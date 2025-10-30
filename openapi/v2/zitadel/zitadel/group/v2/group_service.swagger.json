@@ -1,0 +1,429 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Group Service",
+    "description": "This API is intended to manage user groups in ZITADEL.",
+    "version": "2.0",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "GroupService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {},
+  "definitions": {
+    "filterv2IDFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488337",
+          "description": "Only return resources that belong to this id.",
+          "maxLength": 200
+        }
+      }
+    },
+    "filterv2InIDsFilter": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "example": [
+            "69629023906488334",
+            "69622366012355662"
+          ],
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "description": "Defines the ids to query for."
+        }
+      }
+    },
+    "filterv2PaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "example": 0,
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "example": 10,
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "example": false,
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "filterv2PaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100,
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100,
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "filterv2TextFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_FILTER_METHOD_EQUALS",
+        "TEXT_FILTER_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_STARTS_WITH",
+        "TEXT_FILTER_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_CONTAINS",
+        "TEXT_FILTER_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_ENDS_WITH",
+        "TEXT_FILTER_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_FILTER_METHOD_EQUALS"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2AddUsersToGroupResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-08-11T15:00:00.051Z",
+          "description": "ChangeDate is the timestamp when the users are added."
+        }
+      }
+    },
+    "v2CreateGroupResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "\"This is the ID of the newly created user group\""
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-08-11T15:00:00.051Z",
+          "description": "CreationDate is the timestamp when the user group was created."
+        }
+      }
+    },
+    "v2DeleteGroupResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-08-11T15:00:00.051Z"
+        }
+      }
+    },
+    "v2FieldName": {
+      "type": "string",
+      "enum": [
+        "FIELD_NAME_UNSPECIFIED",
+        "FIELD_NAME_ID",
+        "FIELD_NAME_NAME",
+        "FIELD_NAME_CREATION_DATE",
+        "FIELD_NAME_CHANGE_DATE"
+      ],
+      "default": "FIELD_NAME_UNSPECIFIED"
+    },
+    "v2GetGroupResponse": {
+      "type": "object",
+      "properties": {
+        "group": {
+          "$ref": "#/definitions/v2Group"
+        }
+      }
+    },
+    "v2Group": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "Unique identifier of the user group."
+        },
+        "name": {
+          "type": "string",
+          "example": "Support Group",
+          "description": "Unique name of the user group inside the corresponding organization."
+        },
+        "description": {
+          "type": "string",
+          "example": "Support Group",
+          "description": "Description the user group."
+        },
+        "organizationId": {
+          "type": "string",
+          "example": "69629098906488334",
+          "description": "The ID of the organization to which the group belongs."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "Timestamp when the group was last changed."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "title": "Timestamp when the user group was created"
+        }
+      }
+    },
+    "v2GroupNameFilter": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "My Group",
+          "description": "Name of the user group.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "method": {
+          "$ref": "#/definitions/filterv2TextFilterMethod",
+          "description": "defines which text equality method is used"
+        }
+      }
+    },
+    "v2GroupUser": {
+      "type": "object",
+      "properties": {
+        "groupId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "GroupID is the unique identifier of the user group."
+        },
+        "organizationId": {
+          "type": "string",
+          "example": "69629098906488334",
+          "description": "OrganizationID is the unique identifier of the organization to which the group belongs."
+        },
+        "user": {
+          "$ref": "#/definitions/v2betaUser",
+          "description": "User represents the user in the user group."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "CreationDate is the timestamp when the user was added to the group."
+        }
+      }
+    },
+    "v2GroupUserFieldName": {
+      "type": "string",
+      "enum": [
+        "GROUP_USER_FIELD_NAME_UNSPECIFIED",
+        "GROUP_USER_FIELD_NAME_USER_ID",
+        "GROUP_USER_FIELD_NAME_GROUP_ID",
+        "GROUP_USER_FIELD_NAME_CREATION_DATE"
+      ],
+      "default": "GROUP_USER_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2GroupUsersSearchFilter": {
+      "type": "object",
+      "properties": {
+        "userIds": {
+          "$ref": "#/definitions/filterv2InIDsFilter",
+          "title": "Search for groups by user IDs"
+        },
+        "groupIds": {
+          "$ref": "#/definitions/filterv2InIDsFilter",
+          "title": "Search for users in groups by group IDs"
+        }
+      }
+    },
+    "v2GroupsSearchFilter": {
+      "type": "object",
+      "properties": {
+        "groupIds": {
+          "$ref": "#/definitions/filterv2InIDsFilter",
+          "description": "Search for groups by their IDs."
+        },
+        "nameFilter": {
+          "$ref": "#/definitions/v2GroupNameFilter",
+          "description": "Search for groups by their names."
+        },
+        "organizationId": {
+          "$ref": "#/definitions/filterv2IDFilter",
+          "description": "Search for groups by their organization ID."
+        }
+      }
+    },
+    "v2ListGroupUsersResponse": {
+      "type": "object",
+      "properties": {
+        "groupUsers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2GroupUser"
+          },
+          "title": "GroupUsers is the list of users present in the requested group, matching the search criteria"
+        },
+        "pagination": {
+          "$ref": "#/definitions/filterv2PaginationResponse",
+          "description": "Contains the total number of users matching the query and the applied limit."
+        }
+      }
+    },
+    "v2ListGroupsResponse": {
+      "type": "object",
+      "properties": {
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2Group"
+          },
+          "description": "The list of groups."
+        },
+        "pagination": {
+          "$ref": "#/definitions/filterv2PaginationResponse",
+          "description": "Contains the total number of groups matching the query and the applied limit."
+        }
+      }
+    },
+    "v2RemoveUsersFromGroupResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-08-11T15:00:00.051Z",
+          "description": "ChangeDate is the timestamp when the users are removed."
+        }
+      }
+    },
+    "v2UpdateGroupResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-08-11T15:00:00.051Z"
+        }
+      }
+    },
+    "v2betaUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID represents the ID of the user who was granted the authorization."
+        },
+        "preferredLoginName": {
+          "type": "string",
+          "description": "PreferredLoginName represents the preferred login name of the granted user."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "DisplayName represents the public display name of the granted user."
+        },
+        "avatarUrl": {
+          "type": "string",
+          "description": "AvatarURL is the URL to the user's public avatar image."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "The organization the user belong to.\nThis does not have to correspond with the authorizations organization."
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

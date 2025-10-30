@@ -1,0 +1,3784 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Authentication API aka Auth",
+    "description": "The authentication API is used for all operations on the currently authenticated user.",
+    "version": "1.0",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache License 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSE"
+    }
+  },
+  "tags": [
+    {
+      "name": "General"
+    },
+    {
+      "name": "Policies",
+      "description": "Policies are settings that are made on either an instance or organization level of ZITADEL. The policies will have an impact on what a user is allowed to do or what should be shown to the user."
+    },
+    {
+      "name": "User"
+    },
+    {
+      "name": "User Authentication Factor"
+    },
+    {
+      "name": "User Authorizations/Grants"
+    },
+    {
+      "name": "User Email"
+    },
+    {
+      "name": "User Metadata"
+    },
+    {
+      "name": "User Phone"
+    },
+    {
+      "name": "User Profile"
+    },
+    {
+      "name": "User Social Login"
+    },
+    {
+      "name": "User Tokens"
+    },
+    {
+      "name": "AuthService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/auth/v1",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/global/projectorgs/_search": {
+      "post": {
+        "summary": "List My Organizations",
+        "description": "Returns a list of the organizations where the authenticated user has any authorizations/user grants. The request is made in the context of the requested project. This request can be used in multi-tenancy applications to show the user a tenant switcher.",
+        "operationId": "AuthService_ListMyProjectOrgs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyProjectOrgsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListMyProjectOrgsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Authorizations/Grants"
+        ]
+      }
+    },
+    "/healthz": {
+      "get": {
+        "summary": "Healthz",
+        "description": "The health endpoint allows an external system to probe if ZITADEL authentication API is alive",
+        "operationId": "AuthService_Healthz",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zitadelauthv1HealthzResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "General"
+        ]
+      }
+    },
+    "/languages": {
+      "get": {
+        "summary": "Supported Languages",
+        "description": "Use GetSupportedLanguages on the admin service instead.",
+        "operationId": "AuthService_GetSupportedLanguages",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zitadelauthv1GetSupportedLanguagesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "General"
+        ],
+        "deprecated": true
+      }
+    },
+    "/memberships/me/_search": {
+      "post": {
+        "summary": "List My ZITADEL Manager Roles",
+        "description": "Show all the management roles my user has in ZITADEL (ZITADEL Manager).",
+        "operationId": "AuthService_ListMyMemberships",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyMembershipsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListMyMembershipsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Memberships"
+        ]
+      }
+    },
+    "/permissions/me/_search": {
+      "post": {
+        "summary": "List My Project Roles",
+        "description": "Deprecated: [List authorizations](apis/resources/authorization_service_v2/zitadel-authorization-v-2-authorization-service-list-authorizations.api.mdx) and pass the user ID filter with your users ID and the project ID filter to search for your authorizations on a granted and an owned project.\n\nReturns a list of roles for the authenticated user and for the requesting project.",
+        "operationId": "AuthService_ListMyProjectPermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyProjectPermissionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User Authorizations/Grants"
+        ],
+        "deprecated": true
+      }
+    },
+    "/permissions/zitadel/me/_search": {
+      "post": {
+        "summary": "List My ZITADEL Permissions",
+        "description": "Returns a list of permissions the authenticated user has in ZITADEL based on the manager roles the user has. (e.g: ORG_OWNER = org.read, org.write, ...).",
+        "operationId": "AuthService_ListMyZitadelPermissions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyZitadelPermissionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User Authorizations/Grants"
+        ]
+      }
+    },
+    "/policies/label": {
+      "get": {
+        "summary": "Get Label Policy",
+        "description": "Returns the label settings that should be used for the authenticated user. It is set either on an instance or organization level. This policy defines the branding, colors, fonts, images, etc.",
+        "operationId": "AuthService_GetMyLabelPolicy",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyLabelPolicyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Policies"
+        ]
+      }
+    },
+    "/policies/login": {
+      "get": {
+        "summary": "Get Login Policy",
+        "description": "Returns the login settings that should be used for the authenticated user. It is set either on an instance or organization level. This policy defines what possibilities the user has to authenticate and to use in the login, e.g social logins, MFA, passkey, etc.",
+        "operationId": "AuthService_GetMyLoginPolicy",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyLoginPolicyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Policies"
+        ]
+      }
+    },
+    "/policies/passwords/complexity": {
+      "get": {
+        "summary": "Get Passwordcomplexity Policy",
+        "description": "Returns the password complexity settings that should be used for the authenticated user. It is set either on an instance or organization level. This policy defines how the password should look.",
+        "operationId": "AuthService_GetMyPasswordComplexityPolicy",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyPasswordComplexityPolicyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User Password",
+          "Policies"
+        ]
+      }
+    },
+    "/policies/privacy": {
+      "get": {
+        "summary": "Get Privacy Policy",
+        "description": "Returns the privacy settings that should be used for the authenticated user. It is set either on an instance or organization level. This policy defines the TOS and terms of service links.",
+        "operationId": "AuthService_GetMyPrivacyPolicy",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyPrivacyPolicyResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Policies"
+        ]
+      }
+    },
+    "/usergrants/me/_search": {
+      "post": {
+        "summary": "List My Authorizations / User Grants",
+        "description": "Deprecated: [List authorizations](apis/resources/authorization_service_v2/zitadel-authorization-v-2-authorization-service-list-authorizations.api.mdx) and pass the user ID filter with your users ID to search for your authorizations on granted and owned projects.\n\nReturns a list of the authorizations/user grants the authenticated user has. User grants consist of an organization, a project and 1-n roles.",
+        "operationId": "AuthService_ListMyUserGrants",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyUserGrantsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListMyUserGrantsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Authorizations/Grants"
+        ],
+        "deprecated": true
+      }
+    },
+    "/users/me": {
+      "get": {
+        "summary": "Get my user",
+        "description": "Returns the full user object of the authenticated user including the profile, email, phone, etc ",
+        "operationId": "AuthService_GetMyUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "delete": {
+        "summary": "Delete my user",
+        "description": "Deletes the currently authenticated user. All authentication tokens will be removed and the user will not be able to make any request.",
+        "operationId": "AuthService_RemoveMyUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveMyUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/users/me/auth_factors/_search": {
+      "post": {
+        "summary": "List Authentication Factors",
+        "description": "Returns a list of possible authentication factors, multi-factor (MFA), second factor (2FA)",
+        "operationId": "AuthService_ListMyAuthFactors",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyAuthFactorsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/auth_factors/otp": {
+      "delete": {
+        "summary": "Remove One-Time Password (OTP)",
+        "description": "Remove the configured One-Time Password (OTP) factor of the authenticated user. OTP is an authenticator app like Google/Microsoft Authenticator, Authy, etc. As only one OTP per user is allowed, the user will not have OTP as a second factor afterward.",
+        "operationId": "AuthService_RemoveMyAuthFactorOTP",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveMyAuthFactorOTPResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User Authentication Factor"
+        ]
+      },
+      "post": {
+        "summary": "Add One-Time Password (OTP)",
+        "description": "Add a new One-Time Password (OTP) factor to the authenticated user. OTP is an authenticator app like Google/Microsoft Authenticator, Authy, etc. Only one OTP per user is allowed. After adding a new OTP it has to be verified.",
+        "operationId": "AuthService_AddMyAuthFactorOTP",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AddMyAuthFactorOTPResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AddMyAuthFactorOTPRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/auth_factors/otp/_verify": {
+      "post": {
+        "summary": "Verify One-Time Password (OTP)",
+        "description": "Verify the last added One-Time Password (OTP) factor of the authenticated user. OTP is an authenticator app like Google/Microsoft Authenticator, Authy, etc. Only one OTP per user is allowed.",
+        "operationId": "AuthService_VerifyMyAuthFactorOTP",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1VerifyMyAuthFactorOTPResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1VerifyMyAuthFactorOTPRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/auth_factors/otp_email": {
+      "delete": {
+        "summary": "Remove One-Time Password (OTP) Email",
+        "description": "Remove the configured One-Time Password (OTP) Email factor of the authenticated user. As only one OTP Email per user is allowed, the user will not have OTP Email as a second factor afterward.",
+        "operationId": "AuthService_RemoveMyAuthFactorOTPEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveMyAuthFactorOTPEmailResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User Authentication Factor"
+        ]
+      },
+      "post": {
+        "summary": "Add One-Time Password (OTP) Email",
+        "description": "Add a new One-Time Password (OTP) Email factor to the authenticated user. OTP Email will enable the user to verify a OTP with the latest verified email. The email has to be verified to add the second factor.",
+        "operationId": "AuthService_AddMyAuthFactorOTPEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AddMyAuthFactorOTPEmailResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AddMyAuthFactorOTPEmailRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/auth_factors/otp_sms": {
+      "delete": {
+        "summary": "Remove One-Time Password (OTP) SMS",
+        "description": "Remove the configured One-Time Password (OTP) SMS factor of the authenticated user. As only one OTP SMS per user is allowed, the user will not have OTP SMS as a second factor afterward.",
+        "operationId": "AuthService_RemoveMyAuthFactorOTPSMS",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveMyAuthFactorOTPSMSResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User Authentication Factor"
+        ]
+      },
+      "post": {
+        "summary": "Add One-Time Password (OTP) SMS",
+        "description": "Add a new One-Time Password (OTP) SMS factor to the authenticated user. OTP SMS will enable the user to verify a OTP with the latest verified phone number. The phone number has to be verified to add the second factor.",
+        "operationId": "AuthService_AddMyAuthFactorOTPSMS",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AddMyAuthFactorOTPSMSResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AddMyAuthFactorOTPSMSRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/auth_factors/u2f": {
+      "post": {
+        "summary": "Add Universal Second Factor (U2F)",
+        "description": "Add a new Universal Second Factor (U2F) to the authenticated user. U2F is a device-dependent authentication like FingerScan, FaceID, WindowHello, etc. The factor has to be verified after adding. Multiple factors can be added.",
+        "operationId": "AuthService_AddMyAuthFactorU2F",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AddMyAuthFactorU2FResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AddMyAuthFactorU2FRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/auth_factors/u2f/_verify": {
+      "post": {
+        "summary": "Add Universal Second Factor (U2F)",
+        "description": "Verify the last added new Universal Second Factor (U2F) to the authenticated user.",
+        "operationId": "AuthService_VerifyMyAuthFactorU2F",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1VerifyMyAuthFactorU2FResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1VerifyMyAuthFactorU2FRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/auth_factors/u2f/{tokenId}": {
+      "delete": {
+        "summary": "Remove Universal Second Factor (U2F)",
+        "description": "Remove a specific Universal Second Factor (U2F) from the authenticated user by sending the id.",
+        "operationId": "AuthService_RemoveMyAuthFactorU2F",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveMyAuthFactorU2FResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tokenId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/avatar": {
+      "delete": {
+        "summary": "Remove My Avatar",
+        "description": "Remove the avatar of the authenticated user. If no avatar is set a shortcut of the name of the user will be presented.",
+        "operationId": "AuthService_RemoveMyAvatar",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveMyAvatarResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/users/me/changes/_search": {
+      "post": {
+        "summary": "Get My User History",
+        "description": "Returns a list of changes/events that have happened on the authenticated user. It's the history of the user. Make sure to send a limit.",
+        "operationId": "AuthService_ListMyUserChanges",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyUserChangesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListMyUserChangesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/users/me/email": {
+      "get": {
+        "summary": "Get My Email",
+        "description": "Returns the email address and the verified flag of the authenticated user.",
+        "operationId": "AuthService_GetMyEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyEmailResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User Email"
+        ]
+      },
+      "put": {
+        "summary": "Update My Email",
+        "description": "Change the email address of the authenticated user. A verification email will be sent to the given email address.",
+        "operationId": "AuthService_SetMyEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SetMyEmailResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SetMyEmailRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Email"
+        ]
+      }
+    },
+    "/users/me/email/_resend_verification": {
+      "post": {
+        "summary": "Resend Email Verification",
+        "description": "A new email will be sent to the last set email address of the authenticated user, the last set email address will be used.",
+        "operationId": "AuthService_ResendMyEmailVerification",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ResendMyEmailVerificationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ResendMyEmailVerificationRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Email"
+        ]
+      }
+    },
+    "/users/me/email/_verify": {
+      "post": {
+        "summary": "Verify My Email",
+        "description": "Verify the email address of the authenticated user with the code that has been sent. State of the email address is verified after.",
+        "operationId": "AuthService_VerifyMyEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1VerifyMyEmailResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1VerifyMyEmailRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Email"
+        ]
+      }
+    },
+    "/users/me/idps/_search": {
+      "post": {
+        "summary": "List Social Logins",
+        "description": "Returns a list of all linked identity providers/social logins of the user. (e. Google, Microsoft, AzureAD, etc.)",
+        "operationId": "AuthService_ListMyLinkedIDPs",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyLinkedIDPsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListMyLinkedIDPsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Social Login"
+        ]
+      }
+    },
+    "/users/me/idps/{idpId}/{linkedUserId}": {
+      "delete": {
+        "summary": "Remove Social Login",
+        "description": "Remove one of the linked social logins/identity providers of the authenticated user (e.g. Google, Microsoft, AzureAD, etc.). The user will not be able to log in with the given provider afterward. Make sure the user does have other possibilities to authenticate.",
+        "operationId": "AuthService_RemoveMyLinkedIDP",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveMyLinkedIDPResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "idpId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "linkedUserId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User Social Login"
+        ]
+      }
+    },
+    "/users/me/metadata/_search": {
+      "post": {
+        "summary": "Get My User Metadata",
+        "description": "Returns a list of metadata of the authenticated user. Metadata is a key value list with additional information needed on the user.",
+        "operationId": "AuthService_ListMyMetadata",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyMetadataResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListMyMetadataRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Metadata"
+        ]
+      }
+    },
+    "/users/me/metadata/{key}": {
+      "get": {
+        "summary": "Get My User Metadata By Key",
+        "description": "Returns a metadata value by a specific key of the authenticated user. Metadata is a key value list with additional information needed on the user.",
+        "operationId": "AuthService_GetMyMetadata",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyMetadataResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User Metadata"
+        ]
+      }
+    },
+    "/users/me/password": {
+      "put": {
+        "summary": "Change Password",
+        "description": "Changes the password of the authenticated user. Make sure the password follows the password complexity policy.",
+        "operationId": "AuthService_UpdateMyPassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMyPasswordResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMyPasswordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Password"
+        ]
+      }
+    },
+    "/users/me/passwordless": {
+      "post": {
+        "summary": "Add passkey",
+        "description": "Add a new passkey authentication method to the authenticated user. Like FingerPrint, FaceID, WindowsHello, HardwareToken, etc. Multiple passkeys can be configured.",
+        "operationId": "AuthService_AddMyPasswordless",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AddMyPasswordlessResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AddMyPasswordlessRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/passwordless/_link": {
+      "post": {
+        "summary": "Add passkey link",
+        "description": "Adds a new passkey authenticator link to the authenticated user and returns it in the response. This link enables the user to register a new device if current passkey devices are all platform authenticators. e.g. User has already registered Windows Hello and wants to register FaceID on the iPhone",
+        "operationId": "AuthService_AddMyPasswordlessLink",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AddMyPasswordlessLinkResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AddMyPasswordlessLinkRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/passwordless/_search": {
+      "post": {
+        "summary": "List Passkey",
+        "description": "Get the list of configured passkey authentication methods. Like FingerPrint, FaceID, WindowsHello, HardwareToken, etc.",
+        "operationId": "AuthService_ListMyPasswordless",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyPasswordlessResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/passwordless/_send_link": {
+      "post": {
+        "summary": "Send passkey link",
+        "description": "Adds a new passkey authenticator link to the authenticated user and sends it to the registered email address. This link enables the user to register a new device if current passkey devices are all platform authenticators. e.g. User has already registered Windows Hello and wants to register FaceID on the iPhone",
+        "operationId": "AuthService_SendMyPasswordlessLink",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SendMyPasswordlessLinkResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SendMyPasswordlessLinkRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/passwordless/_verify": {
+      "post": {
+        "summary": "Verify passkey",
+        "description": "Verifies the last added passkey configuration of the authenticated user.",
+        "operationId": "AuthService_VerifyMyPasswordless",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1VerifyMyPasswordlessResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1VerifyMyPasswordlessRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/passwordless/{tokenId}": {
+      "delete": {
+        "summary": "Remove passkey",
+        "description": "Remove a passkey configuration from the authenticated user. The user will not be able to log in with that configuration afterward. Make sure the user has other possibilities to log in.",
+        "operationId": "AuthService_RemoveMyPasswordless",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveMyPasswordlessResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "tokenId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User Authentication Factor"
+        ]
+      }
+    },
+    "/users/me/phone": {
+      "get": {
+        "summary": "Get My Phone",
+        "description": "Returns the phone number of the authenticated user and if the state is verified or not.",
+        "operationId": "AuthService_GetMyPhone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyPhoneResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User Phone"
+        ]
+      },
+      "delete": {
+        "summary": "Remove Phone Number",
+        "description": "The phone number of the authenticated user will be removed.",
+        "operationId": "AuthService_RemoveMyPhone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveMyPhoneResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User Phone"
+        ]
+      },
+      "put": {
+        "summary": "Set My Phone",
+        "description": "Sets a new phone number to the authenticated user. If a notification provider is configured the user will receive an sms with a code to authenticate the number.",
+        "operationId": "AuthService_SetMyPhone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SetMyPhoneResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SetMyPhoneRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Phone"
+        ]
+      }
+    },
+    "/users/me/phone/_resend_verification": {
+      "post": {
+        "summary": "Resend Phone verification",
+        "description": "Resends the verification notification to the last given phone number of the authenticated user. The notification provider has to be configured.",
+        "operationId": "AuthService_ResendMyPhoneVerification",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ResendMyPhoneVerificationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ResendMyPhoneVerificationRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Phone"
+        ]
+      }
+    },
+    "/users/me/phone/_verify": {
+      "post": {
+        "summary": "Verify Phone",
+        "description": "Verify the phone number of the authenticated user, with the code that has been sent to the number. State of the phone number is verified after.",
+        "operationId": "AuthService_VerifyMyPhone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1VerifyMyPhoneResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1VerifyMyPhoneRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Phone"
+        ]
+      }
+    },
+    "/users/me/profile": {
+      "get": {
+        "summary": "Get My Profile",
+        "description": "Returns the profile information of the authenticated user, this includes given name, family name, etc.",
+        "operationId": "AuthService_GetMyProfile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyProfileResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "User Profile"
+        ]
+      },
+      "put": {
+        "summary": "Update My Profile",
+        "description": "Change the profile information of the authenticated user. This includes information like given name, family name, language, etc.",
+        "operationId": "AuthService_UpdateMyProfile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMyProfileResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMyProfileRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Profile"
+        ]
+      }
+    },
+    "/users/me/sessions/_search": {
+      "post": {
+        "summary": "Get My User Sessions",
+        "description": "Returns a list of a user session for the user agent of the authenticated user. This can be used to switch accounts in the current application.",
+        "operationId": "AuthService_ListMyUserSessions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyUserSessionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListMyUserSessionsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/users/me/tokens/refresh/_revoke_all": {
+      "post": {
+        "summary": "Revoke All Refresh Tokens",
+        "description": "Revokes all refresh tokens of the authenticated user.",
+        "operationId": "AuthService_RevokeAllMyRefreshTokens",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RevokeAllMyRefreshTokensResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1RevokeAllMyRefreshTokensRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Tokens"
+        ]
+      }
+    },
+    "/users/me/tokens/refresh/_search": {
+      "post": {
+        "summary": "Get Refresh Tokens",
+        "description": "Returns the list of refresh tokens of the authenticated user.",
+        "operationId": "AuthService_ListMyRefreshTokens",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyRefreshTokensResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListMyRefreshTokensRequest"
+            }
+          }
+        ],
+        "tags": [
+          "User Tokens"
+        ]
+      }
+    },
+    "/users/me/tokens/refresh/{id}": {
+      "delete": {
+        "summary": "Revoke Refresh Tokens",
+        "description": "Revokes a single refresh token of the authorized user by its (token) id.",
+        "operationId": "AuthService_RevokeMyRefreshToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RevokeMyRefreshTokenResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User Tokens"
+        ]
+      }
+    },
+    "/users/me/username": {
+      "put": {
+        "summary": "Change My Username",
+        "description": "Changes the username of the authenticated user. The user has to log in with the newly created username afterward.",
+        "operationId": "AuthService_UpdateMyUserName",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMyUserNameResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateMyUserNameRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "metadatav1Metadata": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "key": {
+          "type": "string",
+          "example": "key1",
+          "description": "metadata key"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte",
+          "example": "VGhpcyBpcyBteSBmaXJzdCB2YWx1ZQ==",
+          "description": "metadata value is base64 encoded, make sure to decode to get the value"
+        }
+      }
+    },
+    "orgv1Org": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "state": {
+          "$ref": "#/definitions/v1OrgState",
+          "description": "current state of the organization"
+        },
+        "name": {
+          "type": "string",
+          "example": "ZITADEL"
+        },
+        "primaryDomain": {
+          "type": "string",
+          "example": "zitadel.cloud"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "userv1Email": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "gigi@zitadel.com",
+          "description": "email address of the user. (spec: https://tools.ietf.org/html/rfc2822#section-3.4.1)"
+        },
+        "isEmailVerified": {
+          "type": "boolean",
+          "description": "Is true if the user verified the email or if the email is managed outside ZITADEL"
+        }
+      }
+    },
+    "userv1Human": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "#/definitions/userv1Profile"
+        },
+        "email": {
+          "$ref": "#/definitions/userv1Email"
+        },
+        "phone": {
+          "$ref": "#/definitions/userv1Phone"
+        },
+        "passwordChanged": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time the user last changed their password."
+        }
+      }
+    },
+    "userv1Machine": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "zitadel"
+        },
+        "description": {
+          "type": "string",
+          "example": "The one and only IAM"
+        },
+        "hasSecret": {
+          "type": "boolean",
+          "example": "true"
+        },
+        "accessTokenType": {
+          "$ref": "#/definitions/v1AccessTokenType",
+          "description": "Type of access token to receive"
+        }
+      }
+    },
+    "userv1Phone": {
+      "type": "object",
+      "properties": {
+        "phone": {
+          "type": "string",
+          "example": "+41 71 000 00 00",
+          "description": "mobile phone number of the user. (use global pattern of spec https://tools.ietf.org/html/rfc3966)"
+        },
+        "isPhoneVerified": {
+          "type": "boolean",
+          "description": "Is true if the user verified the phone or if the phone is managed outside ZITADEL"
+        }
+      }
+    },
+    "userv1Profile": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "Gigi"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Giraffe"
+        },
+        "nickName": {
+          "type": "string",
+          "example": "gigi-giraffe"
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Gigi Giraffe",
+          "description": "a user can set the display name, if nothing is set ZITADEL computes \"first_name last_name\""
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "example": "en",
+          "description": "language tag analog https://tools.ietf.org/html/rfc3066"
+        },
+        "gender": {
+          "$ref": "#/definitions/v1Gender",
+          "description": "the gender of the human"
+        },
+        "avatarUrl": {
+          "type": "string",
+          "example": "https://api.zitadel.ch/assets/v1/avatar-32432jkh4kj32",
+          "description": "avatar URL of the user"
+        }
+      }
+    },
+    "userv1Type": {
+      "type": "string",
+      "enum": [
+        "TYPE_UNSPECIFIED",
+        "TYPE_HUMAN",
+        "TYPE_MACHINE"
+      ],
+      "default": "TYPE_UNSPECIFIED"
+    },
+    "v1AccessTokenType": {
+      "type": "string",
+      "enum": [
+        "ACCESS_TOKEN_TYPE_BEARER",
+        "ACCESS_TOKEN_TYPE_JWT"
+      ],
+      "default": "ACCESS_TOKEN_TYPE_BEARER"
+    },
+    "v1AddMyAuthFactorOTPEmailRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "v1AddMyAuthFactorOTPEmailResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1AddMyAuthFactorOTPRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "v1AddMyAuthFactorOTPResponse": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "example": "otpauth://totp/ZITADEL:gigi@acme.zitadel.cloud?algorithm=SHA1\u0026digits=6\u0026issuer=ZITADEL\u0026period=30\u0026secret=TJOPWSDYILLHXFV4MLKNNJOWFG7VSDCK"
+        },
+        "secret": {
+          "type": "string",
+          "example": "TJOPWSDYILLHXFV4MLKNNJOWFG7VSDCK"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1AddMyAuthFactorOTPSMSRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "v1AddMyAuthFactorOTPSMSResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1AddMyAuthFactorU2FRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "v1AddMyAuthFactorU2FResponse": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/definitions/v1WebAuthNKey"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1AddMyPasswordlessLinkRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "v1AddMyPasswordlessLinkResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "link": {
+          "type": "string",
+          "example": "https://acme.com/ui/login/login/passwordless/init?userID=182156264229306625\u0026orgID=165947650742997249\u0026codeID=200949504189388947\u0026code=kFfsO8OizZPS"
+        },
+        "expiration": {
+          "type": "string",
+          "example": "3600s"
+        }
+      }
+    },
+    "v1AddMyPasswordlessRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "v1AddMyPasswordlessResponse": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/definitions/v1WebAuthNKey"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1AuthFactor": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/v1AuthFactorState",
+          "description": "current state of the auth factor"
+        },
+        "otp": {
+          "$ref": "#/definitions/v1AuthFactorOTP",
+          "description": "one type use OTP, OTPSMS, OTPEmail or U2F"
+        },
+        "u2f": {
+          "$ref": "#/definitions/v1AuthFactorU2F",
+          "description": "one type use OTP, OTPSMS, OTPEmail or U2F"
+        },
+        "otpSms": {
+          "$ref": "#/definitions/v1AuthFactorOTPSMS",
+          "description": "one type use OTP, OTPSMS, OTPEmail or U2F"
+        },
+        "otpEmail": {
+          "$ref": "#/definitions/v1AuthFactorOTPEmail",
+          "description": "one type use OTP, OTPSMS, OTPEmail or U2F"
+        }
+      }
+    },
+    "v1AuthFactorOTP": {
+      "type": "object"
+    },
+    "v1AuthFactorOTPEmail": {
+      "type": "object"
+    },
+    "v1AuthFactorOTPSMS": {
+      "type": "object"
+    },
+    "v1AuthFactorState": {
+      "type": "string",
+      "enum": [
+        "AUTH_FACTOR_STATE_UNSPECIFIED",
+        "AUTH_FACTOR_STATE_NOT_READY",
+        "AUTH_FACTOR_STATE_READY",
+        "AUTH_FACTOR_STATE_REMOVED"
+      ],
+      "default": "AUTH_FACTOR_STATE_UNSPECIFIED"
+    },
+    "v1AuthFactorU2F": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "name": {
+          "type": "string",
+          "example": "fido key"
+        }
+      }
+    },
+    "v1Change": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019-04-01T08:45:00.000000Z",
+          "description": "the creation date of an event"
+        },
+        "eventType": {
+          "$ref": "#/definitions/v1LocalizedMessage"
+        },
+        "sequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2"
+        },
+        "editorId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "the id of the user who created the event"
+        },
+        "editorDisplayName": {
+          "type": "string",
+          "example": "Gigi Giraffe",
+          "description": "the display name of the editor"
+        },
+        "resourceOwnerId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "the organization the event belongs to"
+        },
+        "editorPreferredLoginName": {
+          "type": "string",
+          "example": "gigi@acme.zitadel.ch",
+          "description": "the preferred login name of the editor"
+        },
+        "editorAvatarUrl": {
+          "type": "string",
+          "example": "https://api.zitadel.ch/assets/v1/avatar-32432jkh4kj32",
+          "description": "avatar URL of the editor"
+        }
+      }
+    },
+    "v1ChangeQuery": {
+      "type": "object",
+      "properties": {
+        "sequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2",
+          "description": "sequence represents the order of events. It's always counting"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "example": 20,
+          "description": "Maximum amount of events returned. The default is set to 1000 in https://github.com/zitadel/zitadel/blob/new-eventstore/cmd/zitadel/startup.yaml. If no limit is set or the limit exceeds the maximum configured ZITADEL will throw an error. If no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "description": "default is descending"
+        }
+      },
+      "description": "Filter possibility for the changes/history of an Object.",
+      "title": "Query for Changes of an Object"
+    },
+    "v1Gender": {
+      "type": "string",
+      "enum": [
+        "GENDER_UNSPECIFIED",
+        "GENDER_FEMALE",
+        "GENDER_MALE",
+        "GENDER_DIVERSE"
+      ],
+      "default": "GENDER_UNSPECIFIED"
+    },
+    "v1GetMyEmailResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "email": {
+          "$ref": "#/definitions/userv1Email"
+        }
+      }
+    },
+    "v1GetMyLabelPolicyResponse": {
+      "type": "object",
+      "properties": {
+        "policy": {
+          "$ref": "#/definitions/v1LabelPolicy"
+        }
+      }
+    },
+    "v1GetMyLoginPolicyResponse": {
+      "type": "object",
+      "properties": {
+        "policy": {
+          "$ref": "#/definitions/v1LoginPolicy"
+        }
+      }
+    },
+    "v1GetMyMetadataResponse": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/metadatav1Metadata"
+        }
+      }
+    },
+    "v1GetMyPasswordComplexityPolicyResponse": {
+      "type": "object",
+      "properties": {
+        "policy": {
+          "$ref": "#/definitions/v1PasswordComplexityPolicy"
+        }
+      }
+    },
+    "v1GetMyPhoneResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "phone": {
+          "$ref": "#/definitions/userv1Phone"
+        }
+      }
+    },
+    "v1GetMyPrivacyPolicyResponse": {
+      "type": "object",
+      "properties": {
+        "policy": {
+          "$ref": "#/definitions/v1PrivacyPolicy"
+        }
+      }
+    },
+    "v1GetMyProfileResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "profile": {
+          "$ref": "#/definitions/userv1Profile"
+        }
+      }
+    },
+    "v1GetMyUserResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/v1User"
+        },
+        "lastLogin": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of the last successful login"
+        }
+      }
+    },
+    "v1IDPLoginPolicyLink": {
+      "type": "object",
+      "properties": {
+        "idpId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "the id of the identity provider"
+        },
+        "idpName": {
+          "type": "string",
+          "example": "google",
+          "description": "the name of the identity provider"
+        },
+        "idpType": {
+          "$ref": "#/definitions/v1IDPType",
+          "example": [
+            "IDP_TYPE_OIDC"
+          ],
+          "description": "the authorization framework of the identity provider"
+        }
+      }
+    },
+    "v1IDPType": {
+      "type": "string",
+      "enum": [
+        "IDP_TYPE_UNSPECIFIED",
+        "IDP_TYPE_OIDC",
+        "IDP_TYPE_JWT"
+      ],
+      "default": "IDP_TYPE_UNSPECIFIED",
+      "title": "authorization framework of the identity provider"
+    },
+    "v1IDPUserLink": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "the id of the user"
+        },
+        "idpId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "the id of the identity provider"
+        },
+        "idpName": {
+          "type": "string",
+          "example": "google",
+          "description": "the name of the identity provider"
+        },
+        "providedUserId": {
+          "type": "string",
+          "example": "as-12-df-89",
+          "description": "the id of the user provided by the identity provider"
+        },
+        "providedUserName": {
+          "type": "string",
+          "example": "gigi.long-neck@gmail.com",
+          "description": "the id of the identity provider"
+        },
+        "idpType": {
+          "$ref": "#/definitions/v1IDPType",
+          "description": "the authorization framework of the identity provider"
+        }
+      }
+    },
+    "v1LabelPolicy": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "primaryColor": {
+          "type": "string",
+          "example": "#5469d4",
+          "description": "hex value for primary color",
+          "title": "hex value for primary color"
+        },
+        "isDefault": {
+          "type": "boolean",
+          "description": "defines if the organization's admin changed the policy",
+          "title": "defines if the organization's admin changed the policy"
+        },
+        "hideLoginNameSuffix": {
+          "type": "boolean",
+          "description": "hides the org suffix on the login form if the scope \"urn:zitadel:iam:org:domain:primary:{domainname}\" is set",
+          "title": "hides the org suffix on the login form if the scope \\\"urn:zitadel:iam:org:domain:primary:{domainname}\\\" is set"
+        },
+        "warnColor": {
+          "type": "string",
+          "example": "#CD3D56",
+          "description": "hex value for warn color",
+          "title": "hex value for secondary color"
+        },
+        "backgroundColor": {
+          "type": "string",
+          "example": "#FAFAFA",
+          "description": "hex value for background color",
+          "title": "hex value for background color"
+        },
+        "fontColor": {
+          "type": "string",
+          "example": "#000000",
+          "description": "hex value for font color",
+          "title": "hex value for font color"
+        },
+        "primaryColorDark": {
+          "type": "string",
+          "example": "#BBBAFA",
+          "description": "hex value for the primary color dark theme",
+          "title": "hex value for primary color dark theme"
+        },
+        "backgroundColorDark": {
+          "type": "string",
+          "example": "#111827",
+          "description": "hex value for background color dark theme",
+          "title": "hex value for background color dark theme"
+        },
+        "warnColorDark": {
+          "type": "string",
+          "example": "#FF3B5B",
+          "description": "hex value for warning color dark theme",
+          "title": "hex value for warning color dark theme"
+        },
+        "fontColorDark": {
+          "type": "string",
+          "example": "#FFFFFF",
+          "description": "hex value for font color dark theme",
+          "title": "hex value for font color dark theme"
+        },
+        "disableWatermark": {
+          "type": "boolean"
+        },
+        "logoUrl": {
+          "type": "string",
+          "example": "https://acme.com/assets/v1/165617850692654601/policy/label/logo-180950416321494657",
+          "description": "hex value for font color dark theme"
+        },
+        "iconUrl": {
+          "type": "string",
+          "example": "https://acme.com/assets/v1/165617850692654601/policy/label/icon-180950498874178817",
+          "description": "hex value for font color dark theme"
+        },
+        "logoUrlDark": {
+          "type": "string",
+          "example": "https://acme.com/assets/v1/165617850692654601/policy/label/logo-dark-180950229376461345",
+          "description": "hex value for font color dark theme"
+        },
+        "iconUrlDark": {
+          "type": "string",
+          "example": "https://acme.com/assets/v1/165617850692654601/policy/label/icon-dark-180950243237405441",
+          "description": "hex value for font color dark theme"
+        },
+        "fontUrl": {
+          "type": "string"
+        },
+        "themeMode": {
+          "$ref": "#/definitions/v1ThemeMode"
+        }
+      }
+    },
+    "v1ListDetails": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2"
+        },
+        "processedSequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "267831"
+        },
+        "viewTimestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "the last time the view got updated"
+        }
+      }
+    },
+    "v1ListMyAuthFactorsResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1AuthFactor"
+          }
+        }
+      }
+    },
+    "v1ListMyLinkedIDPsRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/v1ListQuery",
+          "title": "list limitations and ordering"
+        }
+      }
+    },
+    "v1ListMyLinkedIDPsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ListDetails"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1IDPUserLink"
+          }
+        }
+      }
+    },
+    "v1ListMyMembershipsRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/v1ListQuery",
+          "title": "the field the result is sorted"
+        },
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1MembershipQuery"
+          },
+          "title": "criteria the client is looking for"
+        }
+      }
+    },
+    "v1ListMyMembershipsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ListDetails"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Membership"
+          }
+        }
+      }
+    },
+    "v1ListMyMetadataRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/v1ListQuery"
+        },
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1MetadataQuery"
+          }
+        }
+      }
+    },
+    "v1ListMyMetadataResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ListDetails"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/metadatav1Metadata"
+          }
+        }
+      }
+    },
+    "v1ListMyPasswordlessResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1WebAuthNToken"
+          }
+        }
+      }
+    },
+    "v1ListMyProjectOrgsRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/v1ListQuery",
+          "title": "list limitations and ordering"
+        },
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1OrgQuery"
+          },
+          "title": "criteria the client is looking for"
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v1OrgFieldName",
+          "description": "States by which field the results are sorted."
+        }
+      }
+    },
+    "v1ListMyProjectOrgsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ListDetails"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/orgv1Org"
+          }
+        }
+      }
+    },
+    "v1ListMyProjectPermissionsResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "example": [
+            "RoleKey1",
+            "RoleKey2"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "v1ListMyRefreshTokensRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "v1ListMyRefreshTokensResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ListDetails"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1RefreshToken"
+          }
+        }
+      }
+    },
+    "v1ListMyUserChangesRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/v1ChangeQuery"
+        }
+      }
+    },
+    "v1ListMyUserChangesResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Change"
+          },
+          "title": "zitadel.v1.ListDetails details = 1; was always returned empty (as we cannot get the necessary info)"
+        }
+      }
+    },
+    "v1ListMyUserGrantsRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/v1ListQuery",
+          "title": "list limitations and ordering"
+        }
+      }
+    },
+    "v1ListMyUserGrantsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ListDetails"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zitadelauthv1UserGrant"
+          }
+        }
+      }
+    },
+    "v1ListMyUserSessionsRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "v1ListMyUserSessionsResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Session"
+          }
+        }
+      }
+    },
+    "v1ListMyZitadelPermissionsResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "example": [
+            "org.read",
+            "org.write"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "v1ListQuery": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "example": "0"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "example": 100,
+          "description": "Maximum amount of events returned. The default is set to 1000 in https://github.com/zitadel/zitadel/blob/new-eventstore/cmd/zitadel/startup.yaml. If the limit exceeds the maximum configured ZITADEL will throw an error. If no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "description": "default is descending"
+        }
+      },
+      "description": "Object unspecific list filters like offset, limit and asc/desc.",
+      "title": "General List Query"
+    },
+    "v1LocalizedMessage": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "localizedMessage": {
+          "type": "string"
+        }
+      }
+    },
+    "v1LoginPolicy": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "allowUsernamePassword": {
+          "type": "boolean",
+          "description": "defines if a user is allowed to log in with username and password"
+        },
+        "allowRegister": {
+          "type": "boolean",
+          "description": "defines if a person is allowed to register a user on this organization"
+        },
+        "allowExternalIdp": {
+          "type": "boolean",
+          "description": "defines if a user is allowed to add a defined identity provider. E.g. Google auth"
+        },
+        "forceMfa": {
+          "type": "boolean",
+          "description": "defines if a user MUST use a multi-factor to log in"
+        },
+        "passwordlessType": {
+          "$ref": "#/definitions/v1PasswordlessType",
+          "description": "defines if passwordless is allowed for users"
+        },
+        "isDefault": {
+          "type": "boolean",
+          "description": "defines if the organization's admin changed the policy"
+        },
+        "hidePasswordReset": {
+          "type": "boolean",
+          "description": "defines if password reset link should be shown in the login screen"
+        },
+        "ignoreUnknownUsernames": {
+          "type": "boolean",
+          "description": "defines if unknown username on login screen directly returns an error or always displays the password screen"
+        },
+        "defaultRedirectUri": {
+          "type": "string",
+          "example": "https://acme.com/ui/console",
+          "description": "defines where the user will be redirected to if the login is started without app context (e.g. from mail)"
+        },
+        "passwordCheckLifetime": {
+          "type": "string",
+          "example": "864000s"
+        },
+        "externalLoginCheckLifetime": {
+          "type": "string",
+          "example": "864000s"
+        },
+        "mfaInitSkipLifetime": {
+          "type": "string",
+          "example": "2592000s"
+        },
+        "secondFactorCheckLifetime": {
+          "type": "string",
+          "example": "64800s"
+        },
+        "multiFactorCheckLifetime": {
+          "type": "string",
+          "example": "43200s"
+        },
+        "secondFactors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1SecondFactorType"
+          }
+        },
+        "multiFactors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1MultiFactorType"
+          }
+        },
+        "idps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1IDPLoginPolicyLink"
+          }
+        },
+        "allowDomainDiscovery": {
+          "type": "boolean",
+          "description": "If set to true, the suffix (@domain.com) of an unknown username input on the login screen will be matched against the org domains and will redirect to the registration of that organization on success."
+        },
+        "disableLoginWithEmail": {
+          "type": "boolean",
+          "description": "defines if the user can additionally (to the login name) be identified by their verified email address"
+        },
+        "disableLoginWithPhone": {
+          "type": "boolean",
+          "description": "defines if the user can additionally (to the login name) be identified by their verified phone number"
+        },
+        "forceMfaLocalOnly": {
+          "type": "boolean",
+          "description": "if activated, only local authenticated users are forced to use MFA. Authentication through IDPs won't prompt a MFA step in the login."
+        }
+      }
+    },
+    "v1Membership": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "roles": {
+          "type": "array",
+          "example": [
+            "IAM_OWNER"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Gigi Giraffe",
+          "description": "display name of the user"
+        },
+        "iam": {
+          "type": "boolean",
+          "description": "one of type use iam, org id, project id or project grant id"
+        },
+        "orgId": {
+          "type": "string",
+          "description": "one of type use iam, org id, project id or project grant id"
+        },
+        "projectId": {
+          "type": "string",
+          "description": "one of type use iam, org id, project id or project grant id"
+        },
+        "projectGrantId": {
+          "type": "string",
+          "description": "one of type use iam, org id, project id or project grant id"
+        }
+      }
+    },
+    "v1MembershipIAMQuery": {
+      "type": "object",
+      "properties": {
+        "iam": {
+          "type": "boolean"
+        }
+      },
+      "title": "this query always equals"
+    },
+    "v1MembershipOrgQuery": {
+      "type": "object",
+      "properties": {
+        "orgId": {
+          "type": "string",
+          "example": "69629023906488334"
+        }
+      },
+      "title": "this query always equals"
+    },
+    "v1MembershipProjectGrantQuery": {
+      "type": "object",
+      "properties": {
+        "projectGrantId": {
+          "type": "string",
+          "example": "69629023906488334"
+        }
+      },
+      "title": "this query always equals"
+    },
+    "v1MembershipProjectQuery": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "example": "69629023906488334"
+        }
+      },
+      "title": "this query always equals"
+    },
+    "v1MembershipQuery": {
+      "type": "object",
+      "properties": {
+        "orgQuery": {
+          "$ref": "#/definitions/v1MembershipOrgQuery"
+        },
+        "projectQuery": {
+          "$ref": "#/definitions/v1MembershipProjectQuery"
+        },
+        "projectGrantQuery": {
+          "$ref": "#/definitions/v1MembershipProjectGrantQuery"
+        },
+        "iamQuery": {
+          "$ref": "#/definitions/v1MembershipIAMQuery"
+        }
+      }
+    },
+    "v1MetadataKeyQuery": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "example": "key"
+        },
+        "method": {
+          "$ref": "#/definitions/v1TextQueryMethod",
+          "description": "defines which text equality method is used"
+        }
+      }
+    },
+    "v1MetadataQuery": {
+      "type": "object",
+      "properties": {
+        "keyQuery": {
+          "$ref": "#/definitions/v1MetadataKeyQuery"
+        }
+      }
+    },
+    "v1MultiFactorType": {
+      "type": "string",
+      "enum": [
+        "MULTI_FACTOR_TYPE_UNSPECIFIED",
+        "MULTI_FACTOR_TYPE_U2F_WITH_VERIFICATION"
+      ],
+      "default": "MULTI_FACTOR_TYPE_UNSPECIFIED"
+    },
+    "v1ObjectDetails": {
+      "type": "object",
+      "properties": {
+        "sequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2",
+          "description": "on read: the sequence of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "sequence represents the order of events. It's always counting"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "on read: the timestamp of the first event of the object\n\non create: the timestamp of the event(s) added by the manipulation",
+          "title": "creation_date is the timestamp where the first operation on the object was made"
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "on read: the timestamp of the last event reduced by the projection\n\non manipulation: the",
+          "title": "change_date is the timestamp when the object was changed"
+        },
+        "resourceOwner": {
+          "type": "string",
+          "example": "69629023906488334",
+          "title": "resource_owner is the organization an object belongs to"
+        }
+      }
+    },
+    "v1OrgDomainQuery": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "example": "citadel.cloud"
+        },
+        "method": {
+          "$ref": "#/definitions/v1TextQueryMethod",
+          "description": "defines which text equality method is used"
+        }
+      }
+    },
+    "v1OrgFieldName": {
+      "type": "string",
+      "enum": [
+        "ORG_FIELD_NAME_UNSPECIFIED",
+        "ORG_FIELD_NAME_NAME"
+      ],
+      "default": "ORG_FIELD_NAME_UNSPECIFIED"
+    },
+    "v1OrgIDQuery": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334"
+        }
+      }
+    },
+    "v1OrgNameQuery": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "ZITADEL"
+        },
+        "method": {
+          "$ref": "#/definitions/v1TextQueryMethod",
+          "description": "defines which text equality method is used"
+        }
+      }
+    },
+    "v1OrgQuery": {
+      "type": "object",
+      "properties": {
+        "nameQuery": {
+          "$ref": "#/definitions/v1OrgNameQuery"
+        },
+        "domainQuery": {
+          "$ref": "#/definitions/v1OrgDomainQuery"
+        },
+        "stateQuery": {
+          "$ref": "#/definitions/v1OrgStateQuery"
+        },
+        "idQuery": {
+          "$ref": "#/definitions/v1OrgIDQuery"
+        }
+      }
+    },
+    "v1OrgState": {
+      "type": "string",
+      "enum": [
+        "ORG_STATE_UNSPECIFIED",
+        "ORG_STATE_ACTIVE",
+        "ORG_STATE_INACTIVE",
+        "ORG_STATE_REMOVED"
+      ],
+      "default": "ORG_STATE_UNSPECIFIED"
+    },
+    "v1OrgStateQuery": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/v1OrgState",
+          "description": "current state of the organization"
+        }
+      }
+    },
+    "v1PasswordComplexityPolicy": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "minLength": {
+          "type": "string",
+          "format": "uint64",
+          "example": "8"
+        },
+        "hasUppercase": {
+          "type": "boolean",
+          "description": "defines if the password MUST contain an upper case letter"
+        },
+        "hasLowercase": {
+          "type": "boolean",
+          "description": "defines if the password MUST contain a lowercase letter"
+        },
+        "hasNumber": {
+          "type": "boolean",
+          "description": "defines if the password MUST contain a number"
+        },
+        "hasSymbol": {
+          "type": "boolean",
+          "description": "defines if the password MUST contain a symbol. E.g. \"$\""
+        },
+        "isDefault": {
+          "type": "boolean",
+          "description": "defines if the organization's admin changed the policy"
+        }
+      }
+    },
+    "v1PasswordlessType": {
+      "type": "string",
+      "enum": [
+        "PASSWORDLESS_TYPE_NOT_ALLOWED",
+        "PASSWORDLESS_TYPE_ALLOWED"
+      ],
+      "default": "PASSWORDLESS_TYPE_NOT_ALLOWED",
+      "title": "- PASSWORDLESS_TYPE_ALLOWED: PLANNED: PASSWORDLESS_TYPE_WITH_CERT"
+    },
+    "v1PrivacyPolicy": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "tosLink": {
+          "type": "string",
+          "example": "https://zitadel.com/docs/legal/terms-of-service"
+        },
+        "privacyLink": {
+          "type": "string",
+          "example": "https://zitadel.com/docs/legal/privacy-policy"
+        },
+        "isDefault": {
+          "type": "boolean"
+        },
+        "helpLink": {
+          "type": "string",
+          "example": "https://zitadel.com/docs/manuals/introduction"
+        },
+        "supportEmail": {
+          "type": "string",
+          "example": "support-email@test.com",
+          "description": "help / support email address."
+        },
+        "docsLink": {
+          "type": "string",
+          "example": "https://zitadel.com/docs",
+          "description": "Link to documentation to be shown in the console."
+        },
+        "customLink": {
+          "type": "string",
+          "example": "https://external.link",
+          "description": "Link to an external resource that will be available to users in the console."
+        },
+        "customLinkText": {
+          "type": "string",
+          "example": "External",
+          "description": "The button text that would be shown in console pointing to custom link."
+        }
+      }
+    },
+    "v1RefreshToken": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906489455"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "clientId": {
+          "type": "string",
+          "example": "69629023906488334@ZITADEL",
+          "description": "oauth2/oidc client_id of the authorized application"
+        },
+        "authTime": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-02-13T08:45:00.000000Z",
+          "description": "\"time when the user authenticated, does not have to be the same time the token was created\""
+        },
+        "idleExpiration": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-02-14T08:45:00.000000Z",
+          "description": "\"time the refresh token will expire if not used, the user will have to reauthenticate\""
+        },
+        "expiration": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2023-02-14T08:45:00.000000Z",
+          "description": "\"time the refresh token will expire, the user will have to reauthenticate\""
+        },
+        "scopes": {
+          "type": "array",
+          "example": [
+            "openid",
+            "email",
+            "profile",
+            "offline_access"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "scopes of the initial auth request, access tokens created by this refresh token can have a subset of these scopes"
+        },
+        "audience": {
+          "type": "array",
+          "example": [
+            "69629023906488334@ZITADEL",
+            "69629023906481256"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "audience of the initial auth request and of all access tokens created by this refresh token"
+        }
+      }
+    },
+    "v1RemoveMyAuthFactorOTPEmailResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1RemoveMyAuthFactorOTPResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1RemoveMyAuthFactorOTPSMSResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1RemoveMyAuthFactorU2FResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1RemoveMyAvatarResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1RemoveMyLinkedIDPResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1RemoveMyPasswordlessResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1RemoveMyPhoneResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1RemoveMyUserResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1ResendMyEmailVerificationRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "v1ResendMyEmailVerificationResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1ResendMyPhoneVerificationRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "v1ResendMyPhoneVerificationResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1RevokeAllMyRefreshTokensRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "v1RevokeAllMyRefreshTokensResponse": {
+      "type": "object",
+      "title": "This is an empty response"
+    },
+    "v1RevokeMyRefreshTokenResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1SecondFactorType": {
+      "type": "string",
+      "enum": [
+        "SECOND_FACTOR_TYPE_UNSPECIFIED",
+        "SECOND_FACTOR_TYPE_OTP",
+        "SECOND_FACTOR_TYPE_U2F",
+        "SECOND_FACTOR_TYPE_OTP_EMAIL",
+        "SECOND_FACTOR_TYPE_OTP_SMS"
+      ],
+      "default": "SECOND_FACTOR_TYPE_UNSPECIFIED",
+      "title": "- SECOND_FACTOR_TYPE_OTP: SECOND_FACTOR_TYPE_OTP is the type for TOTP"
+    },
+    "v1SendMyPasswordlessLinkRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "v1SendMyPasswordlessLinkResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1Session": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "agentId": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "authState": {
+          "$ref": "#/definitions/v1SessionState",
+          "description": "current state of the session"
+        },
+        "userId": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "userName": {
+          "type": "string",
+          "example": "gigi-giraffe"
+        },
+        "loginName": {
+          "type": "string",
+          "example": "gigi@zitadel.com"
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Gigi Giraffe",
+          "description": "the display name of the user"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "avatarUrl": {
+          "type": "string",
+          "example": "https://api.zitadel.ch/assets/v1/avatar-32432jkh4kj32",
+          "description": "avatar URL of the user"
+        }
+      }
+    },
+    "v1SessionState": {
+      "type": "string",
+      "enum": [
+        "SESSION_STATE_UNSPECIFIED",
+        "SESSION_STATE_ACTIVE",
+        "SESSION_STATE_TERMINATED"
+      ],
+      "default": "SESSION_STATE_UNSPECIFIED"
+    },
+    "v1SetMyEmailRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "gigi@zitadel.com"
+        }
+      },
+      "required": [
+        "email"
+      ]
+    },
+    "v1SetMyEmailResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1SetMyPhoneRequest": {
+      "type": "object",
+      "properties": {
+        "phone": {
+          "type": "string",
+          "example": "+41 71 000 00 00",
+          "maxLength": 50,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "phone"
+      ]
+    },
+    "v1SetMyPhoneResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1TextQueryMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_QUERY_METHOD_EQUALS",
+        "TEXT_QUERY_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_QUERY_METHOD_STARTS_WITH",
+        "TEXT_QUERY_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_QUERY_METHOD_CONTAINS",
+        "TEXT_QUERY_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_QUERY_METHOD_ENDS_WITH",
+        "TEXT_QUERY_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_QUERY_METHOD_EQUALS"
+    },
+    "v1ThemeMode": {
+      "type": "string",
+      "enum": [
+        "THEME_MODE_UNSPECIFIED",
+        "THEME_MODE_AUTO",
+        "THEME_MODE_DARK",
+        "THEME_MODE_LIGHT"
+      ],
+      "default": "THEME_MODE_UNSPECIFIED"
+    },
+    "v1UpdateMyPasswordRequest": {
+      "type": "object",
+      "properties": {
+        "oldPassword": {
+          "type": "string",
+          "example": "MyOldPassword12!",
+          "minLength": 1
+        },
+        "newPassword": {
+          "type": "string",
+          "example": "MyNewPassword12!",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "oldPassword",
+        "newPassword"
+      ]
+    },
+    "v1UpdateMyPasswordResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1UpdateMyProfileRequest": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "Minnie",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Mouse",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "nickName": {
+          "type": "string",
+          "example": "Minnie",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Minnie Mouse",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "example": "en",
+          "maxLength": 10
+        },
+        "gender": {
+          "$ref": "#/definitions/v1Gender"
+        }
+      },
+      "required": [
+        "firstName",
+        "lastName",
+        "displayName"
+      ]
+    },
+    "v1UpdateMyProfileResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1UpdateMyUserNameRequest": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string"
+        }
+      }
+    },
+    "v1UpdateMyUserNameResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "state": {
+          "$ref": "#/definitions/v1UserState",
+          "description": "current state of the user"
+        },
+        "userName": {
+          "type": "string",
+          "example": "gigi-giraffe"
+        },
+        "loginNames": {
+          "type": "array",
+          "example": [
+            "gigi@zitadel.com",
+            "gigi@zitadel.zitadel.ch"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "preferredLoginName": {
+          "type": "string",
+          "example": "gigi@zitadel.com"
+        },
+        "human": {
+          "$ref": "#/definitions/userv1Human",
+          "description": "one of type use human or machine"
+        },
+        "machine": {
+          "$ref": "#/definitions/userv1Machine",
+          "description": "one of type use human or machine"
+        }
+      }
+    },
+    "v1UserGrantState": {
+      "type": "string",
+      "enum": [
+        "USER_GRANT_STATE_UNSPECIFIED",
+        "USER_GRANT_STATE_ACTIVE",
+        "USER_GRANT_STATE_INACTIVE"
+      ],
+      "default": "USER_GRANT_STATE_UNSPECIFIED"
+    },
+    "v1UserState": {
+      "type": "string",
+      "enum": [
+        "USER_STATE_UNSPECIFIED",
+        "USER_STATE_ACTIVE",
+        "USER_STATE_INACTIVE",
+        "USER_STATE_DELETED",
+        "USER_STATE_LOCKED",
+        "USER_STATE_SUSPEND",
+        "USER_STATE_INITIAL"
+      ],
+      "default": "USER_STATE_UNSPECIFIED"
+    },
+    "v1VerifyMyAuthFactorOTPRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "123456"
+        }
+      },
+      "required": [
+        "code"
+      ]
+    },
+    "v1VerifyMyAuthFactorOTPResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1VerifyMyAuthFactorU2FRequest": {
+      "type": "object",
+      "properties": {
+        "verification": {
+          "$ref": "#/definitions/v1WebAuthNVerification"
+        }
+      }
+    },
+    "v1VerifyMyAuthFactorU2FResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1VerifyMyEmailRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "H83J3",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "code"
+      ]
+    },
+    "v1VerifyMyEmailResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1VerifyMyPasswordlessRequest": {
+      "type": "object",
+      "properties": {
+        "verification": {
+          "$ref": "#/definitions/v1WebAuthNVerification"
+        }
+      }
+    },
+    "v1VerifyMyPasswordlessResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1VerifyMyPhoneRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "H83J3",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "code"
+      ]
+    },
+    "v1VerifyMyPhoneResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1WebAuthNKey": {
+      "type": "object",
+      "properties": {
+        "publicKey": {
+          "type": "string",
+          "format": "byte",
+          "example": "eyJwdWJsaWNLZXkiOnsiY2hhbGxlbmdlIoplfZm4vM21qSzBPdjltN2x6VWhnclYyejFJSlVzZnpLd0Z1TytWTWtzRW1Icz0iLCJycCI6eyJuYW1lIjoiWklUQURFTCIsImlkIjoiYWNtZS1nem9lNHgueml0YWRlbC5jbG91ZCJ9LCJ1c2VyIjp7Im5hbWUiOiJ0ZXN0dXNlcjU1QGFjbWUueml0YWRlbC5jbG91ZCIsImRpc3BsYXlOYW1lIjoiVGVzdCBUZXN0IiwiaWQiOiJNVGd5TVRVMk1qWTBNakk1TXpBMk5qSTEifSwicHViS2V5Q3JlZFBhcmFtcyI6W3sidHlwZSI6InB1YmxpYy1rZXkiLCJhbGciOi03fSx7InR5cGUiOiJwdWJsaWMta2V5IiwiYWxnIjotMzV9LHsidHlwZSI6InB1YmxpYy1rZXkiLCJhbGciOi0zNn0seyJ0eXBlIjoicHVibGljLWtleSIsImFsZyI6LTI1N30seyJ0eXBlIjoicHVibGljLWtleSIsImFsZyI6LTI1OH0seyJ0eXBlIjoicHVibGljLWtleSIsImFsZyI6LTI1OX0seyJ0eXBlIjoicHVibGljLWtleSIsImFsZyI6LTM3fSx7InR5cGUiOiJwdWJsaWMta2V5IiwiYWxnIjotMzh9LHsidHlwZSI6InB1YmxpYy1rZXkiLCJhbGciOi0zOX0seyJ0eXBlIjoicHVibGljLWtleSIsImFsZyI6LTh9XSwiYXV0aGVudGljYXRvclNlbGVjdGlvbiI6eyJ1c2VyVmVyaWZpY2F0aW9uIjoiZGlzY291cmFnZWQifn2ilGltZW91dCI6NjAwMDAsImF0dGVzdGF0aW9uIjoibm9uZSJ9fQ==",
+          "description": "json representation of public key credential creation options used by the webauthn client"
+        }
+      }
+    },
+    "v1WebAuthNToken": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "state": {
+          "$ref": "#/definitions/v1AuthFactorState",
+          "description": "current state of the token"
+        },
+        "name": {
+          "type": "string",
+          "example": "fido key",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      }
+    },
+    "v1WebAuthNVerification": {
+      "type": "object",
+      "properties": {
+        "publicKeyCredential": {
+          "type": "string",
+          "format": "byte",
+          "description": "JSON representation of public key credential issued by the webauthn client",
+          "maxLength": 1048576,
+          "minLength": 55
+        },
+        "tokenName": {
+          "type": "string",
+          "example": "fido key",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      }
+    },
+    "zitadelauthv1GetSupportedLanguagesResponse": {
+      "type": "object",
+      "properties": {
+        "languages": {
+          "type": "array",
+          "example": [
+            "en",
+            "de",
+            "it"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "zitadelauthv1HealthzResponse": {
+      "type": "object",
+      "title": "This is an empty response"
+    },
+    "zitadelauthv1UserGrant": {
+      "type": "object",
+      "properties": {
+        "orgId": {
+          "type": "string",
+          "example": "69629026806489455"
+        },
+        "projectId": {
+          "type": "string",
+          "example": "98729028932384528"
+        },
+        "userId": {
+          "type": "string",
+          "example": "28746028909593987"
+        },
+        "roles": {
+          "type": "array",
+          "example": [
+            "RoleKey1",
+            "RoleKey2"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Deprecated: user role_keys"
+        },
+        "orgName": {
+          "type": "string",
+          "example": "ZITADEL"
+        },
+        "grantId": {
+          "type": "string",
+          "example": ""
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "orgDomain": {
+          "type": "string",
+          "example": "zitadel.cloud"
+        },
+        "projectName": {
+          "type": "string",
+          "example": "ZITADEL"
+        },
+        "projectGrantId": {
+          "type": "string",
+          "example": "28746028909586246"
+        },
+        "roleKeys": {
+          "type": "array",
+          "example": [
+            "RoleKey1",
+            "RoleKey2"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "userType": {
+          "$ref": "#/definitions/userv1Type",
+          "description": "type of the user (human / machine)"
+        },
+        "state": {
+          "$ref": "#/definitions/v1UserGrantState",
+          "description": "current state of the user grant"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

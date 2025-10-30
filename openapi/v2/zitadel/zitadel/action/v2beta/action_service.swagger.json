@@ -1,0 +1,1261 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Action Service",
+    "description": "This API is intended to manage custom executions (previously known as actions) in a ZITADEL instance. This service is in beta state. It can AND will continue breaking until a stable version is released.",
+    "version": "2.0-beta",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "ActionService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/v2beta/actions/executions": {
+      "put": {
+        "summary": "Set Execution",
+        "description": "Deprecated: please move to the corresponding endpoint under action service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nSets an execution to call a target or include the targets of another execution.\nSetting an empty list of targets will remove all targets from the execution, making it a noop.\n\nRequired permission:\n  - `action.execution.write`",
+        "operationId": "ActionService_SetExecution",
+        "responses": {
+          "200": {
+            "description": "Execution successfully updated or left unchanged",
+            "schema": {
+              "$ref": "#/definitions/v2betaSetExecutionResponse"
+            }
+          },
+          "400": {
+            "description": "Condition to set execution does not exist or the feature flag `actions` is not enabled.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaSetExecutionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ActionService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/actions/executions/functions": {
+      "get": {
+        "summary": "List Execution Functions",
+        "description": "Deprecated: please move to the corresponding endpoint under action service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nList all available functions which can be used as condition for executions.",
+        "operationId": "ActionService_ListExecutionFunctions",
+        "responses": {
+          "200": {
+            "description": "List all functions successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaListExecutionFunctionsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "ActionService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/actions/executions/methods": {
+      "get": {
+        "summary": "List Execution Methods",
+        "description": "Deprecated: please move to the corresponding endpoint under action service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nList all available methods which can be used as condition for executions.",
+        "operationId": "ActionService_ListExecutionMethods",
+        "responses": {
+          "200": {
+            "description": "List all methods successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaListExecutionMethodsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "ActionService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/actions/executions/search": {
+      "post": {
+        "summary": "List Executions",
+        "description": "Deprecated: please move to the corresponding endpoint under action service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nList all matching executions. By default all executions of the instance are returned that have at least one execution target.\nMake sure to include a limit and sorting for pagination.\n\nRequired permission:\n  - `action.execution.read`",
+        "operationId": "ActionService_ListExecutions",
+        "responses": {
+          "200": {
+            "description": "A list of all non noop executions matching the query",
+            "schema": {
+              "$ref": "#/definitions/v2betaListExecutionsResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid list query or the feature flag `actions` is not enabled.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaListExecutionsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ActionService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/actions/executions/services": {
+      "get": {
+        "summary": "List Execution Services",
+        "description": "Deprecated: please move to the corresponding endpoint under action service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nList all available services which can be used as condition for executions.",
+        "operationId": "ActionService_ListExecutionServices",
+        "responses": {
+          "200": {
+            "description": "List all services successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaListExecutionServicesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "ActionService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/actions/targets": {
+      "post": {
+        "summary": "Create Target",
+        "description": "Deprecated: please move to the corresponding endpoint under action service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nCreate a new target to your endpoint, which can be used in executions.\n\nRequired permission:\n  - `action.target.write`",
+        "operationId": "ActionService_CreateTarget",
+        "responses": {
+          "200": {
+            "description": "Target created successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateTargetResponse"
+            }
+          },
+          "400": {
+            "description": "The feature flag `actions` is not enabled.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "409": {
+            "description": "The target to create already exists.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateTargetRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ActionService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/actions/targets/search": {
+      "post": {
+        "summary": "List targets",
+        "description": "Deprecated: please move to the corresponding endpoint under action service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nList all matching targets. By default all targets of the instance are returned.\nMake sure to include a limit and sorting for pagination.\n\nRequired permission:\n  - `action.target.read`",
+        "operationId": "ActionService_ListTargets",
+        "responses": {
+          "200": {
+            "description": "A list of all targets matching the query",
+            "schema": {
+              "$ref": "#/definitions/v2betaListTargetsResponse"
+            }
+          },
+          "400": {
+            "description": "The feature flag `actions` is not enabled.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaListTargetsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ActionService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/actions/targets/{id}": {
+      "get": {
+        "summary": "Get Target",
+        "description": "Deprecated: please move to the corresponding endpoint under action service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nReturns the target identified by the requested ID.\n\nRequired permission:\n  - `action.target.read`",
+        "operationId": "ActionService_GetTarget",
+        "responses": {
+          "200": {
+            "description": "Target retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetTargetResponse"
+            }
+          },
+          "400": {
+            "description": "The feature flag `actions` is not enabled.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "The target to update does not exist.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ActionService"
+        ],
+        "deprecated": true
+      },
+      "delete": {
+        "summary": "Delete Target",
+        "description": "Deprecated: please move to the corresponding endpoint under action service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nDelete an existing target. This will remove it from any configured execution as well.\nIn case the target is not found, the request will return a successful response as\nthe desired state is already achieved.\n\nRequired permission:\n  - `action.target.delete`",
+        "operationId": "ActionService_DeleteTarget",
+        "responses": {
+          "200": {
+            "description": "Target deleted successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteTargetResponse"
+            }
+          },
+          "400": {
+            "description": "The feature flag `actions` is not enabled.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ActionService"
+        ],
+        "deprecated": true
+      },
+      "post": {
+        "summary": "Update Target",
+        "description": "Deprecated: please move to the corresponding endpoint under action service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nUpdate an existing target.\nTo generate a new signing key set the optional expirationSigningKey.\n\nRequired permission:\n  - `action.target.write`",
+        "operationId": "ActionService_UpdateTarget",
+        "responses": {
+          "200": {
+            "description": "Target successfully updated or left unchanged",
+            "schema": {
+              "$ref": "#/definitions/v2betaUpdateTargetResponse"
+            }
+          },
+          "400": {
+            "description": "The feature flag `actions` is not enabled.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "The target to update does not exist.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ActionServiceUpdateTargetBody"
+            }
+          }
+        ],
+        "tags": [
+          "ActionService"
+        ],
+        "deprecated": true
+      }
+    }
+  },
+  "definitions": {
+    "ActionServiceUpdateTargetBody": {
+      "type": "object",
+      "example": {
+        "name": "ip_allow_list",
+        "restCall": {
+          "interruptOnError": true
+        },
+        "timeout": "10s",
+        "endpoint": "https://example.com/hooks/ip_check",
+        "expirationSigningKey": "0s"
+      },
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "ip_allow_list",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "restWebhook": {
+          "$ref": "#/definitions/v2betaRESTWebhook",
+          "description": "Wait for response but response body is ignored, status is checked, call is sent as post."
+        },
+        "restCall": {
+          "$ref": "#/definitions/v2betaRESTCall",
+          "description": "Wait for response and response body is used, status is checked, call is sent as post."
+        },
+        "restAsync": {
+          "$ref": "#/definitions/v2betaRESTAsync",
+          "description": "Call is executed in parallel to others, ZITADEL does not wait until the call is finished. The state is ignored, call is sent as post."
+        },
+        "timeout": {
+          "type": "string",
+          "example": "10s",
+          "description": "Timeout defines the duration until ZITADEL cancels the execution.\nIf the target doesn't respond before this timeout expires, then the connection is closed and the action fails. Depending on the target type and possible setting on `interrupt_on_error` following targets will not be called. In case of a `rest_async` target only this specific target will fail, without any influence on other targets of the same execution."
+        },
+        "endpoint": {
+          "type": "string",
+          "example": "https://example.com/hooks/ip_check",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "expirationSigningKey": {
+          "type": "string",
+          "example": "0s",
+          "description": "Regenerate the key used for signing and checking the payload sent to the target.\nSet the graceful period for the existing key. During that time, the previous\nsigning key and the new one will be used to sign the request to allow you a smooth\ntransition onf your API.\n\nNote that we currently only allow an immediate rotation (\"0s\") and will support\nlonger expirations in the future."
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2betaCondition": {
+      "type": "object",
+      "properties": {
+        "request": {
+          "$ref": "#/definitions/v2betaRequestExecution",
+          "description": "Condition-type to execute if a request on the defined API point happens."
+        },
+        "response": {
+          "$ref": "#/definitions/v2betaResponseExecution",
+          "description": "Condition-type to execute on response if a request on the defined API point happens."
+        },
+        "function": {
+          "$ref": "#/definitions/v2betaFunctionExecution",
+          "description": "Condition-type to execute if function is used, replaces actions v1."
+        },
+        "event": {
+          "$ref": "#/definitions/v2betaEventExecution",
+          "description": "Condition-type to execute if an event is created in the system."
+        }
+      }
+    },
+    "v2betaCreateTargetRequest": {
+      "type": "object",
+      "example": {
+        "name": "ip_allow_list",
+        "restWebhook": {
+          "interruptOnError": true
+        },
+        "timeout": "10s",
+        "endpoint": "https://example.com/hooks/ip_check"
+      },
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "ip_allow_list",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "restWebhook": {
+          "$ref": "#/definitions/v2betaRESTWebhook",
+          "description": "Wait for response but response body is ignored, status is checked, call is sent as post."
+        },
+        "restCall": {
+          "$ref": "#/definitions/v2betaRESTCall",
+          "description": "Wait for response and response body is used, status is checked, call is sent as post."
+        },
+        "restAsync": {
+          "$ref": "#/definitions/v2betaRESTAsync",
+          "description": "Call is executed in parallel to others, ZITADEL does not wait until the call is finished. The state is ignored, call is sent as post."
+        },
+        "timeout": {
+          "type": "string",
+          "example": "10s",
+          "description": "Timeout defines the duration until ZITADEL cancels the execution.\nIf the target doesn't respond before this timeout expires, then the connection is closed and the action fails. Depending on the target type and possible setting on `interrupt_on_error` following targets will not be called. In case of a `rest_async` target only this specific target will fail, without any influence on other targets of the same execution."
+        },
+        "endpoint": {
+          "type": "string",
+          "example": "https://example.com/hooks/ip_check",
+          "maxLength": 1000,
+          "minLength": 1
+        }
+      }
+    },
+    "v2betaCreateTargetResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "The unique identifier of the newly created target."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the target creation."
+        },
+        "signingKey": {
+          "type": "string",
+          "example": "98KmsU67",
+          "description": "Key used to sign and check payload sent to the target."
+        }
+      }
+    },
+    "v2betaDeleteTargetResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the deletion of the target.\nNote that the deletion date is only guaranteed to be set if the deletion was successful during the request.\nIn case the deletion occurred in a previous request, the deletion date might be empty."
+        }
+      }
+    },
+    "v2betaEventExecution": {
+      "type": "object",
+      "properties": {
+        "event": {
+          "type": "string",
+          "example": "user.human.added",
+          "description": "Event name as condition.",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "group": {
+          "type": "string",
+          "example": "user.human",
+          "description": "Event group as condition, all events under this group.",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "all": {
+          "type": "boolean",
+          "description": "all events as condition."
+        }
+      }
+    },
+    "v2betaExecution": {
+      "type": "object",
+      "properties": {
+        "condition": {
+          "$ref": "#/definitions/v2betaCondition"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the execution creation."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the last change to the execution."
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Ordered list of targets called during the execution."
+        }
+      }
+    },
+    "v2betaExecutionFieldName": {
+      "type": "string",
+      "enum": [
+        "EXECUTION_FIELD_NAME_UNSPECIFIED",
+        "EXECUTION_FIELD_NAME_ID",
+        "EXECUTION_FIELD_NAME_CREATED_DATE",
+        "EXECUTION_FIELD_NAME_CHANGED_DATE"
+      ],
+      "default": "EXECUTION_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2betaExecutionSearchFilter": {
+      "type": "object",
+      "properties": {
+        "inConditionsFilter": {
+          "$ref": "#/definitions/v2betaInConditionsFilter"
+        },
+        "executionTypeFilter": {
+          "$ref": "#/definitions/v2betaExecutionTypeFilter"
+        },
+        "targetFilter": {
+          "$ref": "#/definitions/v2betaTargetFilter"
+        }
+      }
+    },
+    "v2betaExecutionType": {
+      "type": "string",
+      "enum": [
+        "EXECUTION_TYPE_UNSPECIFIED",
+        "EXECUTION_TYPE_REQUEST",
+        "EXECUTION_TYPE_RESPONSE",
+        "EXECUTION_TYPE_EVENT",
+        "EXECUTION_TYPE_FUNCTION"
+      ],
+      "default": "EXECUTION_TYPE_UNSPECIFIED"
+    },
+    "v2betaExecutionTypeFilter": {
+      "type": "object",
+      "properties": {
+        "executionType": {
+          "$ref": "#/definitions/v2betaExecutionType",
+          "description": "Defines the type to query for."
+        }
+      }
+    },
+    "v2betaFunctionExecution": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "Executed on the specified function"
+    },
+    "v2betaGetTargetResponse": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "$ref": "#/definitions/v2betaTarget"
+        }
+      }
+    },
+    "v2betaInConditionsFilter": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaCondition"
+          },
+          "description": "Defines the conditions to query for."
+        }
+      }
+    },
+    "v2betaInTargetIDsFilter": {
+      "type": "object",
+      "properties": {
+        "targetIds": {
+          "type": "array",
+          "example": [
+            "69629023906488334",
+            "69622366012355662"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "the ids of the targets to include"
+        }
+      }
+    },
+    "v2betaListExecutionFunctionsResponse": {
+      "type": "object",
+      "properties": {
+        "functions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "All available methods"
+        }
+      }
+    },
+    "v2betaListExecutionMethodsResponse": {
+      "type": "object",
+      "properties": {
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "All available methods"
+        }
+      }
+    },
+    "v2betaListExecutionServicesResponse": {
+      "type": "object",
+      "properties": {
+        "services": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "All available methods"
+        }
+      }
+    },
+    "v2betaListExecutionsRequest": {
+      "type": "object",
+      "example": {
+        "pagination": {
+          "offset": 0,
+          "limit": 0,
+          "asc": true
+        },
+        "sortingColumn": "EXECUTION_FIELD_NAME_ID",
+        "filters": [
+          {
+            "targetFilter": {
+              "targetId": "69629023906488334"
+            }
+          }
+        ]
+      },
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "List limitations and ordering."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaExecutionFieldName",
+          "default": "\"EXECUTION_FIELD_NAME_CREATION_DATE\"",
+          "description": "The field the result is sorted by. The default is the creation date. Beware that if you change this, your result pagination might be inconsistent."
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaExecutionSearchFilter"
+          },
+          "description": "Define the criteria to query for."
+        }
+      }
+    },
+    "v2betaListExecutionsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse"
+        },
+        "executions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaExecution"
+          }
+        }
+      }
+    },
+    "v2betaListTargetsRequest": {
+      "type": "object",
+      "example": {
+        "pagination": {
+          "offset": 0,
+          "limit": 0,
+          "asc": true
+        },
+        "sortingColumn": "TARGET_FIELD_NAME_CREATION_DATE",
+        "filters": [
+          {
+            "targetNameFilter": {
+              "targetName": "ip_allow_list",
+              "method": "TEXT_FILTER_METHOD_EQUALS"
+            }
+          },
+          {
+            "inTargetIdsFilter": {
+              "targetIds": [
+                "69629023906488334",
+                "69622366012355662"
+              ]
+            }
+          }
+        ]
+      },
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "List limitations and ordering."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaTargetFieldName",
+          "default": "\"TARGET_FIELD_NAME_CREATION_DATE\"",
+          "description": "The field the result is sorted by. The default is the creation date. Beware that if you change this, your result pagination might be inconsistent."
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaTargetSearchFilter"
+          },
+          "description": "Define the criteria to query for."
+        }
+      }
+    },
+    "v2betaListTargetsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse"
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaTarget"
+          }
+        }
+      }
+    },
+    "v2betaPaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "v2betaPaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "v2betaRESTAsync": {
+      "type": "object"
+    },
+    "v2betaRESTCall": {
+      "type": "object",
+      "properties": {
+        "interruptOnError": {
+          "type": "boolean",
+          "description": "Define if any error stops the whole execution. By default the process continues as normal."
+        }
+      }
+    },
+    "v2betaRESTWebhook": {
+      "type": "object",
+      "properties": {
+        "interruptOnError": {
+          "type": "boolean",
+          "description": "Define if any error stops the whole execution. By default the process continues as normal."
+        }
+      }
+    },
+    "v2betaRequestExecution": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "example": "/zitadel.session.v2.SessionService/ListSessions",
+          "description": "GRPC-method as condition.",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "service": {
+          "type": "string",
+          "example": "zitadel.session.v2.SessionService",
+          "description": "GRPC-service as condition.",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "all": {
+          "type": "boolean",
+          "description": "All calls to any available services and methods as condition."
+        }
+      }
+    },
+    "v2betaResponseExecution": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "example": "/zitadel.session.v2.SessionService/ListSessions",
+          "description": "GRPC-method as condition.",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "service": {
+          "type": "string",
+          "example": "zitadel.session.v2.SessionService",
+          "description": "GRPC-service as condition.",
+          "maxLength": 1000,
+          "minLength": 1
+        },
+        "all": {
+          "type": "boolean",
+          "description": "All calls to any available services and methods as condition."
+        }
+      }
+    },
+    "v2betaSetExecutionRequest": {
+      "type": "object",
+      "example": {
+        "condition": {
+          "request": {
+            "method": "zitadel.session.v2.SessionService/ListSessions"
+          }
+        },
+        "targets": [
+          "69629026806489455"
+        ]
+      },
+      "properties": {
+        "condition": {
+          "$ref": "#/definitions/v2betaCondition",
+          "description": "Condition defining when the execution should be used."
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Ordered list of targets called during the execution."
+        }
+      }
+    },
+    "v2betaSetExecutionResponse": {
+      "type": "object",
+      "properties": {
+        "setDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the execution set."
+        }
+      }
+    },
+    "v2betaTarget": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "The unique identifier of the target."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the target creation."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the last change to the target (e.g. creation, activation, deactivation)."
+        },
+        "name": {
+          "type": "string",
+          "example": "ip_allow_list"
+        },
+        "restWebhook": {
+          "$ref": "#/definitions/v2betaRESTWebhook"
+        },
+        "restCall": {
+          "$ref": "#/definitions/v2betaRESTCall"
+        },
+        "restAsync": {
+          "$ref": "#/definitions/v2betaRESTAsync"
+        },
+        "timeout": {
+          "type": "string",
+          "example": "10s",
+          "description": "Timeout defines the duration until ZITADEL cancels the execution.\nIf the target doesn't respond before this timeout expires, the the connection is closed and the action fails. Depending on the target type and possible setting on `interrupt_on_error` following targets will not be called. In case of a `rest_async` target only this specific target will fail, without any influence on other targets of the same execution."
+        },
+        "endpoint": {
+          "type": "string",
+          "example": "https://example.com/hooks/ip_check"
+        },
+        "signingKey": {
+          "type": "string",
+          "example": "98KmsU67"
+        }
+      }
+    },
+    "v2betaTargetFieldName": {
+      "type": "string",
+      "enum": [
+        "TARGET_FIELD_NAME_UNSPECIFIED",
+        "TARGET_FIELD_NAME_ID",
+        "TARGET_FIELD_NAME_CREATED_DATE",
+        "TARGET_FIELD_NAME_CHANGED_DATE",
+        "TARGET_FIELD_NAME_NAME",
+        "TARGET_FIELD_NAME_TARGET_TYPE",
+        "TARGET_FIELD_NAME_URL",
+        "TARGET_FIELD_NAME_TIMEOUT",
+        "TARGET_FIELD_NAME_INTERRUPT_ON_ERROR"
+      ],
+      "default": "TARGET_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2betaTargetFilter": {
+      "type": "object",
+      "properties": {
+        "targetId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "the id of the targets to include"
+        }
+      }
+    },
+    "v2betaTargetNameFilter": {
+      "type": "object",
+      "properties": {
+        "targetName": {
+          "type": "string",
+          "example": "ip_allow_list",
+          "description": "Defines the name of the target to query for.",
+          "maxLength": 200
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextFilterMethod",
+          "description": "defines which text equality method is used"
+        }
+      }
+    },
+    "v2betaTargetSearchFilter": {
+      "type": "object",
+      "properties": {
+        "targetNameFilter": {
+          "$ref": "#/definitions/v2betaTargetNameFilter"
+        },
+        "inTargetIdsFilter": {
+          "$ref": "#/definitions/v2betaInTargetIDsFilter"
+        }
+      }
+    },
+    "v2betaTextFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_FILTER_METHOD_EQUALS",
+        "TEXT_FILTER_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_STARTS_WITH",
+        "TEXT_FILTER_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_CONTAINS",
+        "TEXT_FILTER_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_ENDS_WITH",
+        "TEXT_FILTER_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_FILTER_METHOD_EQUALS"
+    },
+    "v2betaUpdateTargetResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the change of the target."
+        },
+        "signingKey": {
+          "type": "string",
+          "example": "98KmsU67",
+          "description": "Key used to sign and check payload sent to the target."
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

@@ -1,0 +1,469 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "zitadel/authorization/v2/authorization_service.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AuthorizationService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2ActivateAuthorizationResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "ChangeDate is the last timestamp when the authorization was changed / activated."
+        }
+      }
+    },
+    "v2Authorization": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "ID is the unique identifier of the authorization."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "CreationDate is the timestamp when the authorization was created."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "ChangeDate is the timestamp when the authorization was last updated.\nIn case the authorization was not updated, this field is equal to the creation date."
+        },
+        "project": {
+          "$ref": "#/definitions/v2Project",
+          "description": "The project the user was granted the authorization for."
+        },
+        "organization": {
+          "$ref": "#/definitions/v2Organization",
+          "description": "The organization the user was granted the authorization for.\nThis does not have to correspond with the project or user's organization.\nBut does represent the organization to which the authorization belongs and\nthe user was given permissions for."
+        },
+        "user": {
+          "$ref": "#/definitions/v2User",
+          "description": "The user who was granted the authorization."
+        },
+        "state": {
+          "$ref": "#/definitions/v2State",
+          "description": "State is the current state of the authorization."
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2Role"
+          },
+          "description": "Roles contains the roles the user was granted for the project."
+        }
+      }
+    },
+    "v2AuthorizationFieldName": {
+      "type": "string",
+      "enum": [
+        "AUTHORIZATION_FIELD_NAME_UNSPECIFIED",
+        "AUTHORIZATION_FIELD_NAME_CREATED_DATE",
+        "AUTHORIZATION_FIELD_NAME_CHANGED_DATE",
+        "AUTHORIZATION_FIELD_NAME_ID",
+        "AUTHORIZATION_FIELD_NAME_USER_ID",
+        "AUTHORIZATION_FIELD_NAME_PROJECT_ID",
+        "AUTHORIZATION_FIELD_NAME_ORGANIZATION_ID",
+        "AUTHORIZATION_FIELD_NAME_USER_ORGANIZATION_ID"
+      ],
+      "default": "AUTHORIZATION_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2AuthorizationsSearchFilter": {
+      "type": "object",
+      "properties": {
+        "authorizationIds": {
+          "$ref": "#/definitions/v2InIDsFilter",
+          "description": "Search for authorizations by their IDs."
+        },
+        "organizationId": {
+          "$ref": "#/definitions/v2IDFilter",
+          "description": "Search for authorizations by the ID of the organization it was granted for."
+        },
+        "state": {
+          "$ref": "#/definitions/v2StateQuery",
+          "description": "Search for authorizations by their state."
+        },
+        "inUserIds": {
+          "$ref": "#/definitions/v2InIDsFilter",
+          "description": "Search for authorizations by the IDs of the users who were granted the authorizations."
+        },
+        "userOrganizationId": {
+          "$ref": "#/definitions/v2IDFilter",
+          "description": "Search for authorizations by the ID of the organisation the user is part of."
+        },
+        "userPreferredLoginName": {
+          "$ref": "#/definitions/v2UserPreferredLoginNameQuery",
+          "description": "Search for authorizations by the preferred login name of the granted user."
+        },
+        "userDisplayName": {
+          "$ref": "#/definitions/v2UserDisplayNameQuery",
+          "description": "Search for authorizations by the public display name of the granted user."
+        },
+        "projectId": {
+          "$ref": "#/definitions/v2IDFilter",
+          "description": "Search for authorizations by the ID of the project the user was granted the authorization for.\nThis will also include authorizations granted for project grants of the same project."
+        },
+        "projectName": {
+          "$ref": "#/definitions/v2ProjectNameQuery",
+          "description": "Search for authorizations by the name of the project the user was granted the authorization for.\nThis will also include authorizations granted for project grants of the same project."
+        },
+        "roleKey": {
+          "$ref": "#/definitions/v2RoleKeyQuery",
+          "description": "Search for authorizations by the key of the role the user was granted."
+        },
+        "projectGrantId": {
+          "$ref": "#/definitions/v2IDFilter",
+          "description": "Search for authorizations by the ID of the project grant the user was granted the authorization for.\nThis will also include authorizations granted for project grants of the same project."
+        }
+      }
+    },
+    "v2CreateAuthorizationResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "ID is the unique identifier of the newly created authorization."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "CreationDate is the timestamp when the authorization was created."
+        }
+      }
+    },
+    "v2DeactivateAuthorizationResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "ChangeDate is the last timestamp when the authorization was changed / deactivated."
+        }
+      }
+    },
+    "v2DeleteAuthorizationResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "DeletionDate is the timestamp when the authorization was deleted."
+        }
+      }
+    },
+    "v2IDFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488337",
+          "description": "Only return resources that belong to this id.",
+          "maxLength": 200
+        }
+      }
+    },
+    "v2InIDsFilter": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "example": [
+            "69629023906488334",
+            "69622366012355662"
+          ],
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "description": "Defines the ids to query for."
+        }
+      }
+    },
+    "v2ListAuthorizationsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2PaginationResponse",
+          "description": "Contains the pagination information."
+        },
+        "authorizations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2Authorization"
+          },
+          "description": "Authorizations contains the list of authorizations matching the request."
+        }
+      }
+    },
+    "v2Organization": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID is the unique identifier of the organization."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name is the name of the organization."
+        }
+      }
+    },
+    "v2PaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "example": 0,
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "example": 10,
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "example": false,
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "v2PaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100,
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100,
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "v2Project": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID is the unique identifier of the project."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name is the name of the project."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "OrganizationID is the ID of the organization the project belongs to.\nThis does not have to correspond with the authorizations organization.\nIn case the authorization is given on a granted project, this is the organization\nthat owns the project and granted it."
+        }
+      }
+    },
+    "v2ProjectNameQuery": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Specify the name of the project the user was granted the authorization for to search for.\nNote that this will also include authorizations granted for project grants of the same project."
+        },
+        "method": {
+          "$ref": "#/definitions/v2TextFilterMethod",
+          "description": "Specify the method to search for the project name. Default is EQUAL.\nFor example, to search for all authorizations granted on a project with\na name containing a specific string, use CONTAINS or CONTAINS_IGNORE_CASE."
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "v2Role": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Key is the unique key of the role. It's the only relevant attribute for ZITADEL and\nwill be used for authorization checks and as claim in tokens and user info responses."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Human readable name for the role, which might be displayed to users."
+        },
+        "group": {
+          "type": "string",
+          "description": "The group the role belongs to. This is used to group roles in the UI."
+        }
+      }
+    },
+    "v2RoleKeyQuery": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Specify the key of the role the user was granted to search for."
+        },
+        "method": {
+          "$ref": "#/definitions/v2TextFilterMethod",
+          "description": "Specify the method to search for the role key. Default is EQUAL.\nFor example, to search for all authorizations starting with a specific role key,\nuse STARTS_WITH or STARTS_WITH_IGNORE_CASE."
+        }
+      }
+    },
+    "v2State": {
+      "type": "string",
+      "enum": [
+        "STATE_UNSPECIFIED",
+        "STATE_ACTIVE",
+        "STATE_INACTIVE"
+      ],
+      "default": "STATE_UNSPECIFIED",
+      "description": " - STATE_ACTIVE: An active authorization grants the user access with the roles specified on the project.\n - STATE_INACTIVE: An inactive authorization temporarily deactivates the granted access and roles.\nZITADEL will not include the specific authorization in any authorization information like an access token.\nBut the information can still be accessed using the API."
+    },
+    "v2StateQuery": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/v2State",
+          "description": "Specify the state of the authorization to search for."
+        }
+      }
+    },
+    "v2TextFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_FILTER_METHOD_EQUALS",
+        "TEXT_FILTER_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_STARTS_WITH",
+        "TEXT_FILTER_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_CONTAINS",
+        "TEXT_FILTER_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_ENDS_WITH",
+        "TEXT_FILTER_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_FILTER_METHOD_EQUALS"
+    },
+    "v2UpdateAuthorizationResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "ChangeDate is the timestamp when the authorization was last updated."
+        }
+      }
+    },
+    "v2User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID represents the ID of the user who was granted the authorization."
+        },
+        "preferredLoginName": {
+          "type": "string",
+          "description": "PreferredLoginName represents the preferred login name of the granted user."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "DisplayName represents the public display name of the granted user."
+        },
+        "avatarUrl": {
+          "type": "string",
+          "description": "AvatarURL is the URL to the user's public avatar image."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "The organization the user belong to.\nThis does not have to correspond with the authorizations organization."
+        }
+      }
+    },
+    "v2UserDisplayNameQuery": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "description": "Specify the public display name of the granted user to search for."
+        },
+        "method": {
+          "$ref": "#/definitions/v2TextFilterMethod",
+          "description": "Specify the method to search for the display name. Default is EQUAL.\nFor example, to search for all authorizations granted to a user with\na display name containing a specific string, use CONTAINS or CONTAINS_IGNORE_CASE."
+        }
+      },
+      "required": [
+        "displayName"
+      ]
+    },
+    "v2UserPreferredLoginNameQuery": {
+      "type": "object",
+      "properties": {
+        "loginName": {
+          "type": "string",
+          "description": "Specify the preferred login name of the granted user to search for."
+        },
+        "method": {
+          "$ref": "#/definitions/v2TextFilterMethod",
+          "description": "Specify the method to search for the preferred login name. Default is EQUAL.\nFor example, to search for all authorizations granted to a user with\na preferred login name containing a specific string, use CONTAINS or CONTAINS_IGNORE_CASE."
+        }
+      },
+      "required": [
+        "loginName"
+      ]
+    }
+  }
+}

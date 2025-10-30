@@ -1,0 +1,1906 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Project Service",
+    "description": "This API is intended to manage Projects in a ZITADEL Organization. This service is in beta state. It can AND will continue breaking until a stable version is released.",
+    "version": "2.0-beta",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "ProjectService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/v2beta/projects": {
+      "post": {
+        "summary": "Create Project",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nCreate a new Project.\n\nRequired permission:\n  - `project.create`",
+        "operationId": "ProjectService_CreateProject",
+        "responses": {
+          "200": {
+            "description": "Project created successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateProjectResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "409": {
+            "description": "The project to create already exists.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateProjectRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/projects/grants/search": {
+      "post": {
+        "summary": "List Project Grants",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nReturns a list of project grants. A project grant is when the organization grants its project to another organization.\n\nRequired permission:\n  - `project.grant.read`",
+        "operationId": "ProjectService_ListProjectGrants",
+        "responses": {
+          "200": {
+            "description": "A list of all project grants matching the query",
+            "schema": {
+              "$ref": "#/definitions/v2betaListProjectGrantsResponse"
+            }
+          },
+          "400": {
+            "description": "invalid list query",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaListProjectGrantsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/projects/search": {
+      "post": {
+        "summary": "List Projects",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nList all matching projects. By default all projects of the instance that the caller has permission to read are returned.\nMake sure to include a limit and sorting for pagination.\n\nRequired permission:\n  - `project.read`",
+        "operationId": "ProjectService_ListProjects",
+        "responses": {
+          "200": {
+            "description": "A list of all projects matching the query",
+            "schema": {
+              "$ref": "#/definitions/v2betaListProjectsResponse"
+            }
+          },
+          "400": {
+            "description": "invalid list query",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaListProjectsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/projects/{id}": {
+      "get": {
+        "summary": "Get Project",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nReturns the project identified by the requested ID.\n\nRequired permission:\n  - `project.read`",
+        "operationId": "ProjectService_GetProject",
+        "responses": {
+          "200": {
+            "description": "Project retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetProjectResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "The project to get does not exist.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The unique identifier of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      },
+      "delete": {
+        "summary": "Delete Project",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nDelete an existing project.\nIn case the project is not found, the request will return a successful response as\nthe desired state is already achieved.\n\nRequired permission:\n  - `project.delete`",
+        "operationId": "ProjectService_DeleteProject",
+        "responses": {
+          "200": {
+            "description": "Project deleted successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteProjectResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The unique identifier of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      },
+      "post": {
+        "summary": "Update Project",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nUpdate an existing project.\n\nRequired permission:\n  - `project.write`",
+        "operationId": "ProjectService_UpdateProject",
+        "responses": {
+          "200": {
+            "description": "Project successfully updated or left unchanged",
+            "schema": {
+              "$ref": "#/definitions/v2betaUpdateProjectResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "The project to update does not exist.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectServiceUpdateProjectBody"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/projects/{id}/activate": {
+      "post": {
+        "summary": "Activate Project",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nSet the state of a project to active. Request returns no error if the project is already activated.\n\nRequired permission:\n  - `project.write`",
+        "operationId": "ProjectService_ActivateProject",
+        "responses": {
+          "200": {
+            "description": "Project activated successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaActivateProjectResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "The project to activate does not exist.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The unique identifier of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectServiceActivateProjectBody"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/projects/{id}/deactivate": {
+      "post": {
+        "summary": "Deactivate Project",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nSet the state of a project to deactivated. Request returns no error if the project is already deactivated.\nApplications under deactivated projects are not able to login anymore.\n\nRequired permission:\n  - `project.write`",
+        "operationId": "ProjectService_DeactivateProject",
+        "responses": {
+          "200": {
+            "description": "Project deactivated successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeactivateProjectResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "The project to deactivate does not exist.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The unique identifier of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectServiceDeactivateProjectBody"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/projects/{projectId}/grants": {
+      "post": {
+        "summary": "Create Project Grant",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nGrant a project to another organization.\nThe project grant will allow the granted organization to access the project and manage the authorizations for its users.\n\nRequired permission:\n  - `project.grant.create`",
+        "operationId": "ProjectService_CreateProjectGrant",
+        "responses": {
+          "200": {
+            "description": "Project grant created successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateProjectGrantResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "409": {
+            "description": "The project grant to create already exists.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "description": "ID of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectServiceCreateProjectGrantBody"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/projects/{projectId}/grants/{grantedOrganizationId}": {
+      "delete": {
+        "summary": "Delete Project Grant",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nDelete a project grant. All user grants for this project grant will also be removed.\nA user will not have access to the project afterward (if permissions are checked).\nIn case the project grant is not found, the request will return a successful response as\nthe desired state is already achieved.\n\nRequired permission:\n  - `project.grant.delete`",
+        "operationId": "ProjectService_DeleteProjectGrant",
+        "responses": {
+          "200": {
+            "description": "Project grant deleted successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteProjectGrantResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "description": "ID of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "grantedOrganizationId",
+            "description": "Organization the project is granted to.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      },
+      "post": {
+        "summary": "Update Project Grant",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nChange the roles of the project that is granted to another organization.\nThe project grant will allow the granted organization to access the project and manage the authorizations for its users.\n\nRequired permission:\n  - `project.grant.write`",
+        "operationId": "ProjectService_UpdateProjectGrant",
+        "responses": {
+          "200": {
+            "description": "Project grant successfully updated or left unchanged",
+            "schema": {
+              "$ref": "#/definitions/v2betaUpdateProjectGrantResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "The project grant to update does not exist.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "description": "ID of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "grantedOrganizationId",
+            "description": "Organization the project is granted to.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectServiceUpdateProjectGrantBody"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/projects/{projectId}/grants/{grantedOrganizationId}/activate": {
+      "post": {
+        "summary": "Activate Project Grant",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nSet the state of the project grant to activated.\n\nRequired permission:\n  - `project.grant.write`",
+        "operationId": "ProjectService_ActivateProjectGrant",
+        "responses": {
+          "200": {
+            "description": "Project grant activated successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaActivateProjectGrantResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "description": "ID of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "grantedOrganizationId",
+            "description": "Organization the project is granted to.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectServiceActivateProjectGrantBody"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/projects/{projectId}/grants/{grantedOrganizationId}/deactivate": {
+      "post": {
+        "summary": "Deactivate Project Grant",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nSet the state of the project grant to deactivated.\nApplications under deactivated projects grants are not able to login anymore.\n\nRequired permission:\n  - `project.grant.write`",
+        "operationId": "ProjectService_DeactivateProjectGrant",
+        "responses": {
+          "200": {
+            "description": "Project grant deactivated successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeactivateProjectGrantResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "description": "ID of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "grantedOrganizationId",
+            "description": "Organization the project is granted to.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectServiceDeactivateProjectGrantBody"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/projects/{projectId}/roles": {
+      "post": {
+        "summary": "Add Project Role",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nAdd a new project role to a project. The key must be unique within the project.\n\nRequired permission:\n  - `project.role.write`",
+        "operationId": "ProjectService_AddProjectRole",
+        "responses": {
+          "200": {
+            "description": "Project role added successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaAddProjectRoleResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "The project to add the project role does not exist.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "description": "ID of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectServiceAddProjectRoleBody"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/projects/{projectId}/roles/search": {
+      "post": {
+        "summary": "List Project Roles",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nReturns all roles of a project matching the search query.\n\nRequired permission:\n  - `project.role.read`",
+        "operationId": "ProjectService_ListProjectRoles",
+        "responses": {
+          "200": {
+            "description": "A list of all project roles matching the query",
+            "schema": {
+              "$ref": "#/definitions/v2betaListProjectRolesResponse"
+            }
+          },
+          "400": {
+            "description": "invalid list query",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "description": "ID of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "pagination.offset",
+            "description": "Starting point for retrieval, in combination of offset used to query a set list of objects.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "pagination.limit",
+            "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "pagination.asc",
+            "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "sortingColumn",
+            "description": "The field the result is sorted by. The default is the creation date. Beware that if you change this, your result pagination might be inconsistent.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "PROJECT_ROLE_FIELD_NAME_UNSPECIFIED",
+              "PROJECT_ROLE_FIELD_NAME_KEY",
+              "PROJECT_ROLE_FIELD_NAME_CREATION_DATE",
+              "PROJECT_ROLE_FIELD_NAME_CHANGE_DATE"
+            ],
+            "default": "PROJECT_ROLE_FIELD_NAME_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/projects/{projectId}/roles/{roleKey}": {
+      "delete": {
+        "summary": "Remove Project Role",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nRemoves the role from the project and on every resource it has a dependency. This includes project grants and user grants.\n\nRequired permission:\n  - `project.role.write`",
+        "operationId": "ProjectService_RemoveProjectRole",
+        "responses": {
+          "200": {
+            "description": "Project role removed successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaRemoveProjectRoleResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "The project role to remove does not exist.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "description": "ID of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "roleKey",
+            "description": "The key is the only relevant attribute for ZITADEL regarding the authorization checks.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      },
+      "post": {
+        "summary": "Update Project Role",
+        "description": "Deprecated: please move to the corresponding endpoint under project service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nChange a project role. The key is not editable. If a key should change, remove the role and create a new one.\n\nRequired permission:\n  - `project.role.write`",
+        "operationId": "ProjectService_UpdateProjectRole",
+        "responses": {
+          "200": {
+            "description": "Project role updated successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaUpdateProjectRoleResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "The project role to update does not exist.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "projectId",
+            "description": "ID of the project.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "roleKey",
+            "description": "The key is the only relevant attribute for ZITADEL regarding the authorization checks.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProjectServiceUpdateProjectRoleBody"
+            }
+          }
+        ],
+        "tags": [
+          "ProjectService"
+        ],
+        "deprecated": true
+      }
+    }
+  },
+  "definitions": {
+    "ProjectServiceActivateProjectBody": {
+      "type": "object"
+    },
+    "ProjectServiceActivateProjectGrantBody": {
+      "type": "object"
+    },
+    "ProjectServiceAddProjectRoleBody": {
+      "type": "object",
+      "properties": {
+        "roleKey": {
+          "type": "string",
+          "example": "ADMIN",
+          "description": "The key is the only relevant attribute for ZITADEL regarding the authorization checks.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Administrator",
+          "description": "Name displayed for the role.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "group": {
+          "type": "string",
+          "example": "Admins",
+          "description": "The group is only used for display purposes. That you have better handling, like giving all the roles from a group to a user.",
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "roleKey",
+        "displayName"
+      ]
+    },
+    "ProjectServiceCreateProjectGrantBody": {
+      "type": "object",
+      "properties": {
+        "grantedOrganizationId": {
+          "type": "string",
+          "example": "28746028909593987",
+          "description": "Organization the project is granted to.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "roleKeys": {
+          "type": "array",
+          "example": [
+            "RoleKey1",
+            "RoleKey2"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Keys of the role available for the project grant."
+        }
+      },
+      "required": [
+        "grantedOrganizationId"
+      ]
+    },
+    "ProjectServiceDeactivateProjectBody": {
+      "type": "object"
+    },
+    "ProjectServiceDeactivateProjectGrantBody": {
+      "type": "object"
+    },
+    "ProjectServiceUpdateProjectBody": {
+      "type": "object",
+      "example": {
+        "name": "MyProject-Updated",
+        "projectRoleAssertion": true,
+        "projectRoleCheck": true,
+        "hasProjectCheck": true,
+        "privateLabelingSetting": "PRIVATE_LABELING_SETTING_UNSPECIFIED"
+      },
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "MyProject-Updated",
+          "description": "Name of the project.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "projectRoleAssertion": {
+          "type": "boolean",
+          "description": "Enable this setting to have role information included in the user info endpoint. It is also dependent on your application settings to include it in tokens and other types."
+        },
+        "projectRoleCheck": {
+          "type": "boolean",
+          "description": "When enabled ZITADEL will check if a user has a role of this project assigned when login into an application of this project."
+        },
+        "hasProjectCheck": {
+          "type": "boolean",
+          "description": "When enabled ZITADEL will check if the organization of the user, that is trying to log in, has a grant to this project."
+        },
+        "privateLabelingSetting": {
+          "$ref": "#/definitions/v2betaPrivateLabelingSetting",
+          "description": "Define which private labeling/branding should trigger when getting to a login of this project."
+        }
+      }
+    },
+    "ProjectServiceUpdateProjectGrantBody": {
+      "type": "object",
+      "properties": {
+        "roleKeys": {
+          "type": "array",
+          "example": [
+            "RoleKey1",
+            "RoleKey2"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Keys of the role available for the project grant."
+        }
+      }
+    },
+    "ProjectServiceUpdateProjectRoleBody": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "example": "Administrator",
+          "description": "Name displayed for the role.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "group": {
+          "type": "string",
+          "example": "Admins",
+          "description": "The group is only used for display purposes. That you have better handling, like giving all the roles from a group to a user.",
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "displayName"
+      ]
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2betaActivateProjectGrantResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the change of the project grant."
+        }
+      }
+    },
+    "v2betaActivateProjectResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the change of the project."
+        }
+      }
+    },
+    "v2betaAddProjectRoleResponse": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the project role creation."
+        }
+      }
+    },
+    "v2betaCreateProjectGrantResponse": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the project grant creation."
+        }
+      }
+    },
+    "v2betaCreateProjectRequest": {
+      "type": "object",
+      "example": {
+        "organizationId": "69629026806489455",
+        "name": "MyProject",
+        "projectRoleAssertion": true,
+        "projectRoleCheck": true,
+        "hasProjectCheck": true,
+        "privateLabelingSetting": "PRIVATE_LABELING_SETTING_UNSPECIFIED"
+      },
+      "properties": {
+        "organizationId": {
+          "type": "string",
+          "example": "69629026806489455",
+          "description": "The unique identifier of the organization the project belongs to.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "id": {
+          "type": "string",
+          "example": "69629026806489455",
+          "description": "The unique identifier of the project.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "MyProject",
+          "description": "Name of the project.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "projectRoleAssertion": {
+          "type": "boolean",
+          "description": "Enable this setting to provide role information to your application. For OpenID Connect, the roles can be requested from the UserInfo endpoint or sent in the ID or Access Token, based on your application's configuration."
+        },
+        "authorizationRequired": {
+          "type": "boolean",
+          "description": "Deny authentication if the user has no authorization assigned to this project. Authorizations to the project without assigned a specific role to the user are allowed."
+        },
+        "projectAccessRequired": {
+          "type": "boolean",
+          "description": "Before a user can be authenticated, it is verified that their affiliated organization has been granted access to this project. Authentication is not permitted for users from unauthorized organizations."
+        },
+        "privateLabelingSetting": {
+          "$ref": "#/definitions/v2betaPrivateLabelingSetting",
+          "description": "Define which private labeling/branding should trigger when getting to a login of this project."
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "v2betaCreateProjectResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "The unique identifier of the newly created project."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the project creation."
+        }
+      }
+    },
+    "v2betaDeactivateProjectGrantResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the change of the project grant."
+        }
+      }
+    },
+    "v2betaDeactivateProjectResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the change of the project."
+        }
+      }
+    },
+    "v2betaDeleteProjectGrantResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the deletion of the project grant.\nNote that the deletion date is only guaranteed to be set if the deletion was successful during the request.\nIn case the deletion occurred in a previous request, the deletion date might be empty."
+        }
+      }
+    },
+    "v2betaDeleteProjectResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the deletion of the project.\nNote that the deletion date is only guaranteed to be set if the deletion was successful during the request.\nIn case the deletion occurred in a previous request, the deletion date might be empty."
+        }
+      }
+    },
+    "v2betaGetProjectResponse": {
+      "type": "object",
+      "properties": {
+        "project": {
+          "$ref": "#/definitions/v2betaProject"
+        }
+      }
+    },
+    "v2betaGrantedProjectState": {
+      "type": "string",
+      "enum": [
+        "GRANTED_PROJECT_STATE_UNSPECIFIED",
+        "GRANTED_PROJECT_STATE_ACTIVE",
+        "GRANTED_PROJECT_STATE_INACTIVE"
+      ],
+      "default": "GRANTED_PROJECT_STATE_UNSPECIFIED"
+    },
+    "v2betaIDFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488337",
+          "description": "Only return resources that belong to this id.",
+          "maxLength": 200
+        }
+      }
+    },
+    "v2betaInIDsFilter": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "example": [
+            "69629023906488334",
+            "69622366012355662"
+          ],
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "description": "Defines the ids to query for."
+        }
+      }
+    },
+    "v2betaListProjectGrantsRequest": {
+      "type": "object",
+      "example": {
+        "pagination": {
+          "offset": 0,
+          "limit": 0,
+          "asc": true
+        },
+        "filters": [
+          {
+            "projectNameFilter": {
+              "projectName": "MyProject",
+              "method": "TEXT_FILTER_METHOD_EQUALS"
+            }
+          },
+          {
+            "inProjectIdsFilter": {
+              "projectIds": [
+                "69629023906488334",
+                "69622366012355662"
+              ]
+            }
+          }
+        ]
+      },
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "List limitations and ordering."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaProjectGrantFieldName",
+          "default": "\"PROJECT_GRANT_FIELD_NAME_CREATION_DATE\"",
+          "description": "The field the result is sorted by. The default is the creation date. Beware that if you change this, your result pagination might be inconsistent."
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaProjectGrantSearchFilter"
+          },
+          "description": "Define the criteria to query for."
+        }
+      }
+    },
+    "v2betaListProjectGrantsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse"
+        },
+        "projectGrants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaProjectGrant"
+          }
+        }
+      }
+    },
+    "v2betaListProjectRolesResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse"
+        },
+        "projectRoles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaProjectRole"
+          }
+        }
+      }
+    },
+    "v2betaListProjectsRequest": {
+      "type": "object",
+      "example": {
+        "pagination": {
+          "offset": 0,
+          "limit": 0,
+          "asc": true
+        },
+        "sortingColumn": "PROJECT_FIELD_NAME_CREATION_DATE",
+        "filters": [
+          {
+            "projectNameFilter": {
+              "projectName": "MyProject",
+              "method": "TEXT_FILTER_METHOD_EQUALS"
+            }
+          },
+          {
+            "inProjectIdsFilter": {
+              "projectIds": [
+                "69629023906488334",
+                "69622366012355662"
+              ]
+            }
+          }
+        ]
+      },
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "List limitations and ordering."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaProjectFieldName",
+          "default": "\"PROJECT_FIELD_NAME_CREATION_DATE\"",
+          "description": "The field the result is sorted by. The default is the creation date. Beware that if you change this, your result pagination might be inconsistent."
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaProjectSearchFilter"
+          },
+          "description": "Define the criteria to query for."
+        }
+      }
+    },
+    "v2betaListProjectsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse"
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaProject"
+          }
+        }
+      }
+    },
+    "v2betaPaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "v2betaPaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "v2betaPrivateLabelingSetting": {
+      "type": "string",
+      "enum": [
+        "PRIVATE_LABELING_SETTING_UNSPECIFIED",
+        "PRIVATE_LABELING_SETTING_ENFORCE_PROJECT_RESOURCE_OWNER_POLICY",
+        "PRIVATE_LABELING_SETTING_ALLOW_LOGIN_USER_RESOURCE_OWNER_POLICY"
+      ],
+      "default": "PRIVATE_LABELING_SETTING_UNSPECIFIED"
+    },
+    "v2betaProject": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "The unique identifier of the project."
+        },
+        "organizationId": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "The unique identifier of the organization the project belongs to."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the project creation."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the last change to the project (e.g. creation, activation, deactivation)."
+        },
+        "name": {
+          "type": "string",
+          "example": "ip_allow_list",
+          "description": "The name of the project."
+        },
+        "state": {
+          "$ref": "#/definitions/v2betaProjectState",
+          "description": "current state of the project"
+        },
+        "projectRoleAssertion": {
+          "type": "boolean",
+          "description": "Describes if the roles of the user should be added to the token."
+        },
+        "authorizationRequired": {
+          "type": "boolean",
+          "description": "When enabled ZITADEL will check if a user has an authorization to use this project assigned when login into an application of this project."
+        },
+        "projectAccessRequired": {
+          "type": "boolean",
+          "description": "When enabled ZITADEL will check if the organization of the user, that is trying to log in, has access to this project (either owns the project or is granted)."
+        },
+        "privateLabelingSetting": {
+          "$ref": "#/definitions/v2betaPrivateLabelingSetting",
+          "description": "Defines from where the private labeling should be triggered."
+        },
+        "grantedOrganizationId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "The ID of the organization the project is granted to."
+        },
+        "grantedOrganizationName": {
+          "type": "string",
+          "example": "Some Organization",
+          "description": "The name of the organization the project is granted to."
+        },
+        "grantedState": {
+          "$ref": "#/definitions/v2betaGrantedProjectState",
+          "description": "current state of the granted project"
+        }
+      }
+    },
+    "v2betaProjectFieldName": {
+      "type": "string",
+      "enum": [
+        "PROJECT_FIELD_NAME_UNSPECIFIED",
+        "PROJECT_FIELD_NAME_ID",
+        "PROJECT_FIELD_NAME_CREATION_DATE",
+        "PROJECT_FIELD_NAME_CHANGE_DATE",
+        "PROJECT_FIELD_NAME_NAME"
+      ],
+      "default": "PROJECT_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2betaProjectGrant": {
+      "type": "object",
+      "properties": {
+        "organizationId": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "The unique identifier of the organization which granted the project to the granted_organization_id."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the granted project creation."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the last change to the granted project (e.g. creation, activation, deactivation)."
+        },
+        "grantedOrganizationId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "The ID of the organization the project is granted to."
+        },
+        "grantedOrganizationName": {
+          "type": "string",
+          "example": "Some Organization",
+          "description": "The name of the organization the project is granted to."
+        },
+        "grantedRoleKeys": {
+          "type": "array",
+          "example": [
+            "role.super.man"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "The roles of the granted project."
+        },
+        "projectId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "The ID of the granted project."
+        },
+        "projectName": {
+          "type": "string",
+          "example": "ZITADEL",
+          "description": "The name of the granted project."
+        },
+        "state": {
+          "$ref": "#/definitions/v2betaProjectGrantState",
+          "description": "current state of the project"
+        }
+      }
+    },
+    "v2betaProjectGrantFieldName": {
+      "type": "string",
+      "enum": [
+        "PROJECT_GRANT_FIELD_NAME_UNSPECIFIED",
+        "PROJECT_GRANT_FIELD_NAME_PROJECT_ID",
+        "PROJECT_GRANT_FIELD_NAME_CREATION_DATE",
+        "PROJECT_GRANT_FIELD_NAME_CHANGE_DATE"
+      ],
+      "default": "PROJECT_GRANT_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2betaProjectGrantSearchFilter": {
+      "type": "object",
+      "properties": {
+        "projectNameFilter": {
+          "$ref": "#/definitions/v2betaProjectNameFilter"
+        },
+        "roleKeyFilter": {
+          "$ref": "#/definitions/v2betaProjectRoleKeyFilter"
+        },
+        "inProjectIdsFilter": {
+          "$ref": "#/definitions/v2betaInIDsFilter"
+        },
+        "projectResourceOwnerFilter": {
+          "$ref": "#/definitions/v2betaIDFilter"
+        },
+        "projectGrantResourceOwnerFilter": {
+          "$ref": "#/definitions/v2betaIDFilter"
+        }
+      }
+    },
+    "v2betaProjectGrantState": {
+      "type": "string",
+      "enum": [
+        "PROJECT_GRANT_STATE_UNSPECIFIED",
+        "PROJECT_GRANT_STATE_ACTIVE",
+        "PROJECT_GRANT_STATE_INACTIVE"
+      ],
+      "default": "PROJECT_GRANT_STATE_UNSPECIFIED"
+    },
+    "v2betaProjectNameFilter": {
+      "type": "object",
+      "properties": {
+        "projectName": {
+          "type": "string",
+          "example": "ip_allow_list",
+          "description": "Defines the name of the project to query for.",
+          "maxLength": 200
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextFilterMethod",
+          "description": "defines which text equality method is used"
+        }
+      }
+    },
+    "v2betaProjectRole": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "example": "69629026806489455",
+          "description": "ID of the project."
+        },
+        "key": {
+          "type": "string",
+          "example": "role.super.man",
+          "description": "Key of the project role."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the project role creation."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the last change to the project role."
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Super man",
+          "description": "Display name of the project role."
+        },
+        "group": {
+          "type": "string",
+          "example": "people",
+          "description": "Group of the project role."
+        }
+      }
+    },
+    "v2betaProjectRoleDisplayNameFilter": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "example": "SUPER"
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextFilterMethod",
+          "description": "Defines which text comparison method used for the name query."
+        }
+      }
+    },
+    "v2betaProjectRoleFieldName": {
+      "type": "string",
+      "enum": [
+        "PROJECT_ROLE_FIELD_NAME_UNSPECIFIED",
+        "PROJECT_ROLE_FIELD_NAME_KEY",
+        "PROJECT_ROLE_FIELD_NAME_CREATION_DATE",
+        "PROJECT_ROLE_FIELD_NAME_CHANGE_DATE"
+      ],
+      "default": "PROJECT_ROLE_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2betaProjectRoleKeyFilter": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "example": "role.super.man"
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextFilterMethod",
+          "description": "Defines which text comparison method used for the name query."
+        }
+      }
+    },
+    "v2betaProjectRoleSearchFilter": {
+      "type": "object",
+      "properties": {
+        "roleKeyFilter": {
+          "$ref": "#/definitions/v2betaProjectRoleKeyFilter"
+        },
+        "displayNameFilter": {
+          "$ref": "#/definitions/v2betaProjectRoleDisplayNameFilter"
+        }
+      }
+    },
+    "v2betaProjectSearchFilter": {
+      "type": "object",
+      "properties": {
+        "projectNameFilter": {
+          "$ref": "#/definitions/v2betaProjectNameFilter"
+        },
+        "inProjectIdsFilter": {
+          "$ref": "#/definitions/v2betaInIDsFilter"
+        },
+        "projectResourceOwnerFilter": {
+          "$ref": "#/definitions/v2betaIDFilter"
+        },
+        "projectGrantResourceOwnerFilter": {
+          "$ref": "#/definitions/v2betaIDFilter"
+        },
+        "projectOrganizationIdFilter": {
+          "$ref": "#/definitions/v2betaIDFilter"
+        }
+      }
+    },
+    "v2betaProjectState": {
+      "type": "string",
+      "enum": [
+        "PROJECT_STATE_UNSPECIFIED",
+        "PROJECT_STATE_ACTIVE",
+        "PROJECT_STATE_INACTIVE"
+      ],
+      "default": "PROJECT_STATE_UNSPECIFIED"
+    },
+    "v2betaRemoveProjectRoleResponse": {
+      "type": "object",
+      "properties": {
+        "removalDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the removal of the project role.\nNote that the removal date is only guaranteed to be set if the removal was successful during the request.\nIn case the removal occurred in a previous request, the removal date might be empty."
+        }
+      }
+    },
+    "v2betaTextFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_FILTER_METHOD_EQUALS",
+        "TEXT_FILTER_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_STARTS_WITH",
+        "TEXT_FILTER_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_CONTAINS",
+        "TEXT_FILTER_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_ENDS_WITH",
+        "TEXT_FILTER_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_FILTER_METHOD_EQUALS"
+    },
+    "v2betaUpdateProjectGrantResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the change of the project grant."
+        }
+      }
+    },
+    "v2betaUpdateProjectResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the change of the project."
+        }
+      }
+    },
+    "v2betaUpdateProjectRoleResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the change of the project role."
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

@@ -1,0 +1,1602 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Settings Service",
+    "description": "This API is intended to manage settings in a ZITADEL instance. This project is in beta state. It can AND will continue breaking until the services provide the same functionality as the current login.",
+    "version": "2.0-beta",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "SettingsService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/v2/settings/organization": {
+      "delete": {
+        "summary": "Delete Organization Settings",
+        "description": "Deprecated: please move to the corresponding endpoint under settings service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nDelete the settings specific to an organization.\n\nRequired permissions:\n  - `iam.policy.delete`",
+        "operationId": "SettingsService_DeleteOrganizationSettings",
+        "responses": {
+          "200": {
+            "description": "The translations was successfully set.",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteOrganizationSettingsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteOrganizationSettingsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      },
+      "post": {
+        "summary": "Set Organization Settings",
+        "description": "Deprecated: please move to the corresponding endpoint under settings service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nSets the settings specific to an organization.\nOrganization scopes usernames defines that the usernames have to be unique in the organization scope, can only be changed if the usernames of the users are unique in the scope.\n\nRequired permissions:\n  - `iam.policy.write`",
+        "operationId": "SettingsService_SetOrganizationSettings",
+        "responses": {
+          "200": {
+            "description": "The translations was successfully set.",
+            "schema": {
+              "$ref": "#/definitions/v2betaSetOrganizationSettingsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaSetOrganizationSettingsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2/settings/organization/search": {
+      "post": {
+        "summary": "List Organization Settings",
+        "description": "Deprecated: please move to the corresponding endpoint under settings service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nReturns a list of organization settings.\n\nRequired permission:\n  - `iam.policy.read`\n  - `org.policy.read`",
+        "operationId": "SettingsService_ListOrganizationSettings",
+        "responses": {
+          "200": {
+            "description": "A list of all project grants matching the query",
+            "schema": {
+              "$ref": "#/definitions/v2betaListOrganizationSettingsResponse"
+            }
+          },
+          "400": {
+            "description": "invalid list query",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaListOrganizationSettingsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/policies/security": {
+      "put": {
+        "summary": "Set Security Settings",
+        "description": "Set the security settings of the ZITADEL instance.",
+        "operationId": "SettingsService_SetSecuritySettings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaSetSecuritySettingsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaSetSecuritySettingsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/settings": {
+      "get": {
+        "summary": "Get basic information over the instance",
+        "description": "Return the basic information of the instance for the requested context",
+        "operationId": "SettingsService_GetGeneralSettings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetGeneralSettingsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/settings/branding": {
+      "get": {
+        "summary": "Get the current active branding settings",
+        "description": "Return the current active branding settings for the requested context",
+        "operationId": "SettingsService_GetBrandingSettings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetBrandingSettingsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ctx.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ctx.instance",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/settings/domain": {
+      "get": {
+        "summary": "Get the domain settings",
+        "description": "Return the domain settings for the requested context",
+        "operationId": "SettingsService_GetDomainSettings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetDomainSettingsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ctx.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ctx.instance",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/settings/legal_support": {
+      "get": {
+        "summary": "Get the legal and support settings",
+        "description": "Return the legal settings for the requested context",
+        "operationId": "SettingsService_GetLegalAndSupportSettings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetLegalAndSupportSettingsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ctx.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ctx.instance",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/settings/lockout": {
+      "get": {
+        "summary": "Get the lockout settings",
+        "description": "Return the lockout settings for the requested context, which define when a user will be locked",
+        "operationId": "SettingsService_GetLockoutSettings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetLockoutSettingsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ctx.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ctx.instance",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/settings/login": {
+      "get": {
+        "summary": "Get the login settings",
+        "description": "Return the settings for the requested context",
+        "operationId": "SettingsService_GetLoginSettings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetLoginSettingsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ctx.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ctx.instance",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/settings/login/idps": {
+      "get": {
+        "summary": "Get the current active identity providers",
+        "description": "Return the current active identity providers for the requested context",
+        "operationId": "SettingsService_GetActiveIdentityProviders",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetActiveIdentityProvidersResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ctx.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ctx.instance",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/settings/password/complexity": {
+      "get": {
+        "summary": "Get the password complexity settings",
+        "description": "Return the password complexity settings for the requested context",
+        "operationId": "SettingsService_GetPasswordComplexitySettings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetPasswordComplexitySettingsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ctx.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ctx.instance",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/settings/password/expiry": {
+      "get": {
+        "summary": "Get the password expiry settings",
+        "description": "Return the password expiry settings for the requested context",
+        "operationId": "SettingsService_GetPasswordExpirySettings",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetPasswordExpirySettingsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ctx.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ctx.instance",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/settings/security": {
+      "get": {
+        "summary": "Get Security Settings",
+        "description": "Returns the security settings of the ZITADEL instance.",
+        "operationId": "SettingsService_GetSecuritySettings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetSecuritySettingsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "SettingsService"
+        ],
+        "deprecated": true
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2betaBrandingSettings": {
+      "type": "object",
+      "properties": {
+        "lightTheme": {
+          "$ref": "#/definitions/v2betaTheme"
+        },
+        "darkTheme": {
+          "$ref": "#/definitions/v2betaTheme"
+        },
+        "fontUrl": {
+          "type": "string",
+          "example": "https://acme.com/assets/v1/165617850692654601/policy/label/font-180950243237405441",
+          "description": "url to the font used"
+        },
+        "hideLoginNameSuffix": {
+          "type": "boolean",
+          "description": "hides the org suffix on the login form if the scope \"urn:zitadel:iam:org:domain:primary:{domainname}\" is set",
+          "title": "hides the org suffix on the login form if the scope \\\"urn:zitadel:iam:org:domain:primary:{domainname}\\\" is set"
+        },
+        "disableWatermark": {
+          "type": "boolean",
+          "description": "boolean to disable the watermark"
+        },
+        "resourceOwnerType": {
+          "$ref": "#/definitions/v2betaResourceOwnerType",
+          "description": "resource_owner_type returns if the setting is managed on the organization or on the instance",
+          "title": "resource_owner_type returns if the setting is managed on the organization or on the instance"
+        },
+        "themeMode": {
+          "$ref": "#/definitions/v2betaThemeMode",
+          "description": "states whether both or only dark or light theme will be used"
+        }
+      }
+    },
+    "v2betaDeleteOrganizationSettingsRequest": {
+      "type": "object",
+      "properties": {
+        "organizationId": {
+          "type": "string",
+          "description": "Organization ID in which this settings are set."
+        }
+      }
+    },
+    "v2betaDeleteOrganizationSettingsResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the deletion of the organization settings."
+        }
+      }
+    },
+    "v2betaDetails": {
+      "type": "object",
+      "properties": {
+        "sequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2",
+          "description": "on read: the sequence of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "sequence represents the order of events. It's always counting"
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "on read: the timestamp of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "change_date is the timestamp when the object was changed"
+        },
+        "resourceOwner": {
+          "type": "string",
+          "example": "69629023906488334",
+          "title": "resource_owner is the organization or instance_id an object belongs to"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "title": "creation_date is the timestamp where the first operation on the object was made"
+        }
+      }
+    },
+    "v2betaDomainSettings": {
+      "type": "object",
+      "properties": {
+        "loginNameIncludesDomain": {
+          "type": "boolean",
+          "description": "the username has to end with the domain of its organization"
+        },
+        "requireOrgDomainVerification": {
+          "type": "boolean",
+          "description": "defines if organization domains should be verified upon creation, otherwise will be created already verified"
+        },
+        "smtpSenderAddressMatchesInstanceDomain": {
+          "type": "boolean",
+          "description": "defines if the SMTP sender address domain should match an existing domain on the instance"
+        },
+        "resourceOwnerType": {
+          "$ref": "#/definitions/v2betaResourceOwnerType",
+          "description": "resource_owner_type returns if the setting is managed on the organization or on the instance",
+          "title": "resource_owner_type returns if the setting is managed on the organization or on the instance"
+        }
+      }
+    },
+    "v2betaEmbeddedIframeSettings": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "states if iframe embedding is enabled or disabled"
+        },
+        "allowedOrigins": {
+          "type": "array",
+          "example": [
+            "foo.bar.com",
+            "localhost:8080"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "origins allowed loading ZITADEL in an iframe if enabled."
+        }
+      }
+    },
+    "v2betaGetActiveIdentityProvidersResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2betaListDetails"
+        },
+        "identityProviders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaIdentityProvider"
+          }
+        }
+      }
+    },
+    "v2betaGetBrandingSettingsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2betaDetails"
+        },
+        "settings": {
+          "$ref": "#/definitions/v2betaBrandingSettings"
+        }
+      }
+    },
+    "v2betaGetDomainSettingsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2betaDetails"
+        },
+        "settings": {
+          "$ref": "#/definitions/v2betaDomainSettings"
+        }
+      }
+    },
+    "v2betaGetGeneralSettingsResponse": {
+      "type": "object",
+      "properties": {
+        "defaultOrgId": {
+          "type": "string",
+          "description": "default organization for the current context"
+        },
+        "defaultLanguage": {
+          "type": "string",
+          "example": "en",
+          "description": "default language for the current context"
+        },
+        "supportedLanguages": {
+          "type": "array",
+          "example": [
+            "en",
+            "de",
+            "it"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "v2betaGetLegalAndSupportSettingsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2betaDetails"
+        },
+        "settings": {
+          "$ref": "#/definitions/v2betaLegalAndSupportSettings"
+        }
+      }
+    },
+    "v2betaGetLockoutSettingsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2betaDetails"
+        },
+        "settings": {
+          "$ref": "#/definitions/v2betaLockoutSettings"
+        }
+      }
+    },
+    "v2betaGetLoginSettingsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2betaDetails"
+        },
+        "settings": {
+          "$ref": "#/definitions/v2betaLoginSettings"
+        }
+      }
+    },
+    "v2betaGetPasswordComplexitySettingsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2betaDetails"
+        },
+        "settings": {
+          "$ref": "#/definitions/v2betaPasswordComplexitySettings"
+        }
+      }
+    },
+    "v2betaGetPasswordExpirySettingsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2betaDetails"
+        },
+        "settings": {
+          "$ref": "#/definitions/v2betaPasswordExpirySettings"
+        }
+      }
+    },
+    "v2betaGetSecuritySettingsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2betaDetails"
+        },
+        "settings": {
+          "$ref": "#/definitions/v2betaSecuritySettings"
+        }
+      }
+    },
+    "v2betaIdentityProvider": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/v2betaIdentityProviderType"
+        }
+      }
+    },
+    "v2betaIdentityProviderType": {
+      "type": "string",
+      "enum": [
+        "IDENTITY_PROVIDER_TYPE_UNSPECIFIED",
+        "IDENTITY_PROVIDER_TYPE_OIDC",
+        "IDENTITY_PROVIDER_TYPE_JWT",
+        "IDENTITY_PROVIDER_TYPE_LDAP",
+        "IDENTITY_PROVIDER_TYPE_OAUTH",
+        "IDENTITY_PROVIDER_TYPE_AZURE_AD",
+        "IDENTITY_PROVIDER_TYPE_GITHUB",
+        "IDENTITY_PROVIDER_TYPE_GITHUB_ES",
+        "IDENTITY_PROVIDER_TYPE_GITLAB",
+        "IDENTITY_PROVIDER_TYPE_GITLAB_SELF_HOSTED",
+        "IDENTITY_PROVIDER_TYPE_GOOGLE",
+        "IDENTITY_PROVIDER_TYPE_SAML"
+      ],
+      "default": "IDENTITY_PROVIDER_TYPE_UNSPECIFIED"
+    },
+    "v2betaInIDsFilter": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "example": [
+            "69629023906488334",
+            "69622366012355662"
+          ],
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "description": "Defines the ids to query for."
+        }
+      }
+    },
+    "v2betaLegalAndSupportSettings": {
+      "type": "object",
+      "properties": {
+        "tosLink": {
+          "type": "string",
+          "example": "https://zitadel.com/docs/legal/terms-of-service"
+        },
+        "privacyPolicyLink": {
+          "type": "string",
+          "example": "https://zitadel.com/docs/legal/privacy-policy"
+        },
+        "helpLink": {
+          "type": "string",
+          "example": "https://zitadel.com/docs/manuals/introduction"
+        },
+        "supportEmail": {
+          "type": "string",
+          "example": "support-email@test.com",
+          "description": "help / support email address."
+        },
+        "resourceOwnerType": {
+          "$ref": "#/definitions/v2betaResourceOwnerType",
+          "description": "resource_owner_type returns if the setting is managed on the organization or on the instance",
+          "title": "resource_owner_type returns if the setting is managed on the organization or on the instance"
+        },
+        "docsLink": {
+          "type": "string",
+          "example": "https://zitadel.com/docs",
+          "description": "Link to documentation to be shown in the console."
+        },
+        "customLink": {
+          "type": "string",
+          "example": "https://external.link",
+          "description": "Link to an external resource that will be available to users in the console."
+        },
+        "customLinkText": {
+          "type": "string",
+          "example": "External",
+          "description": "The button text that would be shown in console pointing to custom link."
+        }
+      }
+    },
+    "v2betaListDetails": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2"
+        },
+        "processedSequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "267831"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "the last time the projection got updated"
+        }
+      }
+    },
+    "v2betaListOrganizationSettingsRequest": {
+      "type": "object",
+      "example": {
+        "pagination": {
+          "offset": 0,
+          "limit": 0,
+          "asc": true
+        },
+        "sortingColumn": "ORGANIZATION_SETTINGS_FIELD_NAME_CREATION_DATE",
+        "filters": [
+          {
+            "inOrganizationIdsFilter": {
+              "ids": [
+                "28746028909593987"
+              ]
+            }
+          }
+        ]
+      },
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "List limitations and ordering."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaOrganizationSettingsFieldName",
+          "default": "\"ORGANIZATION_SETTINGS_FIELD_NAME_CREATION_DATE\"",
+          "description": "The field the result is sorted by. The default is the creation date. Beware that if you change this, your result pagination might be inconsistent."
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaOrganizationSettingsSearchFilter"
+          }
+        }
+      }
+    },
+    "v2betaListOrganizationSettingsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse"
+        },
+        "organizationSettings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaOrganizationSettings"
+          }
+        }
+      }
+    },
+    "v2betaLockoutSettings": {
+      "type": "object",
+      "properties": {
+        "maxPasswordAttempts": {
+          "type": "string",
+          "format": "uint64",
+          "example": "10",
+          "description": "Maximum password check attempts before the account gets locked. Attempts are reset as soon as the password is entered correctly or the password is reset. If set to 0 the account will never be locked."
+        },
+        "resourceOwnerType": {
+          "$ref": "#/definitions/v2betaResourceOwnerType",
+          "description": "resource_owner_type returns if the settings is managed on the organization or on the instance",
+          "title": "resource_owner_type returns if the settings is managed on the organization or on the instance"
+        },
+        "maxOtpAttempts": {
+          "type": "string",
+          "format": "uint64",
+          "example": "10",
+          "description": "Maximum failed attempts for a single OTP type (TOTP, SMS, Email) before the account gets locked. Attempts are reset as soon as the OTP is entered correctly. If set to 0 the account will never be locked."
+        }
+      }
+    },
+    "v2betaLoginSettings": {
+      "type": "object",
+      "properties": {
+        "allowUsernamePassword": {
+          "type": "boolean",
+          "description": "defines if a user is allowed to log in with username and password"
+        },
+        "allowRegister": {
+          "type": "boolean",
+          "description": "defines if a person is allowed to register a user on this organization"
+        },
+        "allowExternalIdp": {
+          "type": "boolean",
+          "description": "defines if a user is allowed to add a defined identity provider. E.g. Google auth"
+        },
+        "forceMfa": {
+          "type": "boolean",
+          "description": "defines if a user MUST use a multi-factor to log in"
+        },
+        "passkeysType": {
+          "$ref": "#/definitions/v2betaPasskeysType",
+          "description": "defines if passkeys are allowed for users"
+        },
+        "hidePasswordReset": {
+          "type": "boolean",
+          "description": "defines if password reset link should be shown in the login screen"
+        },
+        "ignoreUnknownUsernames": {
+          "type": "boolean",
+          "description": "defines if unknown username on login screen directly returns an error or always displays the password screen"
+        },
+        "defaultRedirectUri": {
+          "type": "string",
+          "example": "https://acme.com/ui/console",
+          "description": "defines where the user will be redirected to if the login is started without app context (e.g. from mail)"
+        },
+        "passwordCheckLifetime": {
+          "type": "string",
+          "example": "864000s",
+          "description": "Defines after how much time the user has to re-authenticate with the password."
+        },
+        "externalLoginCheckLifetime": {
+          "type": "string",
+          "example": "864000s",
+          "description": "Defines after how much time the user has to re-authenticate with an external provider."
+        },
+        "mfaInitSkipLifetime": {
+          "type": "string",
+          "example": "2592000s",
+          "description": "Defines after how much time the mfa prompt will be shown again."
+        },
+        "secondFactorCheckLifetime": {
+          "type": "string",
+          "example": "64800s",
+          "description": "Defines after how long the second factor check is valid."
+        },
+        "multiFactorCheckLifetime": {
+          "type": "string",
+          "example": "43200s",
+          "description": "Defines how long the multi-factor check is valid."
+        },
+        "secondFactors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2betaSecondFactorType"
+          }
+        },
+        "multiFactors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2betaMultiFactorType"
+          }
+        },
+        "allowDomainDiscovery": {
+          "type": "boolean",
+          "description": "If set to true, the suffix (@domain.com) of an unknown username input on the login screen will be matched against the org domains and will redirect to the registration of that organization on success."
+        },
+        "disableLoginWithEmail": {
+          "type": "boolean",
+          "description": "defines if the user can additionally (to the login name) be identified by their verified email address"
+        },
+        "disableLoginWithPhone": {
+          "type": "boolean",
+          "description": "defines if the user can additionally (to the login name) be identified by their verified phone number"
+        },
+        "resourceOwnerType": {
+          "$ref": "#/definitions/v2betaResourceOwnerType",
+          "description": "resource_owner_type returns if the settings is managed on the organization or on the instance",
+          "title": "resource_owner_type returns if the settings is managed on the organization or on the instance"
+        },
+        "forceMfaLocalOnly": {
+          "type": "boolean",
+          "description": "if activated, only local authenticated users are forced to use MFA. Authentication through IDPs won't prompt a MFA step in the login."
+        }
+      }
+    },
+    "v2betaMultiFactorType": {
+      "type": "string",
+      "enum": [
+        "MULTI_FACTOR_TYPE_UNSPECIFIED",
+        "MULTI_FACTOR_TYPE_U2F_WITH_VERIFICATION"
+      ],
+      "default": "MULTI_FACTOR_TYPE_UNSPECIFIED"
+    },
+    "v2betaOrganizationScopedUsernamesFilter": {
+      "type": "object",
+      "properties": {
+        "organizationScopedUsernames": {
+          "type": "boolean"
+        }
+      },
+      "description": "Query for organization settings with specific scopes usernames."
+    },
+    "v2betaOrganizationSettings": {
+      "type": "object",
+      "properties": {
+        "organizationId": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "The unique identifier of the organization the settings belong to."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the organization settings creation."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the last change to the organization settings."
+        },
+        "organizationScopedUsernames": {
+          "type": "boolean",
+          "description": "Defines if the usernames have to be unique in the organization context."
+        }
+      }
+    },
+    "v2betaOrganizationSettingsFieldName": {
+      "type": "string",
+      "enum": [
+        "ORGANIZATION_SETTINGS_FIELD_NAME_UNSPECIFIED",
+        "ORGANIZATION_SETTINGS_FIELD_NAME_ORGANIZATION_ID",
+        "ORGANIZATION_SETTINGS_FIELD_NAME_CREATION_DATE",
+        "ORGANIZATION_SETTINGS_FIELD_NAME_CHANGE_DATE"
+      ],
+      "default": "ORGANIZATION_SETTINGS_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2betaOrganizationSettingsSearchFilter": {
+      "type": "object",
+      "properties": {
+        "inOrganizationIdsFilter": {
+          "$ref": "#/definitions/v2betaInIDsFilter"
+        },
+        "organizationScopedUsernamesFilter": {
+          "$ref": "#/definitions/v2betaOrganizationScopedUsernamesFilter"
+        }
+      }
+    },
+    "v2betaPaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "v2betaPaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "v2betaPasskeysType": {
+      "type": "string",
+      "enum": [
+        "PASSKEYS_TYPE_NOT_ALLOWED",
+        "PASSKEYS_TYPE_ALLOWED"
+      ],
+      "default": "PASSKEYS_TYPE_NOT_ALLOWED"
+    },
+    "v2betaPasswordComplexitySettings": {
+      "type": "object",
+      "properties": {
+        "minLength": {
+          "type": "string",
+          "format": "uint64",
+          "example": "8",
+          "description": "Defines the minimum length of a password."
+        },
+        "requiresUppercase": {
+          "type": "boolean",
+          "description": "defines if the password MUST contain an upper case letter"
+        },
+        "requiresLowercase": {
+          "type": "boolean",
+          "description": "defines if the password MUST contain a lowercase letter"
+        },
+        "requiresNumber": {
+          "type": "boolean",
+          "description": "defines if the password MUST contain a number"
+        },
+        "requiresSymbol": {
+          "type": "boolean",
+          "description": "defines if the password MUST contain a symbol. E.g. \"$\""
+        },
+        "resourceOwnerType": {
+          "$ref": "#/definitions/v2betaResourceOwnerType",
+          "description": "resource_owner_type returns if the settings is managed on the organization or on the instance",
+          "title": "resource_owner_type returns if the settings is managed on the organization or on the instance"
+        }
+      }
+    },
+    "v2betaPasswordExpirySettings": {
+      "type": "object",
+      "properties": {
+        "maxAgeDays": {
+          "type": "string",
+          "format": "uint64",
+          "example": "365",
+          "description": "Amount of days after which a password will expire. The user will be forced to change the password on the following authentication."
+        },
+        "expireWarnDays": {
+          "type": "string",
+          "format": "uint64",
+          "example": "10",
+          "description": "Amount of days after which the user should be notified of the upcoming expiry. ZITADEL will not notify the user."
+        },
+        "resourceOwnerType": {
+          "$ref": "#/definitions/v2betaResourceOwnerType",
+          "title": "resource_owner_type returns if the settings is managed on the organization or on the instance"
+        }
+      }
+    },
+    "v2betaRequestContext": {
+      "type": "object",
+      "properties": {
+        "orgId": {
+          "type": "string"
+        },
+        "instance": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v2betaResourceOwnerType": {
+      "type": "string",
+      "enum": [
+        "RESOURCE_OWNER_TYPE_UNSPECIFIED",
+        "RESOURCE_OWNER_TYPE_INSTANCE",
+        "RESOURCE_OWNER_TYPE_ORG"
+      ],
+      "default": "RESOURCE_OWNER_TYPE_UNSPECIFIED"
+    },
+    "v2betaSecondFactorType": {
+      "type": "string",
+      "enum": [
+        "SECOND_FACTOR_TYPE_UNSPECIFIED",
+        "SECOND_FACTOR_TYPE_OTP",
+        "SECOND_FACTOR_TYPE_U2F",
+        "SECOND_FACTOR_TYPE_OTP_EMAIL",
+        "SECOND_FACTOR_TYPE_OTP_SMS"
+      ],
+      "default": "SECOND_FACTOR_TYPE_UNSPECIFIED",
+      "title": "- SECOND_FACTOR_TYPE_OTP: This is the type for TOTP"
+    },
+    "v2betaSecuritySettings": {
+      "type": "object",
+      "properties": {
+        "embeddedIframe": {
+          "$ref": "#/definitions/v2betaEmbeddedIframeSettings"
+        },
+        "enableImpersonation": {
+          "type": "boolean",
+          "example": "en",
+          "description": "default language for the current context"
+        }
+      }
+    },
+    "v2betaSetOrganizationSettingsRequest": {
+      "type": "object",
+      "properties": {
+        "organizationId": {
+          "type": "string",
+          "description": "Organization ID in which this settings are set."
+        },
+        "organizationScopedUsernames": {
+          "type": "boolean",
+          "description": "Force the usernames in the organization to be unique, only possible to set if the existing users already have unique usernames in the organization context."
+        }
+      }
+    },
+    "v2betaSetOrganizationSettingsResponse": {
+      "type": "object",
+      "properties": {
+        "setDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the set of the organization settings."
+        }
+      }
+    },
+    "v2betaSetSecuritySettingsRequest": {
+      "type": "object",
+      "properties": {
+        "embeddedIframe": {
+          "$ref": "#/definitions/v2betaEmbeddedIframeSettings"
+        },
+        "enableImpersonation": {
+          "type": "boolean",
+          "description": "allows users to impersonate other users. The impersonator needs the appropriate `*_IMPERSONATOR` roles assigned as well"
+        }
+      }
+    },
+    "v2betaSetSecuritySettingsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2betaDetails"
+        }
+      }
+    },
+    "v2betaTheme": {
+      "type": "object",
+      "properties": {
+        "primaryColor": {
+          "type": "string",
+          "example": "#5469d4",
+          "description": "hex value for primary color",
+          "title": "hex value for primary color"
+        },
+        "backgroundColor": {
+          "type": "string",
+          "example": "#FAFAFA",
+          "description": "hex value for background color",
+          "title": "hex value for background color"
+        },
+        "warnColor": {
+          "type": "string",
+          "example": "#CD3D56",
+          "description": "hex value for warn color",
+          "title": "hex value for warning color"
+        },
+        "fontColor": {
+          "type": "string",
+          "example": "#000000",
+          "description": "hex value for font color",
+          "title": "hex value for font color"
+        },
+        "logoUrl": {
+          "type": "string",
+          "example": "https://acme.com/assets/v1/165617850692654601/policy/label/logo-180950416321494657",
+          "description": "url to the logo",
+          "title": "url where the logo is served"
+        },
+        "iconUrl": {
+          "type": "string",
+          "example": "https://acme.com/assets/v1/165617850692654601/policy/label/icon-180950498874178817",
+          "description": "url to the icon",
+          "title": "url where the icon is served"
+        }
+      }
+    },
+    "v2betaThemeMode": {
+      "type": "string",
+      "enum": [
+        "THEME_MODE_UNSPECIFIED",
+        "THEME_MODE_AUTO",
+        "THEME_MODE_LIGHT",
+        "THEME_MODE_DARK"
+      ],
+      "default": "THEME_MODE_UNSPECIFIED"
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

@@ -1,0 +1,380 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "OIDC Service",
+    "description": "Get OIDC Auth Request details and create callback URLs. This project is in beta state. It can AND will continue breaking until the services provide the same functionality as the current login.",
+    "version": "2.0-beta",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "OIDCService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/v2beta/oidc/auth_requests/{authRequestId}": {
+      "get": {
+        "summary": "Get AuthRequest",
+        "description": "Deprecated: please move to the corresponding endpoint under oidc service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nGet OIDC Auth Request details by ID, obtained from the redirect URL. Returns details that are parsed from the application's Auth Request.",
+        "operationId": "OIDCService_GetAuthRequest",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetAuthRequestResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authRequestId",
+            "description": "ID of the Auth Request, as obtained from the redirect URL.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OIDCService"
+        ],
+        "deprecated": true
+      },
+      "post": {
+        "summary": "Create Callback",
+        "description": "Deprecated: please move to the corresponding endpoint under oidc service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nFinalize an Auth Request and get the callback URL for success or failure.\nThe user must be redirected to the URL in order to inform the application about the success or failure.\nOn success, the URL contains details for the application to obtain the tokens.\nThis method can only be called once for an Auth request.",
+        "operationId": "OIDCService_CreateCallback",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateCallbackResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authRequestId",
+            "description": "Set this field when the authorization flow failed. It creates a callback URL to the application, with the error details set.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OIDCServiceCreateCallbackBody"
+            }
+          }
+        ],
+        "tags": [
+          "OIDCService"
+        ],
+        "deprecated": true
+      }
+    }
+  },
+  "definitions": {
+    "OIDCServiceCreateCallbackBody": {
+      "type": "object",
+      "properties": {
+        "session": {
+          "$ref": "#/definitions/v2betaSession"
+        },
+        "error": {
+          "$ref": "#/definitions/v2betaAuthorizationError",
+          "description": "Set this field when the authorization flow failed. It creates a callback URL to the application, with the error details set."
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2betaAuthRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of the authorization request"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Time when the auth request was created"
+        },
+        "clientId": {
+          "type": "string",
+          "description": "OIDC client ID of the application that created the auth request"
+        },
+        "scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Requested scopes by the application, which the user must consent to."
+        },
+        "redirectUri": {
+          "type": "string",
+          "description": "Base URI that points back to the application"
+        },
+        "prompt": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2betaPrompt"
+          },
+          "description": "Prompts that must be displayed to the user"
+        },
+        "uiLocales": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "End-User's preferred languages and scripts for the user interface, represented as a list of BCP47 [RFC5646] language tag values, ordered by preference. For instance, the value [fr-CA, fr, en] represents a preference for French as spoken in Canada, then French (without a region designation), followed by English (without a region designation). An error SHOULD NOT result if some or all of the requested locales are not supported."
+        },
+        "loginHint": {
+          "type": "string",
+          "description": "Login hint can be set by the application with a user identifier such as an email or phone number."
+        },
+        "maxAge": {
+          "type": "string",
+          "description": "Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated. If the elapsed time is greater than this value, or the field is present with 0 duration, the user must be re-authenticated."
+        },
+        "hintUserId": {
+          "type": "string",
+          "description": "User ID taken from a ID Token Hint if it was present and valid."
+        }
+      },
+      "externalDocs": {
+        "description": "Find out more about OIDC Auth Request parameters",
+        "url": "https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest"
+      }
+    },
+    "v2betaAuthorizationError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/v2betaErrorReason"
+        },
+        "errorDescription": {
+          "type": "string"
+        },
+        "errorUri": {
+          "type": "string"
+        }
+      }
+    },
+    "v2betaCreateCallbackResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2betaDetails"
+        },
+        "callbackUrl": {
+          "type": "string",
+          "example": "https://client.example.org/cb?code=SplxlOBeZQQYbYS6WxSbIA\u0026state=af0ifjsldkj",
+          "description": "Callback URL where the user should be redirected, using a \"302 FOUND\" status. Contains details for the application to obtain the tokens on success, or error details on failure. Note that this field must be treated as credentials, as the contained code can be used to obtain tokens on behalve of the user."
+        }
+      }
+    },
+    "v2betaDetails": {
+      "type": "object",
+      "properties": {
+        "sequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2",
+          "description": "on read: the sequence of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "sequence represents the order of events. It's always counting"
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "on read: the timestamp of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "change_date is the timestamp when the object was changed"
+        },
+        "resourceOwner": {
+          "type": "string",
+          "example": "69629023906488334",
+          "title": "resource_owner is the organization or instance_id an object belongs to"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "title": "creation_date is the timestamp where the first operation on the object was made"
+        }
+      }
+    },
+    "v2betaErrorReason": {
+      "type": "string",
+      "enum": [
+        "ERROR_REASON_UNSPECIFIED",
+        "ERROR_REASON_INVALID_REQUEST",
+        "ERROR_REASON_UNAUTHORIZED_CLIENT",
+        "ERROR_REASON_ACCESS_DENIED",
+        "ERROR_REASON_UNSUPPORTED_RESPONSE_TYPE",
+        "ERROR_REASON_INVALID_SCOPE",
+        "ERROR_REASON_SERVER_ERROR",
+        "ERROR_REASON_TEMPORARY_UNAVAILABLE",
+        "ERROR_REASON_INTERACTION_REQUIRED",
+        "ERROR_REASON_LOGIN_REQUIRED",
+        "ERROR_REASON_ACCOUNT_SELECTION_REQUIRED",
+        "ERROR_REASON_CONSENT_REQUIRED",
+        "ERROR_REASON_INVALID_REQUEST_URI",
+        "ERROR_REASON_INVALID_REQUEST_OBJECT",
+        "ERROR_REASON_REQUEST_NOT_SUPPORTED",
+        "ERROR_REASON_REQUEST_URI_NOT_SUPPORTED",
+        "ERROR_REASON_REGISTRATION_NOT_SUPPORTED"
+      ],
+      "default": "ERROR_REASON_UNSPECIFIED",
+      "title": "- ERROR_REASON_INVALID_REQUEST: Error states from https://datatracker.ietf.org/doc/html/rfc6749#section-4.2.2.1\n - ERROR_REASON_INTERACTION_REQUIRED: Error states from https://openid.net/specs/openid-connect-core-1_0.html#AuthError"
+    },
+    "v2betaGetAuthRequestResponse": {
+      "type": "object",
+      "properties": {
+        "authRequest": {
+          "$ref": "#/definitions/v2betaAuthRequest"
+        }
+      }
+    },
+    "v2betaPrompt": {
+      "type": "string",
+      "enum": [
+        "PROMPT_UNSPECIFIED",
+        "PROMPT_NONE",
+        "PROMPT_LOGIN",
+        "PROMPT_CONSENT",
+        "PROMPT_SELECT_ACCOUNT",
+        "PROMPT_CREATE"
+      ],
+      "default": "PROMPT_UNSPECIFIED"
+    },
+    "v2betaSession": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "ID of the session, used to login the user. Connects the session to the Auth Request.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "sessionToken": {
+          "type": "string",
+          "description": "Token to verify the session is valid",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

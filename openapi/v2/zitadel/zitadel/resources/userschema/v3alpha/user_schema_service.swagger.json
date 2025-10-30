@@ -1,0 +1,1025 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "User Schema Service",
+    "description": "This API is intended to manage data schemas for users in a ZITADEL instance. This project is in preview state. It can AND will continue breaking until the service provides the same functionality as the v1 and v2 user services.",
+    "version": "3.0-preview",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "ZITADELUserSchemas"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/resources/v3alpha/user_schemas": {
+      "post": {
+        "summary": "Create a user schema",
+        "description": "Create the first revision of a new user schema. The schema can then be used on users to store and validate their data.",
+        "operationId": "ZITADELUserSchemas_CreateUserSchema",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v3alphaCreateUserSchemaResponse"
+            }
+          },
+          "201": {
+            "description": "Schema successfully created",
+            "schema": {
+              "$ref": "#/definitions/v3alphaCreateUserSchemaResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userSchema",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v3alphaUserSchema"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUserSchemas"
+        ]
+      }
+    },
+    "/resources/v3alpha/user_schemas/_search": {
+      "post": {
+        "summary": "Search user schemas",
+        "description": "Search all matching user schemas. By default, we will return all user schema of your instance. Make sure to include a limit and sorting for pagination.",
+        "operationId": "ZITADELUserSchemas_SearchUserSchemas",
+        "responses": {
+          "200": {
+            "description": "A list of all user schema matching the search",
+            "schema": {
+              "$ref": "#/definitions/v3alphaSearchUserSchemasResponse"
+            }
+          },
+          "400": {
+            "description": "invalid search",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filters",
+            "description": "Define the criteria to filter for.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/v3alphaSearchFilter"
+              }
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "query.offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "query.limit",
+            "description": "Maximum amount of events returned. If not configured otherwise, the default is 100, the maximum is 1000. If the limit exceeds the maximum, ZITADEL throws an error.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "query.desc",
+            "description": "default is ascending, because together with the creation date sorting column, this returns the most deterministic pagination results.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "sortingColumn",
+            "description": "The field the result is sorted by. The default is the creation date. Beware that if you change this, your result pagination might be inconsistent.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "FIELD_NAME_UNSPECIFIED",
+              "FIELD_NAME_TYPE",
+              "FIELD_NAME_STATE",
+              "FIELD_NAME_REVISION",
+              "FIELD_NAME_CHANGE_DATE",
+              "FIELD_NAME_CREATION_DATE"
+            ],
+            "default": "FIELD_NAME_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "ZITADELUserSchemas"
+        ]
+      }
+    },
+    "/resources/v3alpha/user_schemas/{id}": {
+      "get": {
+        "summary": "User schema by ID",
+        "description": "Returns the user schema identified by the requested ID.",
+        "operationId": "ZITADELUserSchemas_GetUserSchema",
+        "responses": {
+          "200": {
+            "description": "Schema successfully retrieved",
+            "schema": {
+              "$ref": "#/definitions/v3alphaGetUserSchemaResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the schema.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUserSchemas"
+        ]
+      },
+      "delete": {
+        "summary": "Delete a user schema",
+        "description": "Delete an existing user schema. This operation is only allowed if there are no associated users to it.",
+        "operationId": "ZITADELUserSchemas_DeleteUserSchema",
+        "responses": {
+          "200": {
+            "description": "Schema successfully deleted",
+            "schema": {
+              "$ref": "#/definitions/v3alphaDeleteUserSchemaResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the schema.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUserSchemas"
+        ]
+      },
+      "patch": {
+        "summary": "Patch a user schema",
+        "description": "Patch an existing user schema to a new revision. Users based on the current revision will not be affected until they are updated.",
+        "operationId": "ZITADELUserSchemas_PatchUserSchema",
+        "responses": {
+          "200": {
+            "description": "Schema successfully updated",
+            "schema": {
+              "$ref": "#/definitions/v3alphaPatchUserSchemaResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the schema.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "userSchema",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userschemav3alphaPatchUserSchema"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUserSchemas"
+        ]
+      }
+    },
+    "/resources/v3alpha/user_schemas/{id}/_deactivate": {
+      "post": {
+        "summary": "Deactivate a user schema",
+        "description": "Deactivate an existing user schema and change it into a read-only state. Users based on this schema cannot be updated anymore, but are still able to authenticate.",
+        "operationId": "ZITADELUserSchemas_DeactivateUserSchema",
+        "responses": {
+          "200": {
+            "description": "Schema successfully deactivated",
+            "schema": {
+              "$ref": "#/definitions/v3alphaDeactivateUserSchemaResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the schema.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUserSchemas"
+        ]
+      }
+    },
+    "/resources/v3alpha/user_schemas/{id}/_reactivate": {
+      "post": {
+        "summary": "Reactivate a user schema",
+        "description": "Reactivate an previously deactivated user schema and change it into an active state again.",
+        "operationId": "ZITADELUserSchemas_ReactivateUserSchema",
+        "responses": {
+          "200": {
+            "description": "Schema successfully reactivated",
+            "schema": {
+              "$ref": "#/definitions/v3alphaReactivateUserSchemaResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the schema.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUserSchemas"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "protobufNullValue": {
+      "type": "string",
+      "enum": [
+        "NULL_VALUE"
+      ],
+      "default": "NULL_VALUE",
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\nThe JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "userschemav3alphaGetUserSchema": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails",
+          "description": "Details provide some base information (such as the last change date) of the schema."
+        },
+        "config": {
+          "$ref": "#/definitions/v3alphaUserSchema"
+        },
+        "state": {
+          "$ref": "#/definitions/v3alphaState",
+          "example": "STATE_ACTIVE",
+          "description": "Current state of the schema."
+        },
+        "revision": {
+          "type": "integer",
+          "format": "int64",
+          "example": "2",
+          "description": "Revision is a read only version of the schema, each update of the `schema`-field increases the revision."
+        }
+      }
+    },
+    "userschemav3alphaPatchUserSchema": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "employees",
+          "description": "Type is a human readable word describing the schema.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "schema": {
+          "type": "object",
+          "example": {
+            "$schema": "https://example.com/user/employees",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "required": true
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "JSON schema representation defining the user."
+        },
+        "possibleAuthenticators": {
+          "type": "array",
+          "example": [
+            "AUTHENTICATOR_TYPE_USERNAME",
+            "AUTHENTICATOR_TYPE_PASSWORD",
+            "AUTHENTICATOR_TYPE_WEBAUTHN"
+          ],
+          "items": {
+            "$ref": "#/definitions/v3alphaAuthenticatorType"
+          },
+          "description": "Defines the possible types of authenticators.\n\nRemoval of an authenticator does not remove the authenticator on a user."
+        }
+      },
+      "required": [
+        "type",
+        "schema"
+      ]
+    },
+    "v3alphaAndFilter": {
+      "type": "object",
+      "properties": {
+        "queries": {
+          "type": "array",
+          "example": [
+            {
+              "typeFilter": {
+                "id": "employees",
+                "method": "TEXT_FILTER_METHOD_STARTS_WITH"
+              }
+            },
+            {
+              "stateFilter": {
+                "state": "STATE_ACTIVE"
+              }
+            }
+          ],
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaSearchFilter"
+          }
+        }
+      }
+    },
+    "v3alphaAuthenticatorType": {
+      "type": "string",
+      "enum": [
+        "AUTHENTICATOR_TYPE_UNSPECIFIED",
+        "AUTHENTICATOR_TYPE_USERNAME",
+        "AUTHENTICATOR_TYPE_PASSWORD",
+        "AUTHENTICATOR_TYPE_WEBAUTHN",
+        "AUTHENTICATOR_TYPE_TOTP",
+        "AUTHENTICATOR_TYPE_OTP_EMAIL",
+        "AUTHENTICATOR_TYPE_OTP_SMS",
+        "AUTHENTICATOR_TYPE_AUTHENTICATION_KEY",
+        "AUTHENTICATOR_TYPE_IDENTITY_PROVIDER"
+      ],
+      "default": "AUTHENTICATOR_TYPE_UNSPECIFIED"
+    },
+    "v3alphaCreateUserSchemaResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails",
+          "description": "Details provide some base information (such as the last change date) of the schema."
+        }
+      }
+    },
+    "v3alphaDeactivateUserSchemaResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails",
+          "description": "Details provide some base information (such as the last change date) of the schema."
+        }
+      }
+    },
+    "v3alphaDeleteUserSchemaResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails",
+          "description": "Details provide some base information (such as the last change date) of the schema."
+        }
+      }
+    },
+    "v3alphaDetails": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "the timestamp of the first event applied to the object."
+        },
+        "changed": {
+          "type": "string",
+          "format": "date-time",
+          "description": "the timestamp of the last event applied to the object."
+        },
+        "owner": {
+          "$ref": "#/definitions/v3alphaOwner",
+          "example": "69629023906488334",
+          "description": "the parent object representing the returned objects context."
+        }
+      }
+    },
+    "v3alphaFieldName": {
+      "type": "string",
+      "enum": [
+        "FIELD_NAME_UNSPECIFIED",
+        "FIELD_NAME_TYPE",
+        "FIELD_NAME_STATE",
+        "FIELD_NAME_REVISION",
+        "FIELD_NAME_CHANGE_DATE",
+        "FIELD_NAME_CREATION_DATE"
+      ],
+      "default": "FIELD_NAME_UNSPECIFIED"
+    },
+    "v3alphaGetUserSchemaResponse": {
+      "type": "object",
+      "properties": {
+        "userSchema": {
+          "$ref": "#/definitions/userschemav3alphaGetUserSchema"
+        }
+      }
+    },
+    "v3alphaIDFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "Defines the ID of the user schema to filter for.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "method": {
+          "$ref": "#/definitions/v3alphaTextFilterMethod",
+          "description": "Defines which text comparison method used for the id filter."
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "v3alphaInstance": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        }
+      }
+    },
+    "v3alphaListDetails": {
+      "type": "object",
+      "properties": {
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100
+        },
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "the last time the projection got updated"
+        }
+      }
+    },
+    "v3alphaNotFilter": {
+      "type": "object",
+      "properties": {
+        "filter": {
+          "$ref": "#/definitions/v3alphaSearchFilter",
+          "example": {
+            "stateFilter": {
+              "state": "STATE_ACTIVE"
+            }
+          }
+        }
+      }
+    },
+    "v3alphaOrFilter": {
+      "type": "object",
+      "properties": {
+        "queries": {
+          "type": "array",
+          "example": [
+            {
+              "idFilter": {
+                "id": "163840776835432705",
+                "method": "TEXT_FILTER_METHOD_EQUALS"
+              }
+            },
+            {
+              "idFilter": {
+                "id": "163840776835943483",
+                "method": "TEXT_FILTER_METHOD_EQUALS"
+              }
+            }
+          ],
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaSearchFilter"
+          }
+        }
+      }
+    },
+    "v3alphaOwner": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/v3alphaOwnerType"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "v3alphaOwnerType": {
+      "type": "string",
+      "enum": [
+        "OWNER_TYPE_UNSPECIFIED",
+        "OWNER_TYPE_SYSTEM",
+        "OWNER_TYPE_INSTANCE",
+        "OWNER_TYPE_ORG"
+      ],
+      "default": "OWNER_TYPE_UNSPECIFIED"
+    },
+    "v3alphaPatchUserSchemaResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails",
+          "description": "Details provide some base information (such as the last change date) of the schema."
+        }
+      }
+    },
+    "v3alphaReactivateUserSchemaResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails",
+          "description": "Details provide some base information (such as the last change date) of the schema."
+        }
+      }
+    },
+    "v3alphaSearchFilter": {
+      "type": "object",
+      "properties": {
+        "orFilter": {
+          "$ref": "#/definitions/v3alphaOrFilter",
+          "description": "Union the results of each sub filter ('OR')."
+        },
+        "andFilter": {
+          "$ref": "#/definitions/v3alphaAndFilter",
+          "description": "Limit the result to match all sub queries ('AND').\nNote that if you specify multiple queries, they will be implicitly used as andQueries.\nUse the andFilter in combination with orFilter and notFilter."
+        },
+        "notFilter": {
+          "$ref": "#/definitions/v3alphaNotFilter",
+          "description": "Exclude / Negate the result of the sub filter ('NOT')."
+        },
+        "typeFilter": {
+          "$ref": "#/definitions/v3alphaTypeFilter",
+          "description": "Limit the result to a specific schema type."
+        },
+        "stateFilter": {
+          "$ref": "#/definitions/v3alphaStateFilter",
+          "description": "Limit the result to a specific state of the schema."
+        },
+        "idFilter": {
+          "$ref": "#/definitions/v3alphaIDFilter",
+          "description": "Limit the result to a specific schema ID."
+        }
+      }
+    },
+    "v3alphaSearchQuery": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "example": "0"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "example": 100,
+          "description": "Maximum amount of events returned. If not configured otherwise, the default is 100, the maximum is 1000. If the limit exceeds the maximum, ZITADEL throws an error."
+        },
+        "desc": {
+          "type": "boolean",
+          "description": "default is ascending, because together with the creation date sorting column, this returns the most deterministic pagination results."
+        }
+      },
+      "description": "Object unspecific list filters like offset, limit and asc/desc.",
+      "title": "General List Query"
+    },
+    "v3alphaSearchUserSchemasResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaListDetails",
+          "description": "Details provides information about the returned result including total amount found."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v3alphaFieldName",
+          "description": "States by which field the results are sorted."
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/userschemav3alphaGetUserSchema"
+          },
+          "description": "The result contains the user schemas, which matched the queries."
+        }
+      }
+    },
+    "v3alphaState": {
+      "type": "string",
+      "enum": [
+        "STATE_UNSPECIFIED",
+        "STATE_ACTIVE",
+        "STATE_INACTIVE"
+      ],
+      "default": "STATE_UNSPECIFIED"
+    },
+    "v3alphaStateFilter": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/v3alphaState",
+          "example": "STATE_ACTIVE",
+          "description": "Defines the state to filter for."
+        }
+      },
+      "required": [
+        "state"
+      ]
+    },
+    "v3alphaTextFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_FILTER_METHOD_EQUALS",
+        "TEXT_FILTER_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_STARTS_WITH",
+        "TEXT_FILTER_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_CONTAINS"
+      ],
+      "default": "TEXT_FILTER_METHOD_EQUALS"
+    },
+    "v3alphaTypeFilter": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "employees",
+          "description": "Defines which type to filter for.",
+          "maxLength": 200
+        },
+        "method": {
+          "$ref": "#/definitions/v3alphaTextFilterMethod",
+          "description": "Defines which text comparison method used for the type filter."
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "v3alphaUserSchema": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "employees",
+          "description": "Type is a human readable word describing the schema.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "schema": {
+          "type": "object",
+          "example": {
+            "$schema": "https://example.com/user/employees",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "required": true
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
+          "description": "JSON schema representation defining the user."
+        },
+        "possibleAuthenticators": {
+          "type": "array",
+          "example": [
+            "AUTHENTICATOR_TYPE_USERNAME",
+            "AUTHENTICATOR_TYPE_PASSWORD",
+            "AUTHENTICATOR_TYPE_WEBAUTHN"
+          ],
+          "items": {
+            "$ref": "#/definitions/v3alphaAuthenticatorType"
+          },
+          "description": "Defines the possible types of authenticators."
+        }
+      },
+      "required": [
+        "type",
+        "schema"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

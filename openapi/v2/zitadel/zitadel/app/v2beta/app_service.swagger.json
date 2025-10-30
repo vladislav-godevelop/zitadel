@@ -1,0 +1,1757 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Application Service",
+    "description": "This API is intended to manage apps (SAML, OIDC, etc..) in a ZITADEL instance. This service is in beta state. It can AND will continue breaking until a stable version is released.",
+    "version": "2.0-beta",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "AppService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/v2beta/application_keys": {
+      "post": {
+        "summary": "Create Application Key",
+        "description": "Deprecated: use [application service v2 CreateApplicationKey](apis/resources/application_service_v2/application-service-create-application-key.api.mdx) instead.\n\nCreate a new application key, which is used to authorize an API application.\n\nKey details are returned in the response. They must be stored safely, as it will not\nbe possible to retrieve them again.\n\nRequired permissions:\n  - `project.app.write`",
+        "operationId": "AppService_CreateApplicationKey",
+        "responses": {
+          "200": {
+            "description": "The created application key",
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateApplicationKeyResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateApplicationKeyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AppService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/application_keys/search": {
+      "post": {
+        "summary": "List Application Keys",
+        "description": "Deprecated: use [application service v2 ListApplicationKeys](apis/resources/application_service_v2/application-service-list-application-keys.api.mdx) instead.\n\nReturns a list of application keys matching the input parameters.\n\nThe result can be sorted by id, aggregate, creation date, expiration date, resource owner or type.\nIt can also be filtered by app, project or organization ID.\n\nRequired permissions:\n  - project.app.read",
+        "operationId": "AppService_ListApplicationKeys",
+        "responses": {
+          "200": {
+            "description": "The matching applications",
+            "schema": {
+              "$ref": "#/definitions/v2betaListApplicationKeysResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaListApplicationKeysRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AppService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/application_keys/{id}": {
+      "get": {
+        "summary": "Get Application Key",
+        "description": "Deprecated: use [application service v2 GetApplicationKey](apis/resources/application_service_v2/application-service-get-application-key.api.mdx) instead.\n\nRetrieves the application key matching the provided ID.\n\nSpecifying a project, organization and app ID is optional but help with filtering/performance.\n\nRequired permissions:\n  - project.app.read",
+        "operationId": "AppService_GetApplicationKey",
+        "responses": {
+          "200": {
+            "description": "The fetched app key.",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetApplicationKeyResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "applicationId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organizationId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AppService"
+        ],
+        "deprecated": true
+      },
+      "delete": {
+        "summary": "Delete Application Key",
+        "description": "Deprecated: use [application service v2 DeleteApplicationKey](apis/resources/application_service_v2/application-service-delete-application-key.api.mdx) instead.\n\nDeletes an application key matching the provided ID.\n\nOrganization ID is not mandatory, but helps with filtering/performance.\n\nThe deletion time is returned in response message.\n\nRequired permissions:\n  - `project.app.write`",
+        "operationId": "AppService_DeleteApplicationKey",
+        "responses": {
+          "200": {
+            "description": "The time of deletion.",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteApplicationKeyResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "applicationId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organizationId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AppService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/applications": {
+      "post": {
+        "summary": "Create Application",
+        "description": "Deprecated: use [application service v2 CreateApplication](apis/resources/application_service_v2/application-service-create-application.api.mdx) instead.\n\nCreate an application. The application can be OIDC, API or SAML type, based on the input.\n\nRequired permissions:\n  - project.app.write",
+        "operationId": "AppService_CreateApplication",
+        "responses": {
+          "200": {
+            "description": "The created application",
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateApplicationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateApplicationRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AppService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/applications/search": {
+      "post": {
+        "summary": "List Applications",
+        "description": "Deprecated: use [application service v2 ListApplications](apis/resources/application_service_v2/application-service-list-applications.api.mdx) instead.\n\nReturns a list of applications matching the input parameters that belong to the provided\nproject.\n\nThe result can be sorted by app id, name, creation date, change date or state. It can also\nbe filtered by app state, app type and app name.\n\nRequired permissions:\n  - project.app.read",
+        "operationId": "AppService_ListApplications",
+        "responses": {
+          "200": {
+            "description": "The matching applications",
+            "schema": {
+              "$ref": "#/definitions/v2betaListApplicationsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaListApplicationsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AppService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/applications/{applicationId}/generate_client_secret": {
+      "post": {
+        "summary": "Regenerate Client Secret",
+        "description": "Deprecated: use [application service v2 GenerateClientSecret](apis/resources/application_service_v2/application-service-generate-client-secret.api.mdx) instead.\n\nRegenerates the client secret of an API or OIDC application that belongs to the input project.\n\nRequired permissions:\n  - project.app.write",
+        "operationId": "AppService_RegenerateClientSecret",
+        "responses": {
+          "200": {
+            "description": "The regenerated client secret.",
+            "schema": {
+              "$ref": "#/definitions/v2betaRegenerateClientSecretResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AppServiceRegenerateClientSecretBody"
+            }
+          }
+        ],
+        "tags": [
+          "AppService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/applications/{id}": {
+      "get": {
+        "summary": "Get Application",
+        "description": "Deprecated: use [application service v2 GetApplication](apis/resources/application_service_v2/application-service-get-application.api.mdx) instead.\n\nRetrieves the application matching the provided ID.\n\nRequired permissions:\n  - project.app.read",
+        "operationId": "AppService_GetApplication",
+        "responses": {
+          "200": {
+            "description": "The fetched app.",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetApplicationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AppService"
+        ],
+        "deprecated": true
+      },
+      "delete": {
+        "summary": "Delete Application",
+        "description": "Deprecated: use [application service v2 DeleteApplication](apis/resources/application_service_v2/application-service-delete-application.api.mdx) instead.\n\nDeletes the application belonging to the input project and matching the provided\napplication ID.\n\nRequired permissions:\n  - project.app.delete",
+        "operationId": "AppService_DeleteApplication",
+        "responses": {
+          "200": {
+            "description": "The time of deletion.",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteApplicationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AppService"
+        ],
+        "deprecated": true
+      },
+      "patch": {
+        "summary": "Update Application",
+        "description": "Deprecated: use [application service v2 UpdateApplication](apis/resources/application_service_v2/zitadel-app-v-2-application-service-update-application.api.mdx) instead.\n\nChanges the configuration of an OIDC, API or SAML type application, as well as\nthe application name, based on the input provided.\n\nRequired permissions:\n  - project.app.write",
+        "operationId": "AppService_UpdateApplication",
+        "responses": {
+          "200": {
+            "description": "The updated app.",
+            "schema": {
+              "$ref": "#/definitions/v2betaUpdateApplicationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AppServiceUpdateApplicationBody"
+            }
+          }
+        ],
+        "tags": [
+          "AppService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/applications/{id}/deactivate": {
+      "post": {
+        "summary": "Deactivate Application",
+        "description": "Deprecated: use [application service v2 DeactivateApplication](apis/resources/application_service_v2/application-service-deactivate-application.api.mdx) instead.\n\nDeactivates the application belonging to the input project and matching the provided\napplication ID.\n\nRequired permissions:\n  - project.app.write",
+        "operationId": "AppService_DeactivateApplication",
+        "responses": {
+          "200": {
+            "description": "The time of deactivation.",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeactivateApplicationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AppServiceDeactivateApplicationBody"
+            }
+          }
+        ],
+        "tags": [
+          "AppService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/applications/{id}/reactivate": {
+      "post": {
+        "summary": "Reactivate Application",
+        "description": "Deprecated: use [application service v2 ReactivateApplication](apis/resources/application_service_v2/application-service-reactivate-application.api.mdx) instead.\n\nReactivates the application belonging to the input project and matching the provided\napplication ID.\n\nRequired permissions:\n  - project.app.write",
+        "operationId": "AppService_ReactivateApplication",
+        "responses": {
+          "200": {
+            "description": "The time of reactivation.",
+            "schema": {
+              "$ref": "#/definitions/v2betaReactivateApplicationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AppServiceReactivateApplicationBody"
+            }
+          }
+        ],
+        "tags": [
+          "AppService"
+        ],
+        "deprecated": true
+      }
+    }
+  },
+  "definitions": {
+    "AppServiceDeactivateApplicationBody": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string"
+        }
+      }
+    },
+    "AppServiceReactivateApplicationBody": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string"
+        }
+      }
+    },
+    "AppServiceRegenerateClientSecretBody": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string"
+        },
+        "isOidc": {
+          "type": "boolean"
+        },
+        "isApi": {
+          "type": "boolean"
+        }
+      }
+    },
+    "AppServiceUpdateApplicationBody": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "example": "MyApplicationName",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "samlConfigurationRequest": {
+          "$ref": "#/definitions/v2betaUpdateSAMLApplicationConfigurationRequest"
+        },
+        "oidcConfigurationRequest": {
+          "$ref": "#/definitions/v2betaUpdateOIDCApplicationConfigurationRequest"
+        },
+        "apiConfigurationRequest": {
+          "$ref": "#/definitions/v2betaUpdateAPIApplicationConfigurationRequest"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2PaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "example": 0,
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "example": 10,
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "example": false,
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "v2PaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100,
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100,
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "v2TextFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_FILTER_METHOD_EQUALS",
+        "TEXT_FILTER_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_STARTS_WITH",
+        "TEXT_FILTER_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_CONTAINS",
+        "TEXT_FILTER_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_ENDS_WITH",
+        "TEXT_FILTER_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_FILTER_METHOD_EQUALS"
+    },
+    "v2betaAPIAuthMethodType": {
+      "type": "string",
+      "enum": [
+        "API_AUTH_METHOD_TYPE_BASIC",
+        "API_AUTH_METHOD_TYPE_PRIVATE_KEY_JWT"
+      ],
+      "default": "API_AUTH_METHOD_TYPE_BASIC"
+    },
+    "v2betaAPIConfig": {
+      "type": "object",
+      "properties": {
+        "clientId": {
+          "type": "string",
+          "example": "69629023906488334@ZITADEL",
+          "description": "generated oauth2/oidc client_id"
+        },
+        "authMethodType": {
+          "$ref": "#/definitions/v2betaAPIAuthMethodType",
+          "description": "defines how the API passes the login credentials"
+        }
+      }
+    },
+    "v2betaAppSorting": {
+      "type": "string",
+      "enum": [
+        "APP_SORT_BY_ID",
+        "APP_SORT_BY_NAME",
+        "APP_SORT_BY_STATE",
+        "APP_SORT_BY_CREATION_DATE",
+        "APP_SORT_BY_CHANGE_DATE"
+      ],
+      "default": "APP_SORT_BY_ID"
+    },
+    "v2betaAppState": {
+      "type": "string",
+      "enum": [
+        "APP_STATE_UNSPECIFIED",
+        "APP_STATE_ACTIVE",
+        "APP_STATE_INACTIVE",
+        "APP_STATE_REMOVED"
+      ],
+      "default": "APP_STATE_UNSPECIFIED"
+    },
+    "v2betaApplication": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the app creation."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the app update."
+        },
+        "state": {
+          "$ref": "#/definitions/v2betaAppState",
+          "description": "current state of the application"
+        },
+        "name": {
+          "type": "string",
+          "example": "Console"
+        },
+        "oidcConfig": {
+          "$ref": "#/definitions/v2betaOIDCConfig"
+        },
+        "apiConfig": {
+          "$ref": "#/definitions/v2betaAPIConfig"
+        },
+        "samlConfig": {
+          "$ref": "#/definitions/v2betaSAMLConfig"
+        }
+      }
+    },
+    "v2betaApplicationKey": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "applicationId": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z"
+        },
+        "organizationId": {
+          "type": "string"
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z"
+        }
+      }
+    },
+    "v2betaApplicationKeysSorting": {
+      "type": "string",
+      "enum": [
+        "APPLICATION_KEYS_SORT_BY_ID",
+        "APPLICATION_KEYS_SORT_BY_PROJECT_ID",
+        "APPLICATION_KEYS_SORT_BY_APPLICATION_ID",
+        "APPLICATION_KEYS_SORT_BY_CREATION_DATE",
+        "APPLICATION_KEYS_SORT_BY_ORGANIZATION_ID",
+        "APPLICATION_KEYS_SORT_BY_EXPIRATION",
+        "APPLICATION_KEYS_SORT_BY_TYPE"
+      ],
+      "default": "APPLICATION_KEYS_SORT_BY_ID"
+    },
+    "v2betaApplicationNameQuery": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Conso"
+        },
+        "method": {
+          "$ref": "#/definitions/v2TextFilterMethod",
+          "description": "defines which text equality method is used"
+        }
+      }
+    },
+    "v2betaApplicationSearchFilter": {
+      "type": "object",
+      "properties": {
+        "nameFilter": {
+          "$ref": "#/definitions/v2betaApplicationNameQuery"
+        },
+        "stateFilter": {
+          "$ref": "#/definitions/v2betaAppState"
+        },
+        "apiAppOnly": {
+          "type": "boolean"
+        },
+        "oidcAppOnly": {
+          "type": "boolean"
+        },
+        "samlAppOnly": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v2betaCreateAPIApplicationRequest": {
+      "type": "object",
+      "properties": {
+        "authMethodType": {
+          "$ref": "#/definitions/v2betaAPIAuthMethodType"
+        }
+      }
+    },
+    "v2betaCreateAPIApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "clientId": {
+          "type": "string",
+          "example": "3950723409029374",
+          "description": "generated secret for this config"
+        },
+        "clientSecret": {
+          "type": "string",
+          "example": "gjoq34589uasgh",
+          "description": "generated secret for this config"
+        }
+      }
+    },
+    "v2betaCreateApplicationKeyRequest": {
+      "type": "object",
+      "properties": {
+        "appId": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string"
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2519-04-01T08:45:00.000000Z",
+          "description": "The date the key will expire",
+          "title": "The date the key will expire"
+        }
+      }
+    },
+    "v2betaCreateApplicationKeyResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "28746028909593987"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the app creation."
+        },
+        "keyDetails": {
+          "type": "string",
+          "format": "byte",
+          "example": "eyJ0eXBlIjoiYXBwbGljYXRpb24iLCJrZXlJZCI6IjIwMjcxMDE4NjYyMjcxNDExMyIsImtleSI6Ii0tLS0tQkVHSU4gUlNBIFBSSVZBVEUgS0VZLS0tLS1cbk1JSUVvd0lCQUFLQ0FRRUFuMUxyNStTV0pGRllURU1kaXQ2U0dNY0E2Yks5dG0xMmhlcm55V0wrZm9PWnA3eEVcbk9wcmsvWE81QVplSU5NY0x0ZVhxckJlK1NPdVVNMFpLU2xCMHFTNzNjVStDVTVMTGoycVB0UzhNOFI0N3BGdFhcbjJXRTFJNjNhZHB1N01TejA2SXduQ2lyNnJYOTVPQ2ZneHA3VU1Dd0pSTUZmYXJqdjVBRXY3NXpsSS9lYUV6bUJcbkxKWU1xanZFRmZoN2x3M2lPT3VsWW9kNjNpN3RDNWl5czNlYjNLZW4yWU0rN1FSbXB2dE5qcTJMVmlIMnkrUGJcbk9ESlI3MU9ib05TYVJDNTZDUFpWVytoWDByYXI3VzMwUjI2eGtIQ09oSytQbUpSeGtOY0g1VTdja0xXMEw0WEVcbnNNZkVUSmszeDR3Q0psbisxbElXUzkrNmw0R1E2TWRzWURyOU5RSURBUUFCQW9JQkFCSkx6WGQxMHFBZEQwekNcbnNGUFFOMnJNLzVmV3hONThONDR0YWF6QXg0VHp5K050UlZDTmxScGQvYkxuR2VjbHJIeVpDSmYycWcxcHNEMHJcbkowRGRlR2d0VXBFYWxsYk9scjNEZVBsUGkrYnNsK0RKOUk2c0VSUWwxTjZtQjVzZ0ZJZllBR3UwZjlFSXdIem9cblozR25yNnBRaEVmM0JPUVdsTVhVTlJNSksyOHp3M2E1L01nRmtKVUZUSTUzeXFwbGRtZ2hLajRZR1hLRk1LUGhcbkV3RkxrRncwK2s3K0xuSjFQNGp1ZVd1RXo3WlAyaFpvUWxCcXdSajVyTG9QZ05RbUU4UytFVDRuczlUYzByOFFcbnFyaHlacDZBczJrTDhGTytCZnF3SVpDZnpnWHN2cC9PLzRaSHIzVTB2Ymp3UW1sSzdVSm42U0J6T2hpWFpNU0lcbk5Wc0V5VUVDZ1lFQTFEaktkRGo3NTM1MWQzdlRNQlRFd2JSQ3hoUVZOdENFMnMwVUw4ckJQZ1I0K1dlblNUWmFcbnprWUprcEV0bE54VGxzYnN1Y0RTUXZqeWRYYk5nSHFBeDYzMm1vdTVkak9lR0VTUDFWVGtUdElsZFZQZWszQWxcbjVYbkpQa1dqWGVyVVJZNm5KeUQ5UWhlREx3MVp4NEFYVzNHWURiTFkrT05XV0VKUlJaQUloNjBDZ1lFQXdEQ2xcbnc1MHc4dkcvbEJ4RzNSYW9FaHdLOWNna1VXOHk2T25DekNwcEtjOEZUUmY1VE5iWjl5TzNXUmdYajhkeHRCakFcbkl5VGlzYk9NQk1VaFZKUUtGZHRQaDhoVDBwRkRjeE9ndzY0aHBtYzhyY2RTbXVKNzlYSVRTaHUySjA0N0UvNFZcbnJOTThpWVk5ZGR3VGdGUUlsdFNZL0l0RnFxWERmdjhqK1dVY25La0NnWUVBaENOUU80bDNuNjRucWR2WnBTaHBcblVrclJBTkJrWFJyOGZkZ1BaNnFSSS9KWStNSEhjVmg4dGM3NkN0NkdTUmZlbkJVRU5LeVF2czZPK1FDZCtBOU9cbnZBWGZkRjduZldlcVdtWG1RT2g0dDNNMWk1WkxFZlpVUWt2UU9BdllLcFFhMDZ4OCsyb1pCdHZvL0pVTmY2Q0xcbjZvNFNKUVZrLzZOZGtkckpDODBnNG9rQ2dZQkZsNWYrbkVYa1F0dWZVeG5wNXRGWE5XWldsM0ZuTjMvVXpRaW5cbmkxZm5OcnB4cnhPcjJrUzA4KzdwU1FzSEdpNDNDNXRQWG9UajJlTUN1eXNWaUVHYXBuNUc2YWhJb0NjdlhWVWlcblprUnpFQUR0NERZdU5ZS3pYdXBUTkhPaUNmYmtoMlhyM2RXVzZ0QUloSGRmU1k2T3AwNzZhNmYvWWVUSGNMWGpcbkVkVHBlUUtCZ0FPdnBqcDQ4TzRUWEZkU0JLSnYya005OHVhUjlSQURtdGxTWHd2cTlyQkhTV084NFk4bzE0L1Bcbkl1UmxUOHhROGRYKzhMR21UUCtjcUtiOFFRQ1grQk1YUWxMSEVtWnpnb0xFa0pGMUVIMm4vZEZ5bngxS3prdFNcbm9UZUdsRzZhbXhVOVh4eW9RVFlEVGJCbERwc2FZUlFBZ2FUQzM3UVZRUjhmK1ZoRzFHSFFcbi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tXG4iLCJhcHBJZCI6IjIwMjcwNjM5ODgxMzg4MDU3NyIsImNsaWVudElkIjoiMjAyNzA2Mzk4ODEzOTQ2MTEzQG15dGVzdHByb2plY3QifQ=="
+        }
+      }
+    },
+    "v2betaCreateApplicationRequest": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "example": "MyApp",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "oidcRequest": {
+          "$ref": "#/definitions/v2betaCreateOIDCApplicationRequest"
+        },
+        "samlRequest": {
+          "$ref": "#/definitions/v2betaCreateSAMLApplicationRequest"
+        },
+        "apiRequest": {
+          "$ref": "#/definitions/v2betaCreateAPIApplicationRequest"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "v2betaCreateApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "appId": {
+          "type": "string"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the app creation."
+        },
+        "oidcResponse": {
+          "$ref": "#/definitions/v2betaCreateOIDCApplicationResponse"
+        },
+        "samlResponse": {
+          "$ref": "#/definitions/v2betaCreateSAMLApplicationResponse"
+        },
+        "apiResponse": {
+          "$ref": "#/definitions/v2betaCreateAPIApplicationResponse"
+        }
+      }
+    },
+    "v2betaCreateOIDCApplicationRequest": {
+      "type": "object",
+      "properties": {
+        "redirectUris": {
+          "type": "array",
+          "example": [
+            "http://localhost:4200/auth/callback"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Callback URI of the authorization request where the code or tokens will be sent to",
+          "title": "Callback URI of the authorization request where the code or tokens will be sent to"
+        },
+        "responseTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2betaOIDCResponseType"
+          },
+          "description": "Determines whether a code, id_token token or just id_token will be returned"
+        },
+        "grantTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2betaOIDCGrantType"
+          },
+          "description": "The flow type the application uses to gain access"
+        },
+        "appType": {
+          "$ref": "#/definitions/v2betaOIDCAppType",
+          "description": "Determines the paradigm of the application"
+        },
+        "authMethodType": {
+          "$ref": "#/definitions/v2betaOIDCAuthMethodType",
+          "description": "Defines how the application passes login credentials"
+        },
+        "postLogoutRedirectUris": {
+          "type": "array",
+          "example": [
+            "http://localhost:4200/signedout"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "ZITADEL will redirect to this link after a successful logout",
+          "title": "ZITADEL will redirect to this link after a successful logout"
+        },
+        "version": {
+          "$ref": "#/definitions/v2betaOIDCVersion"
+        },
+        "devMode": {
+          "type": "boolean",
+          "description": "Used for development, some checks of the OIDC specification will not be checked."
+        },
+        "accessTokenType": {
+          "$ref": "#/definitions/v2betaOIDCTokenType",
+          "description": "Type of the access token returned from ZITADEL"
+        },
+        "accessTokenRoleAssertion": {
+          "type": "boolean",
+          "description": "Adds roles to the claims of the access token (only if type == JWT) even if they are not requested by scopes"
+        },
+        "idTokenRoleAssertion": {
+          "type": "boolean",
+          "description": "Adds roles to the claims of the id token even if they are not requested by scopes"
+        },
+        "idTokenUserinfoAssertion": {
+          "type": "boolean",
+          "description": "Claims of profile, email, address and phone scopes are added to the id token even if an access token is issued. Attention this violates the OIDC specification"
+        },
+        "clockSkew": {
+          "type": "string",
+          "example": "1s",
+          "description": "Used to compensate time difference of servers. Duration added to the \"exp\" claim and subtracted from \"iat\", \"auth_time\" and \"nbf\" claims"
+        },
+        "additionalOrigins": {
+          "type": "array",
+          "example": [
+            "scheme://localhost:8080"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Additional origins (other than the redirect_uris) from where the API can be used, provided string has to be an origin (scheme://hostname[:port]) without path, query or fragment"
+        },
+        "skipNativeAppSuccessPage": {
+          "type": "boolean",
+          "description": "Skip the successful login page on native apps and directly redirect the user to the callback."
+        },
+        "backChannelLogoutUri": {
+          "type": "string",
+          "example": [
+            "https://example.com/auth/backchannel"
+          ],
+          "description": "ZITADEL will use this URI to notify the application about terminated session according to the OIDC Back-Channel Logout (https://openid.net/specs/openid-connect-backchannel-1_0.html)"
+        },
+        "loginVersion": {
+          "$ref": "#/definitions/v2betaLoginVersion",
+          "description": "Specify the preferred login UI, where the user is redirected to for authentication. If unset, the login UI is chosen by the instance default."
+        }
+      }
+    },
+    "v2betaCreateOIDCApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "clientId": {
+          "type": "string",
+          "example": "1035496534033449",
+          "description": "generated client id for this config"
+        },
+        "clientSecret": {
+          "type": "string",
+          "example": "gjoq34589uasgh",
+          "description": "generated secret for this config"
+        },
+        "noneCompliant": {
+          "type": "boolean"
+        },
+        "complianceProblems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaOIDCLocalizedMessage"
+          }
+        }
+      }
+    },
+    "v2betaCreateSAMLApplicationRequest": {
+      "type": "object",
+      "properties": {
+        "metadataXml": {
+          "type": "string",
+          "format": "byte"
+        },
+        "metadataUrl": {
+          "type": "string"
+        },
+        "loginVersion": {
+          "$ref": "#/definitions/v2betaLoginVersion",
+          "description": "Specify the preferred login UI, where the user is redirected to for authentication. If unset, the login UI is chosen by the instance default."
+        }
+      }
+    },
+    "v2betaCreateSAMLApplicationResponse": {
+      "type": "object"
+    },
+    "v2betaDeactivateApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "deactivationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        }
+      }
+    },
+    "v2betaDeleteApplicationKeyResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        }
+      }
+    },
+    "v2betaDeleteApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        }
+      }
+    },
+    "v2betaGetApplicationKeyResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "3019-04-01T08:45:00.000000Z",
+          "description": "the date a key will expire",
+          "title": "the date a key will expire"
+        }
+      }
+    },
+    "v2betaGetApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "app": {
+          "$ref": "#/definitions/v2betaApplication"
+        }
+      }
+    },
+    "v2betaListApplicationKeysRequest": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2PaginationRequest",
+          "description": "Pagination and sorting."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaApplicationKeysSorting"
+        },
+        "applicationId": {
+          "type": "string"
+        },
+        "projectId": {
+          "type": "string"
+        },
+        "organizationId": {
+          "type": "string"
+        }
+      }
+    },
+    "v2betaListApplicationKeysResponse": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaApplicationKey"
+          }
+        },
+        "pagination": {
+          "$ref": "#/definitions/v2PaginationResponse",
+          "description": "Contains the total number of app keys matching the query and the applied limit."
+        }
+      }
+    },
+    "v2betaListApplicationsRequest": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string"
+        },
+        "pagination": {
+          "$ref": "#/definitions/v2PaginationRequest",
+          "description": "Pagination and sorting."
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaApplicationSearchFilter"
+          },
+          "title": "criteria the client is looking for"
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaAppSorting"
+        }
+      }
+    },
+    "v2betaListApplicationsResponse": {
+      "type": "object",
+      "properties": {
+        "applications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaApplication"
+          }
+        },
+        "pagination": {
+          "$ref": "#/definitions/v2PaginationResponse",
+          "description": "Contains the total number of apps matching the query and the applied limit."
+        }
+      }
+    },
+    "v2betaLoginV1": {
+      "type": "object"
+    },
+    "v2betaLoginV2": {
+      "type": "object",
+      "properties": {
+        "baseUri": {
+          "type": "string",
+          "description": "Optionally specify a base uri of the login UI. If unspecified the default URI will be used."
+        }
+      }
+    },
+    "v2betaLoginVersion": {
+      "type": "object",
+      "properties": {
+        "loginV1": {
+          "$ref": "#/definitions/v2betaLoginV1"
+        },
+        "loginV2": {
+          "$ref": "#/definitions/v2betaLoginV2"
+        }
+      }
+    },
+    "v2betaOIDCAppType": {
+      "type": "string",
+      "enum": [
+        "OIDC_APP_TYPE_WEB",
+        "OIDC_APP_TYPE_USER_AGENT",
+        "OIDC_APP_TYPE_NATIVE"
+      ],
+      "default": "OIDC_APP_TYPE_WEB"
+    },
+    "v2betaOIDCAuthMethodType": {
+      "type": "string",
+      "enum": [
+        "OIDC_AUTH_METHOD_TYPE_BASIC",
+        "OIDC_AUTH_METHOD_TYPE_POST",
+        "OIDC_AUTH_METHOD_TYPE_NONE",
+        "OIDC_AUTH_METHOD_TYPE_PRIVATE_KEY_JWT"
+      ],
+      "default": "OIDC_AUTH_METHOD_TYPE_BASIC"
+    },
+    "v2betaOIDCConfig": {
+      "type": "object",
+      "properties": {
+        "redirectUris": {
+          "type": "array",
+          "example": [
+            "https://console.zitadel.ch/auth/callback"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Callback URI of the authorization request where the code or tokens will be sent to"
+        },
+        "responseTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2betaOIDCResponseType"
+          },
+          "description": "Determines whether a code, id_token token or just id_token will be returned"
+        },
+        "grantTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2betaOIDCGrantType"
+          },
+          "description": "The flow type the application uses to gain access"
+        },
+        "appType": {
+          "$ref": "#/definitions/v2betaOIDCAppType",
+          "description": "determines the paradigm of the application"
+        },
+        "clientId": {
+          "type": "string",
+          "example": "69629023906488334@ZITADEL",
+          "description": "generated oauth2/oidc client id"
+        },
+        "authMethodType": {
+          "$ref": "#/definitions/v2betaOIDCAuthMethodType",
+          "description": "defines how the application passes login credentials"
+        },
+        "postLogoutRedirectUris": {
+          "type": "array",
+          "example": [
+            "https://console.zitadel.ch/logout"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "ZITADEL will redirect to this link after a successful logout"
+        },
+        "version": {
+          "$ref": "#/definitions/v2betaOIDCVersion",
+          "description": "the OIDC version used by the application"
+        },
+        "noneCompliant": {
+          "type": "boolean",
+          "description": "specifies whether the config is OIDC compliant. A production configuration SHOULD be compliant"
+        },
+        "complianceProblems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaOIDCLocalizedMessage"
+          },
+          "description": "lists the problems for non-compliancy"
+        },
+        "devMode": {
+          "type": "boolean",
+          "description": "used for development"
+        },
+        "accessTokenType": {
+          "$ref": "#/definitions/v2betaOIDCTokenType",
+          "description": "type of the access token returned from ZITADEL"
+        },
+        "accessTokenRoleAssertion": {
+          "type": "boolean",
+          "description": "adds roles to the claims of the access token (only if type == JWT) even if they are not requested by scopes"
+        },
+        "idTokenRoleAssertion": {
+          "type": "boolean",
+          "description": "adds roles to the claims of the id token even if they are not requested by scopes"
+        },
+        "idTokenUserinfoAssertion": {
+          "type": "boolean",
+          "description": "claims of profile, email, address and phone scopes are added to the id token even if an access token is issued. Attention this violates the OIDC specification"
+        },
+        "clockSkew": {
+          "type": "string",
+          "description": "Used to compensate time difference of servers. Duration added to the \"exp\" claim and subtracted from \"iat\", \"auth_time\" and \"nbf\" claims"
+        },
+        "additionalOrigins": {
+          "type": "array",
+          "example": [
+            "https://console.zitadel.ch/auth/callback"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "additional origins (other than the redirect_uris) from where the API can be used"
+        },
+        "allowedOrigins": {
+          "type": "array",
+          "example": [
+            "https://console.zitadel.ch/auth/callback"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "all allowed origins from where the API can be used"
+        },
+        "skipNativeAppSuccessPage": {
+          "type": "boolean",
+          "description": "Skip the successful login page on native apps and directly redirect the user to the callback."
+        },
+        "backChannelLogoutUri": {
+          "type": "string",
+          "example": [
+            "https://example.com/auth/backchannel"
+          ],
+          "description": "ZITADEL will use this URI to notify the application about terminated session according to the OIDC Back-Channel Logout (https://openid.net/specs/openid-connect-backchannel-1_0.html)"
+        },
+        "loginVersion": {
+          "$ref": "#/definitions/v2betaLoginVersion",
+          "description": "Specify the preferred login UI, where the user is redirected to for authentication. If unset, the login UI is chosen by the instance default."
+        }
+      }
+    },
+    "v2betaOIDCGrantType": {
+      "type": "string",
+      "enum": [
+        "OIDC_GRANT_TYPE_AUTHORIZATION_CODE",
+        "OIDC_GRANT_TYPE_IMPLICIT",
+        "OIDC_GRANT_TYPE_REFRESH_TOKEN",
+        "OIDC_GRANT_TYPE_DEVICE_CODE",
+        "OIDC_GRANT_TYPE_TOKEN_EXCHANGE"
+      ],
+      "default": "OIDC_GRANT_TYPE_AUTHORIZATION_CODE"
+    },
+    "v2betaOIDCLocalizedMessage": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "localizedMessage": {
+          "type": "string"
+        }
+      }
+    },
+    "v2betaOIDCResponseType": {
+      "type": "string",
+      "enum": [
+        "OIDC_RESPONSE_TYPE_UNSPECIFIED",
+        "OIDC_RESPONSE_TYPE_CODE",
+        "OIDC_RESPONSE_TYPE_ID_TOKEN",
+        "OIDC_RESPONSE_TYPE_ID_TOKEN_TOKEN"
+      ],
+      "default": "OIDC_RESPONSE_TYPE_UNSPECIFIED"
+    },
+    "v2betaOIDCTokenType": {
+      "type": "string",
+      "enum": [
+        "OIDC_TOKEN_TYPE_BEARER",
+        "OIDC_TOKEN_TYPE_JWT"
+      ],
+      "default": "OIDC_TOKEN_TYPE_BEARER"
+    },
+    "v2betaOIDCVersion": {
+      "type": "string",
+      "enum": [
+        "OIDC_VERSION_1_0"
+      ],
+      "default": "OIDC_VERSION_1_0"
+    },
+    "v2betaReactivateApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "reactivationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        }
+      }
+    },
+    "v2betaRegenerateClientSecretResponse": {
+      "type": "object",
+      "properties": {
+        "clientSecret": {
+          "type": "string",
+          "example": "gjoq34589uasgh",
+          "description": "generated secret for the client"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "title": "The timestamp of the creation of the new client secret"
+        }
+      }
+    },
+    "v2betaSAMLConfig": {
+      "type": "object",
+      "properties": {
+        "metadataXml": {
+          "type": "string",
+          "format": "byte"
+        },
+        "metadataUrl": {
+          "type": "string"
+        },
+        "loginVersion": {
+          "$ref": "#/definitions/v2betaLoginVersion",
+          "description": "Specify the preferred login UI, where the user is redirected to for authentication. If unset, the login UI is chosen by the instance default."
+        }
+      }
+    },
+    "v2betaUpdateAPIApplicationConfigurationRequest": {
+      "type": "object",
+      "properties": {
+        "authMethodType": {
+          "$ref": "#/definitions/v2betaAPIAuthMethodType"
+        }
+      }
+    },
+    "v2betaUpdateApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the app update."
+        }
+      }
+    },
+    "v2betaUpdateOIDCApplicationConfigurationRequest": {
+      "type": "object",
+      "properties": {
+        "redirectUris": {
+          "type": "array",
+          "example": [
+            "http://localhost:4200/auth/callback"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Callback URI of the authorization request where the code or tokens will be sent to"
+        },
+        "responseTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2betaOIDCResponseType"
+          },
+          "description": "Determines whether a code, id_token token or just id_token will be returned"
+        },
+        "grantTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2betaOIDCGrantType"
+          },
+          "description": "The flow type the application uses to gain access"
+        },
+        "appType": {
+          "$ref": "#/definitions/v2betaOIDCAppType",
+          "description": "Determines the paradigm of the application"
+        },
+        "authMethodType": {
+          "$ref": "#/definitions/v2betaOIDCAuthMethodType",
+          "description": "Defines how the application passes login credentials"
+        },
+        "postLogoutRedirectUris": {
+          "type": "array",
+          "example": [
+            "http://localhost:4200/signedout"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "ZITADEL will redirect to this link after a successful logout"
+        },
+        "version": {
+          "$ref": "#/definitions/v2betaOIDCVersion"
+        },
+        "devMode": {
+          "type": "boolean",
+          "description": "Used for development, some checks of the OIDC specification will not be checked."
+        },
+        "accessTokenType": {
+          "$ref": "#/definitions/v2betaOIDCTokenType",
+          "description": "Type of the access token returned from ZITADEL"
+        },
+        "accessTokenRoleAssertion": {
+          "type": "boolean",
+          "description": "Adds roles to the claims of the access token (only if type == JWT) even if they are not requested by scopes"
+        },
+        "idTokenRoleAssertion": {
+          "type": "boolean",
+          "description": "Adds roles to the claims of the id token even if they are not requested by scopes"
+        },
+        "idTokenUserinfoAssertion": {
+          "type": "boolean",
+          "description": "Claims of profile, email, address and phone scopes are added to the id token even if an access token is issued. Attention this violates the OIDC specification"
+        },
+        "clockSkew": {
+          "type": "string",
+          "example": "1s",
+          "description": "Used to compensate time difference of servers. Duration added to the \"exp\" claim and subtracted from \"iat\", \"auth_time\" and \"nbf\" claims"
+        },
+        "additionalOrigins": {
+          "type": "array",
+          "example": [
+            "scheme://localhost:8080"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Additional origins (other than the redirect_uris) from where the API can be used, provided string has to be an origin (scheme://hostname[:port]) without path, query or fragment"
+        },
+        "skipNativeAppSuccessPage": {
+          "type": "boolean",
+          "description": "Skip the successful login page on native apps and directly redirect the user to the callback."
+        },
+        "backChannelLogoutUri": {
+          "type": "string",
+          "example": [
+            "https://example.com/auth/backchannel"
+          ],
+          "description": "ZITADEL will use this URI to notify the application about terminated session according to the OIDC Back-Channel Logout (https://openid.net/specs/openid-connect-backchannel-1_0.html)"
+        },
+        "loginVersion": {
+          "$ref": "#/definitions/v2betaLoginVersion",
+          "description": "Specify the preferred login UI, where the user is redirected to for authentication. If unset, the login UI is chosen by the instance default."
+        }
+      }
+    },
+    "v2betaUpdateSAMLApplicationConfigurationRequest": {
+      "type": "object",
+      "properties": {
+        "metadataXml": {
+          "type": "string",
+          "format": "byte"
+        },
+        "metadataUrl": {
+          "type": "string"
+        },
+        "loginVersion": {
+          "$ref": "#/definitions/v2betaLoginVersion",
+          "description": "Specify the preferred login UI, where the user is redirected to for authentication. If unset, the login UI is chosen by the instance default."
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

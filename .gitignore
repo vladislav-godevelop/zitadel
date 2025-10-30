@@ -40,42 +40,42 @@ load-test/.keys
 .local/*
 .build/
 
-#binaries
-cmd/zitadel/zitadel
-**/statik/statik.go
-/zitadelctl
-/zitadel
+##binaries
+#cmd/zitadel/zitadel
+#**/statik/statik.go
+#/zitadelctl
+#/zitadel
 
-# buildfolders and generated files
-console/src/app/proto/generated/
-**.pb.go
-!pkg/grpc/protoc/v2/options.pb.go
-**.proto.mock.go
-**.pb.*.go
-pkg/**/**.connect.go
-**.gen.go
-openapi/**/*.json
-/internal/api/assets/authz.go
-/internal/api/assets/router.go
-/internal/api/ui/console/static/*
-!/internal/api/ui/console/static/gitkeep
-docs/docs/apis/auth
-docs/docs/apis/admin
-docs/docs/apis/mgmt
-docs/docs/apis/system
-docs/docs/apis/proto
-**/.sass-cache
-/internal/api/ui/login/static/resources/themes/zitadel/css/zitadel.css
-/internal/api/ui/login/static/resources/themes/zitadel/css/zitadel.css.map
-zitadel-*-*
-!apps/**/zitadel-*-*
+## buildfolders and generated files
+#console/src/app/proto/generated/
+#**.pb.go
+#!pkg/grpc/protoc/v2/options.pb.go
+#**.proto.mock.go
+#**.pb.*.go
+#pkg/**/**.connect.go
+#**.gen.go
+#openapi/**/*.json
+#/internal/api/assets/authz.go
+#/internal/api/assets/router.go
+#/internal/api/ui/console/static/*
+#!/internal/api/ui/console/static/gitkeep
+#docs/docs/apis/auth
+#docs/docs/apis/admin
+#docs/docs/apis/mgmt
+#docs/docs/apis/system
+#docs/docs/apis/proto
+#**/.sass-cache
+#/internal/api/ui/login/static/resources/themes/zitadel/css/zitadel.css
+#/internal/api/ui/login/static/resources/themes/zitadel/css/zitadel.css.map
+#zitadel-*-*
+#!apps/**/zitadel-*-*
 
 # local
 build/local/*.env
 .notifications
-/.artifacts/*
-!/.artifacts/zitadel
-/zitadel
+#/.artifacts/*
+#!/.artifacts/zitadel
+#/zitadel
 node_modules/
 .kreya
 login-client.pat
@@ -89,11 +89,10 @@ go.work.sum
 
 dist
 .vercel
-
-# PNPM
-.pnpm-store
+#
+## PNPM
+#.pnpm-store
 
 # Nx
 .nx/cache
 .nx/workspace-data
-.cursor/rules/nx-rules.mdc

@@ -1,0 +1,2486 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "System API",
+    "description": "This API is intended to configure and manage the different tenants whithin ZITADEL.",
+    "version": "1.0",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "General"
+    },
+    {
+      "name": "Usage Control"
+    },
+    {
+      "name": "Limits"
+    },
+    {
+      "name": "Quotas"
+    },
+    {
+      "name": "SystemService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/system/v1",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/domains/{domain}/_exists": {
+      "post": {
+        "summary": "Checks if a domain exists",
+        "description": "Deprecated: Use [ListCustomDomains](apis/resources/instance_service_v2/zitadel-instance-v-2-instance-service-list-custom-domains.api.mdx) instead to check existence of an instance",
+        "operationId": "SystemService_ExistsDomain",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ExistsDomainResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SystemServiceExistsDomainBody"
+            }
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/failedevents/_search": {
+      "post": {
+        "summary": "Returns event descriptions which cannot be processed.\nIt's possible that some events need some retries.\nFor example if the SMTP-API wasn't able to send an email at the first time",
+        "operationId": "SystemService_ListFailedEvents",
+        "responses": {
+          "200": {
+            "description": "Events which were not processed by the views",
+            "schema": {
+              "$ref": "#/definitions/zitadelsystemv1ListFailedEventsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zitadelsystemv1ListFailedEventsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "failed events"
+        ]
+      }
+    },
+    "/failedevents/{database}/{viewName}/{failedSequence}": {
+      "delete": {
+        "summary": "Deletes the event from failed events view.\nthe event is not removed from the change stream\nThis call is usefull if the system was able to process the event later.\ne.g. if the second try of sending an email was successful. the first try produced a\nfailed event. You can find out if it worked on the `failure_count`",
+        "operationId": "SystemService_RemoveFailedEvent",
+        "responses": {
+          "200": {
+            "description": "Events removed from the list",
+            "schema": {
+              "$ref": "#/definitions/zitadelsystemv1RemoveFailedEventResponse"
+            }
+          },
+          "400": {
+            "description": "failed event not found",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "database",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "viewName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "failedSequence",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "instanceId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "failed events"
+        ]
+      }
+    },
+    "/healthz": {
+      "get": {
+        "summary": "Indicates if ZITADEL is running.\nIt respondes as soon as ZITADEL started",
+        "operationId": "SystemService_Healthz",
+        "responses": {
+          "200": {
+            "description": "ZITADEL started",
+            "schema": {
+              "$ref": "#/definitions/zitadelsystemv1HealthzResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "ZITADEL NOT started yet",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "General"
+        ]
+      }
+    },
+    "/instances": {
+      "post": {
+        "summary": "Deprecated: Use CreateInstance instead\nCreates a new instance with all needed setup data\nThis might take some time",
+        "operationId": "SystemService_AddInstance",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AddInstanceResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1AddInstanceRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/instances/_create": {
+      "post": {
+        "summary": "Creates a new instance with all needed setup data\nThis might take some time",
+        "operationId": "SystemService_CreateInstance",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateInstanceResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateInstanceRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ]
+      }
+    },
+    "/instances/_search": {
+      "post": {
+        "summary": "Returns a list of ZITADEL instances",
+        "description": "Deprecated: Use [ListInstances](apis/resources/instance_service_v2/zitadel-instance-v-2-instance-service-list-instances.api.mdx) instead to list instances",
+        "operationId": "SystemService_ListInstances",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListInstancesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Search query for lists",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListInstancesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/instances/limits/_bulk": {
+      "put": {
+        "summary": "Sets many instance level limits",
+        "operationId": "SystemService_BulkSetLimits",
+        "responses": {
+          "200": {
+            "description": "Instance limits set",
+            "schema": {
+              "$ref": "#/definitions/v1BulkSetLimitsResponse"
+            }
+          },
+          "400": {
+            "description": "At least one limit must be specified for each instance",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1BulkSetLimitsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Usage Control",
+          "Limits"
+        ]
+      }
+    },
+    "/instances/{instanceId}": {
+      "get": {
+        "summary": "Returns the detail of an instance",
+        "description": "Deprecated: Use [GetInstance](apis/resources/instance_service_v2/zitadel-instance-v-2-instance-service-get-instance.api.mdx) instead to get the details of the instance in context",
+        "operationId": "SystemService_GetInstance",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetInstanceResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ],
+        "deprecated": true
+      },
+      "delete": {
+        "summary": "Removes an instance\nThis might take some time",
+        "description": "Deprecated: Use [DeleteInstance](apis/resources/instance_service_v2/zitadel-instance-v-2-instance-service-delete-instance.api.mdx) instead to delete an instance",
+        "operationId": "SystemService_RemoveInstance",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveInstanceResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ],
+        "deprecated": true
+      },
+      "put": {
+        "summary": "Updates name of an existing instance",
+        "description": "Deprecated: Use [UpdateInstance](apis/resources/instance_service_v2/zitadel-instance-v-2-instance-service-update-instance.api.mdx) instead to update the name of the instance in context",
+        "operationId": "SystemService_UpdateInstance",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateInstanceResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SystemServiceUpdateInstanceBody"
+            }
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/instances/{instanceId}/domains": {
+      "post": {
+        "summary": "Adds a domain to an instance",
+        "description": "Deprecated: Use [AddCustomDomain](apis/resources/instance_service_v2/zitadel-instance-v-2-instance-service-add-custom-domain.api.mdx) instead to add a custom domain to the instance in context",
+        "operationId": "SystemService_AddDomain",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AddDomainResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SystemServiceAddDomainBody"
+            }
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/instances/{instanceId}/domains/_search": {
+      "post": {
+        "summary": "List Domains",
+        "description": "Deprecated: use [instance service v2 ListCustomDomains](apis/resources/instance_service_v2/zitadel-instance-v-2-instance-service-list-custom-domains.api.mdx) instead.\n\nReturns the custom domains of an instance.",
+        "operationId": "SystemService_ListDomains",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListDomainsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "description": "list limitations and ordering",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SystemServiceListDomainsBody"
+            }
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/instances/{instanceId}/domains/_set_primary": {
+      "post": {
+        "summary": "Sets the primary domain of an instance",
+        "operationId": "SystemService_SetPrimaryDomain",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SetPrimaryDomainResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SystemServiceSetPrimaryDomainBody"
+            }
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ]
+      }
+    },
+    "/instances/{instanceId}/domains/{domain}": {
+      "delete": {
+        "summary": "Removes the domain of an instance",
+        "description": "Deprecated: Use [RemoveDomain](apis/resources/instance_service_v2/zitadel-instance-v-2-instance-service-remove-custom-domain.api.mdx) instead to remove a custom domain from the instance in context",
+        "operationId": "SystemService_RemoveDomain",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveDomainResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/instances/{instanceId}/features/{featureId}": {
+      "put": {
+        "summary": "Set a feature flag on an instance",
+        "operationId": "SystemService_SetInstanceFeature",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SetInstanceFeatureResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "featureId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "INSTANCE_FEATURE_UNSPECIFIED",
+              "INSTANCE_FEATURE_LOGIN_DEFAULT_ORG"
+            ]
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SystemServiceSetInstanceFeatureBody"
+            }
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ]
+      }
+    },
+    "/instances/{instanceId}/limits": {
+      "delete": {
+        "summary": "Resets instance level limits",
+        "operationId": "SystemService_ResetLimits",
+        "responses": {
+          "200": {
+            "description": "Limits are reset to the system defaults",
+            "schema": {
+              "$ref": "#/definitions/v1ResetLimitsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Limits are already set to the system defaults",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Usage Control",
+          "Limits"
+        ]
+      },
+      "put": {
+        "summary": "Sets instance level limits",
+        "operationId": "SystemService_SetLimits",
+        "responses": {
+          "200": {
+            "description": "Instance limits set",
+            "schema": {
+              "$ref": "#/definitions/v1SetLimitsResponse"
+            }
+          },
+          "400": {
+            "description": "At least one limit must be specified",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SystemServiceSetLimitsBody"
+            }
+          }
+        ],
+        "tags": [
+          "Usage Control",
+          "Limits"
+        ]
+      }
+    },
+    "/instances/{instanceId}/members/_search": {
+      "post": {
+        "summary": "Returns all instance members matching the request\nall queries need to match (ANDed)\nDeprecated: Use the Admin APIs ListIAMMembers instead",
+        "operationId": "SystemService_ListIAMMembers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/zitadelsystemv1ListIAMMembersResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SystemServiceListIAMMembersBody"
+            }
+          }
+        ],
+        "tags": [
+          "SystemService"
+        ]
+      }
+    },
+    "/instances/{instanceId}/quotas": {
+      "post": {
+        "summary": "Creates a new quota\nReturns an error if the quota already exists for the specified unit\nDeprecated: use SetQuota instead",
+        "operationId": "SystemService_AddQuota",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AddQuotaResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SystemServiceAddQuotaBody"
+            }
+          }
+        ],
+        "tags": [
+          "Usage Control",
+          "Quotas"
+        ]
+      },
+      "put": {
+        "summary": "Sets quota configuration properties\nCreates a new quota if it doesn't exist for the specified unit",
+        "operationId": "SystemService_SetQuota",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SetQuotaResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SystemServiceSetQuotaBody"
+            }
+          }
+        ],
+        "tags": [
+          "Usage Control",
+          "Quotas"
+        ]
+      }
+    },
+    "/instances/{instanceId}/quotas/{unit}": {
+      "delete": {
+        "summary": "Removes a quota",
+        "operationId": "SystemService_RemoveQuota",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveQuotaResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "unit",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "UNIT_UNIMPLEMENTED",
+              "UNIT_REQUESTS_ALL_AUTHENTICATED",
+              "UNIT_ACTIONS_ALL_RUN_SECONDS"
+            ]
+          }
+        ],
+        "tags": [
+          "Usage Control",
+          "Quotas"
+        ]
+      }
+    },
+    "/views/_search": {
+      "post": {
+        "summary": "Returns all stored read models of ZITADEL\nviews are used for search optimisation and optimise request latencies\nthey represent the delta of the event happend on the objects",
+        "operationId": "SystemService_ListViews",
+        "responses": {
+          "200": {
+            "description": "Views for query operations",
+            "schema": {
+              "$ref": "#/definitions/zitadelsystemv1ListViewsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/zitadelsystemv1ListViewsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "views"
+        ]
+      }
+    },
+    "/views/{database}/{viewName}": {
+      "post": {
+        "summary": "Truncates the delta of the change stream\nbe carefull with this function because ZITADEL has to\nrecompute the deltas after they got cleared.\nSearch requests will return wrong results until all deltas are recomputed",
+        "operationId": "SystemService_ClearView",
+        "responses": {
+          "200": {
+            "description": "View cleared",
+            "schema": {
+              "$ref": "#/definitions/v1ClearViewResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "database",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "viewName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "views"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "CreateInstanceRequestMachineKey": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/v1KeyType"
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2519-04-01T08:45:00.000000Z",
+          "description": "The date the key will expire and no logins will be possible"
+        }
+      }
+    },
+    "SystemServiceAddDomainBody": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      }
+    },
+    "SystemServiceAddQuotaBody": {
+      "type": "object",
+      "properties": {
+        "unit": {
+          "$ref": "#/definitions/v1Unit",
+          "description": "the unit a quota should be imposed on",
+          "title": "the unit a quota should be imposed on"
+        },
+        "from": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019-04-01T08:45:00.000000Z",
+          "description": "the starting time from which the current quota period is calculated from. This is relevant for querying the current usage."
+        },
+        "resetInterval": {
+          "type": "string",
+          "description": "the quota periods duration",
+          "title": "the quota periods duration"
+        },
+        "amount": {
+          "type": "string",
+          "format": "uint64",
+          "description": "the quota amount of units",
+          "title": "the quota amount of units"
+        },
+        "limit": {
+          "type": "boolean",
+          "description": "whether ZITADEL should block further usage when the configured amount is used",
+          "title": "whether ZITADEL should block further usage when the configured amount is used"
+        },
+        "notifications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Notification"
+          },
+          "description": "the handlers, ZITADEL executes when certain quota percentages are reached",
+          "title": "the handlers, ZITADEL executes when certain quota percentages are reached"
+        }
+      }
+    },
+    "SystemServiceExistsDomainBody": {
+      "type": "object"
+    },
+    "SystemServiceListDomainsBody": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/v1ListQuery"
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v1DomainFieldName",
+          "title": "the field the result is sorted"
+        },
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zitadelinstancev1DomainSearchQuery"
+          },
+          "title": "criterias the client is looking for"
+        }
+      }
+    },
+    "SystemServiceSetInstanceFeatureBody": {
+      "type": "object",
+      "properties": {
+        "bool": {
+          "type": "boolean"
+        }
+      }
+    },
+    "SystemServiceSetLimitsBody": {
+      "type": "object",
+      "properties": {
+        "auditLogRetention": {
+          "type": "string",
+          "description": "auditLogRetention limits the number of events that can be queried via the events API by their age. A value of '0s' means that all events are available. If this value is set, it overwrites the system default."
+        },
+        "block": {
+          "type": "boolean",
+          "description": "if block is true, requests are responded with a resource exhausted error code."
+        }
+      }
+    },
+    "SystemServiceSetPrimaryDomainBody": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        }
+      }
+    },
+    "SystemServiceSetQuotaBody": {
+      "type": "object",
+      "properties": {
+        "unit": {
+          "$ref": "#/definitions/v1Unit",
+          "description": "the unit a quota should be imposed on",
+          "title": "the unit a quota should be imposed on"
+        },
+        "from": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019-04-01T08:45:00.000000Z",
+          "description": "the starting time from which the current quota period is calculated from. This is relevant for querying the current usage."
+        },
+        "resetInterval": {
+          "type": "string",
+          "description": "the quota periods duration",
+          "title": "the quota periods duration"
+        },
+        "amount": {
+          "type": "string",
+          "format": "uint64",
+          "description": "the quota amount of units",
+          "title": "the quota amount of units"
+        },
+        "limit": {
+          "type": "boolean",
+          "description": "whether ZITADEL should block further usage when the configured amount is used",
+          "title": "whether ZITADEL should block further usage when the configured amount is used"
+        },
+        "notifications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Notification"
+          },
+          "description": "the handlers, ZITADEL executes when certain quota percentages are reached",
+          "title": "the handlers, ZITADEL executes when certain quota percentages are reached"
+        }
+      }
+    },
+    "SystemServiceUpdateInstanceBody": {
+      "type": "object",
+      "properties": {
+        "instanceName": {
+          "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "userv1Type": {
+      "type": "string",
+      "enum": [
+        "TYPE_UNSPECIFIED",
+        "TYPE_HUMAN",
+        "TYPE_MACHINE"
+      ],
+      "default": "TYPE_UNSPECIFIED"
+    },
+    "v1AddDomainResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1AddInstanceRequest": {
+      "type": "object",
+      "properties": {
+        "instanceName": {
+          "type": "string"
+        },
+        "firstOrgName": {
+          "type": "string"
+        },
+        "customDomain": {
+          "type": "string"
+        },
+        "ownerUserName": {
+          "type": "string"
+        },
+        "ownerEmail": {
+          "$ref": "#/definitions/v1AddInstanceRequestEmail"
+        },
+        "ownerProfile": {
+          "$ref": "#/definitions/v1AddInstanceRequestProfile"
+        },
+        "ownerPassword": {
+          "$ref": "#/definitions/v1AddInstanceRequestPassword"
+        },
+        "defaultLanguage": {
+          "type": "string"
+        }
+      }
+    },
+    "v1AddInstanceRequestEmail": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "isEmailVerified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1AddInstanceRequestPassword": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "passwordChangeRequired": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1AddInstanceRequestProfile": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "preferredLanguage": {
+          "type": "string"
+        }
+      }
+    },
+    "v1AddInstanceResponse": {
+      "type": "object",
+      "properties": {
+        "instanceId": {
+          "type": "string"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1AddQuotaResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1BulkSetLimitsRequest": {
+      "type": "object",
+      "properties": {
+        "limits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SetLimitsRequest"
+          }
+        }
+      }
+    },
+    "v1BulkSetLimitsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "targetDetails": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ObjectDetails"
+          }
+        }
+      }
+    },
+    "v1ClearViewResponse": {
+      "type": "object",
+      "title": "This is an empty response"
+    },
+    "v1CreateInstanceRequest": {
+      "type": "object",
+      "properties": {
+        "instanceName": {
+          "type": "string"
+        },
+        "firstOrgName": {
+          "type": "string"
+        },
+        "customDomain": {
+          "type": "string"
+        },
+        "human": {
+          "$ref": "#/definitions/v1CreateInstanceRequestHuman",
+          "title": "oneof field for the user managing the instance"
+        },
+        "machine": {
+          "$ref": "#/definitions/v1CreateInstanceRequestMachine"
+        },
+        "defaultLanguage": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateInstanceRequestEmail": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "isEmailVerified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1CreateInstanceRequestHuman": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "email": {
+          "$ref": "#/definitions/v1CreateInstanceRequestEmail"
+        },
+        "profile": {
+          "$ref": "#/definitions/v1CreateInstanceRequestProfile"
+        },
+        "password": {
+          "$ref": "#/definitions/v1CreateInstanceRequestPassword"
+        }
+      }
+    },
+    "v1CreateInstanceRequestMachine": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "personalAccessToken": {
+          "$ref": "#/definitions/v1CreateInstanceRequestPersonalAccessToken"
+        },
+        "machineKey": {
+          "$ref": "#/definitions/CreateInstanceRequestMachineKey"
+        }
+      }
+    },
+    "v1CreateInstanceRequestPassword": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "passwordChangeRequired": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1CreateInstanceRequestPersonalAccessToken": {
+      "type": "object",
+      "properties": {
+        "expirationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2519-04-01T08:45:00.000000Z",
+          "description": "The date the token will expire and no logins will be possible"
+        }
+      }
+    },
+    "v1CreateInstanceRequestProfile": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "preferredLanguage": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateInstanceResponse": {
+      "type": "object",
+      "properties": {
+        "instanceId": {
+          "type": "string"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "pat": {
+          "type": "string"
+        },
+        "machineKey": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "v1DomainFieldName": {
+      "type": "string",
+      "enum": [
+        "DOMAIN_FIELD_NAME_UNSPECIFIED",
+        "DOMAIN_FIELD_NAME_DOMAIN",
+        "DOMAIN_FIELD_NAME_PRIMARY",
+        "DOMAIN_FIELD_NAME_GENERATED",
+        "DOMAIN_FIELD_NAME_CREATION_DATE"
+      ],
+      "default": "DOMAIN_FIELD_NAME_UNSPECIFIED"
+    },
+    "v1DomainGeneratedQuery": {
+      "type": "object",
+      "properties": {
+        "generated": {
+          "type": "boolean",
+          "description": "generated domains"
+        }
+      },
+      "title": "DomainGeneratedQuery is always equals"
+    },
+    "v1DomainPrimaryQuery": {
+      "type": "object",
+      "properties": {
+        "primary": {
+          "type": "boolean",
+          "description": "primary domains"
+        }
+      },
+      "title": "DomainPrimaryQuery is always equals"
+    },
+    "v1DomainQuery": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "description": "zitadel.com"
+        },
+        "method": {
+          "$ref": "#/definitions/v1TextQueryMethod",
+          "description": "defines which text equality method is used"
+        }
+      }
+    },
+    "v1DomainsQuery": {
+      "type": "object",
+      "properties": {
+        "domains": {
+          "type": "array",
+          "example": [
+            "my-instace.zitadel.cloud",
+            "auth.custom.com"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Return the instances that have the requested domains",
+          "maxItems": 20
+        }
+      }
+    },
+    "v1ExistsDomainResponse": {
+      "type": "object",
+      "properties": {
+        "exists": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1FieldName": {
+      "type": "string",
+      "enum": [
+        "FIELD_NAME_UNSPECIFIED",
+        "FIELD_NAME_ID",
+        "FIELD_NAME_NAME",
+        "FIELD_NAME_CREATION_DATE"
+      ],
+      "default": "FIELD_NAME_UNSPECIFIED"
+    },
+    "v1GetInstanceResponse": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "$ref": "#/definitions/v1InstanceDetail"
+        }
+      }
+    },
+    "v1IdsQuery": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "4820840938402429"
+        }
+      },
+      "title": "IdQuery always equals"
+    },
+    "v1Instance": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "state": {
+          "$ref": "#/definitions/v1State",
+          "description": "current state of the instance"
+        },
+        "name": {
+          "type": "string",
+          "example": "ZITADEL"
+        },
+        "version": {
+          "type": "string",
+          "example": "1.0.0"
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zitadelinstancev1Domain"
+          }
+        }
+      }
+    },
+    "v1InstanceDetail": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "state": {
+          "$ref": "#/definitions/v1State",
+          "description": "current state of the instance"
+        },
+        "name": {
+          "type": "string",
+          "example": "ZITADEL"
+        },
+        "version": {
+          "type": "string",
+          "example": "1.0.0"
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zitadelinstancev1Domain"
+          }
+        }
+      }
+    },
+    "v1InstanceFeature": {
+      "type": "string",
+      "enum": [
+        "INSTANCE_FEATURE_UNSPECIFIED",
+        "INSTANCE_FEATURE_LOGIN_DEFAULT_ORG"
+      ],
+      "default": "INSTANCE_FEATURE_UNSPECIFIED"
+    },
+    "v1KeyType": {
+      "type": "string",
+      "enum": [
+        "KEY_TYPE_UNSPECIFIED",
+        "KEY_TYPE_JSON"
+      ],
+      "default": "KEY_TYPE_UNSPECIFIED"
+    },
+    "v1ListDetails": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2"
+        },
+        "processedSequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "267831"
+        },
+        "viewTimestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "the last time the view got updated"
+        }
+      }
+    },
+    "v1ListDomainsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ListDetails"
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v1DomainFieldName"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zitadelinstancev1Domain"
+          }
+        }
+      }
+    },
+    "v1ListInstancesRequest": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/v1ListQuery",
+          "title": "list limitations and ordering"
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v1FieldName",
+          "title": "the field the result is sorted"
+        },
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Query"
+          },
+          "title": "criterias the client is looking for"
+        }
+      },
+      "description": "Search query for lists",
+      "required": [
+        "query"
+      ]
+    },
+    "v1ListInstancesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ListDetails"
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v1FieldName"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Instance"
+          }
+        }
+      }
+    },
+    "v1ListQuery": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "example": "0"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "example": 100,
+          "description": "Maximum amount of events returned. The default is set to 1000 in https://github.com/zitadel/zitadel/blob/new-eventstore/cmd/zitadel/startup.yaml. If the limit exceeds the maximum configured ZITADEL will throw an error. If no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "description": "default is descending"
+        }
+      },
+      "description": "Object unspecific list filters like offset, limit and asc/desc.",
+      "title": "General List Query"
+    },
+    "v1Member": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "roles": {
+          "type": "array",
+          "example": [
+            "IAM_OWNER"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "the role keys granted to the user"
+        },
+        "preferredLoginName": {
+          "type": "string",
+          "example": "gigi@zitadel.com",
+          "description": "preferred login name of the user"
+        },
+        "email": {
+          "type": "string",
+          "example": "gigi@zitadel.com",
+          "description": "preferred login name of the user"
+        },
+        "firstName": {
+          "type": "string",
+          "example": "Gigi",
+          "description": "the first name of the user"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Giraffe",
+          "description": "last name of the user"
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Gigi Giraffe",
+          "description": "display name of the user"
+        },
+        "avatarUrl": {
+          "type": "string",
+          "example": "https://api.zitadel.ch/assets/v1/avatar-32432jkh4kj32",
+          "description": "avatar URL of the user"
+        },
+        "userType": {
+          "$ref": "#/definitions/userv1Type",
+          "description": "type of the user (human / machine)"
+        },
+        "userResourceOwner": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "The organization the user belong to."
+        }
+      }
+    },
+    "v1MemberFieldColumnName": {
+      "type": "string",
+      "enum": [
+        "MEMBER_FIELD_NAME_UNSPECIFIED",
+        "MEMBER_FIELD_NAME_USER_ID",
+        "MEMBER_FIELD_NAME_CREATION_DATE",
+        "MEMBER_FIELD_NAME_CHANGE_DATE",
+        "MEMBER_FIELD_NAME_USER_RESOURCE_OWNER"
+      ],
+      "default": "MEMBER_FIELD_NAME_UNSPECIFIED"
+    },
+    "v1Notification": {
+      "type": "object",
+      "properties": {
+        "percent": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The percentage relative to the quotas amount on which the call_url should be called."
+        },
+        "repeat": {
+          "type": "boolean",
+          "description": "If true, the call_url is called each time a factor of percentage is reached."
+        },
+        "callUrl": {
+          "type": "string",
+          "description": "The URL, which is called with HTTP method POST and a JSON payload with the properties \"unit\", \"id\" (notification id), \"callURL\", \"periodStart\", \"threshold\" and \"usage\"."
+        }
+      }
+    },
+    "v1ObjectDetails": {
+      "type": "object",
+      "properties": {
+        "sequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2",
+          "description": "on read: the sequence of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "sequence represents the order of events. It's always counting"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "on read: the timestamp of the first event of the object\n\non create: the timestamp of the event(s) added by the manipulation",
+          "title": "creation_date is the timestamp where the first operation on the object was made"
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "on read: the timestamp of the last event reduced by the projection\n\non manipulation: the",
+          "title": "change_date is the timestamp when the object was changed"
+        },
+        "resourceOwner": {
+          "type": "string",
+          "example": "69629023906488334",
+          "title": "resource_owner is the organization an object belongs to"
+        }
+      }
+    },
+    "v1Query": {
+      "type": "object",
+      "properties": {
+        "idQuery": {
+          "$ref": "#/definitions/v1IdsQuery"
+        },
+        "domainQuery": {
+          "$ref": "#/definitions/v1DomainsQuery"
+        }
+      }
+    },
+    "v1RemoveDomainResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1RemoveInstanceResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1RemoveQuotaResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1ResetLimitsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1SetInstanceFeatureResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1SetLimitsRequest": {
+      "type": "object",
+      "properties": {
+        "instanceId": {
+          "type": "string"
+        },
+        "auditLogRetention": {
+          "type": "string",
+          "description": "auditLogRetention limits the number of events that can be queried via the events API by their age. A value of '0s' means that all events are available. If this value is set, it overwrites the system default."
+        },
+        "block": {
+          "type": "boolean",
+          "description": "if block is true, requests are responded with a resource exhausted error code."
+        }
+      }
+    },
+    "v1SetLimitsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1SetPrimaryDomainResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1SetQuotaResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1State": {
+      "type": "string",
+      "enum": [
+        "STATE_UNSPECIFIED",
+        "STATE_CREATING",
+        "STATE_RUNNING",
+        "STATE_STOPPING",
+        "STATE_STOPPED"
+      ],
+      "default": "STATE_UNSPECIFIED"
+    },
+    "v1SystemServiceListIAMMembersBody": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/v1ListQuery"
+        },
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zitadelmemberv1SearchQuery"
+          }
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v1MemberFieldColumnName"
+        }
+      }
+    },
+    "v1TextQueryMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_QUERY_METHOD_EQUALS",
+        "TEXT_QUERY_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_QUERY_METHOD_STARTS_WITH",
+        "TEXT_QUERY_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_QUERY_METHOD_CONTAINS",
+        "TEXT_QUERY_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_QUERY_METHOD_ENDS_WITH",
+        "TEXT_QUERY_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_QUERY_METHOD_EQUALS"
+    },
+    "v1Unit": {
+      "type": "string",
+      "enum": [
+        "UNIT_UNIMPLEMENTED",
+        "UNIT_REQUESTS_ALL_AUTHENTICATED",
+        "UNIT_ACTIONS_ALL_RUN_SECONDS"
+      ],
+      "default": "UNIT_UNIMPLEMENTED",
+      "title": "- UNIT_REQUESTS_ALL_AUTHENTICATED: The sum of all requests to the ZITADEL API with an authorization header,\nexcluding the following exceptions\n- Calls to the System API\n- Calls that cause internal server errors\n- Failed authorizations\n- Requests after the quota already exceeded\n - UNIT_ACTIONS_ALL_RUN_SECONDS: The sum of all actions run durations in seconds"
+    },
+    "v1UpdateInstanceResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        }
+      }
+    },
+    "v1UserIDQuery": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "the id of the user",
+          "maxLength": 200
+        }
+      }
+    },
+    "zitadelinstancev1Domain": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ObjectDetails"
+        },
+        "domain": {
+          "type": "string",
+          "example": "zitadel.com"
+        },
+        "primary": {
+          "type": "boolean"
+        },
+        "generated": {
+          "type": "boolean"
+        }
+      }
+    },
+    "zitadelinstancev1DomainSearchQuery": {
+      "type": "object",
+      "properties": {
+        "domainQuery": {
+          "$ref": "#/definitions/v1DomainQuery"
+        },
+        "generatedQuery": {
+          "$ref": "#/definitions/v1DomainGeneratedQuery"
+        },
+        "primaryQuery": {
+          "$ref": "#/definitions/v1DomainPrimaryQuery"
+        }
+      }
+    },
+    "zitadelmemberv1EmailQuery": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "gigi@zitadel.com",
+          "description": "email address of the user",
+          "maxLength": 200
+        },
+        "method": {
+          "$ref": "#/definitions/v1TextQueryMethod",
+          "description": "defines which text equality method is used"
+        }
+      }
+    },
+    "zitadelmemberv1FirstNameQuery": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "Gigi",
+          "maxLength": 200
+        },
+        "method": {
+          "$ref": "#/definitions/v1TextQueryMethod",
+          "description": "defines which text equality method is used"
+        }
+      }
+    },
+    "zitadelmemberv1LastNameQuery": {
+      "type": "object",
+      "properties": {
+        "lastName": {
+          "type": "string",
+          "example": "Giraffe",
+          "maxLength": 200
+        },
+        "method": {
+          "$ref": "#/definitions/v1TextQueryMethod",
+          "description": "defines which text equality method is used"
+        }
+      }
+    },
+    "zitadelmemberv1SearchQuery": {
+      "type": "object",
+      "properties": {
+        "firstNameQuery": {
+          "$ref": "#/definitions/zitadelmemberv1FirstNameQuery"
+        },
+        "lastNameQuery": {
+          "$ref": "#/definitions/zitadelmemberv1LastNameQuery"
+        },
+        "emailQuery": {
+          "$ref": "#/definitions/zitadelmemberv1EmailQuery"
+        },
+        "userIdQuery": {
+          "$ref": "#/definitions/v1UserIDQuery"
+        }
+      }
+    },
+    "zitadelsystemv1FailedEvent": {
+      "type": "object",
+      "properties": {
+        "database": {
+          "type": "string",
+          "example": "adminapi"
+        },
+        "viewName": {
+          "type": "string",
+          "example": "iam_members"
+        },
+        "failedSequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "9823759"
+        },
+        "failureCount": {
+          "type": "string",
+          "format": "uint64",
+          "example": "5"
+        },
+        "errorMessage": {
+          "type": "string",
+          "example": "ID=EXAMP-ID3ER Message=Example message"
+        },
+        "lastFailed": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp the failure last occurred"
+        }
+      }
+    },
+    "zitadelsystemv1HealthzResponse": {
+      "type": "object",
+      "title": "This is an empty response"
+    },
+    "zitadelsystemv1ListFailedEventsRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "zitadelsystemv1ListFailedEventsResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zitadelsystemv1FailedEvent"
+          },
+          "title": "TODO: list details"
+        }
+      }
+    },
+    "zitadelsystemv1ListIAMMembersResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v1ListDetails"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Member"
+          }
+        }
+      }
+    },
+    "zitadelsystemv1ListViewsRequest": {
+      "type": "object",
+      "title": "This is an empty request"
+    },
+    "zitadelsystemv1ListViewsResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zitadelsystemv1View"
+          },
+          "title": "TODO: list details"
+        }
+      }
+    },
+    "zitadelsystemv1RemoveFailedEventResponse": {
+      "type": "object",
+      "title": "This is an empty response"
+    },
+    "zitadelsystemv1View": {
+      "type": "object",
+      "properties": {
+        "database": {
+          "type": "string",
+          "example": "adminapi"
+        },
+        "viewName": {
+          "type": "string",
+          "example": "iam_members"
+        },
+        "processedSequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "9823758"
+        },
+        "eventTimestamp": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019-04-01T08:45:00.000000Z",
+          "description": "The timestamp the event occured",
+          "title": "The timestamp the event occured"
+        },
+        "lastSuccessfulSpoolerRun": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp the event occured"
+        },
+        "instance": {
+          "type": "string",
+          "example": "840498034930840"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}
