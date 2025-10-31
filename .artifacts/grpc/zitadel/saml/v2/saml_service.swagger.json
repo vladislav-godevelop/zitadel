@@ -1,0 +1,358 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "SAML Service",
+    "description": "Get SAML Auth Request details and create callback URLs.",
+    "version": "2.0",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "SAMLService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/v2/saml/saml_requests/{samlRequestId}": {
+      "get": {
+        "summary": "Get SAML Request",
+        "description": "Get SAML Request details by ID. Returns details that are parsed from the application's SAML Request.\n\nRequired permissions:\n  - `session.read`",
+        "operationId": "SAMLService_GetSAMLRequest",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2GetSAMLRequestResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "samlRequestId",
+            "description": "ID of the SAML Request, as obtained from the redirect URL.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SAMLService"
+        ]
+      },
+      "post": {
+        "summary": "Create Response",
+        "description": "Finalize a SAML Request and get the response definition for success or failure.\nThe response must be handled as per the SAML definition to inform the application about the success or failure.\nOn success, the response contains details for the application to obtain the SAMLResponse.\nThis method can only be called once for an SAML request.\n\nRequired permissions:\n  - `session.link`",
+        "operationId": "SAMLService_CreateResponse",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2CreateResponseResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "samlRequestId",
+            "description": "ID of the SAML Request.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SAMLServiceCreateResponseBody"
+            }
+          }
+        ],
+        "tags": [
+          "SAMLService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "SAMLServiceCreateResponseBody": {
+      "type": "object",
+      "properties": {
+        "session": {
+          "$ref": "#/definitions/v2Session",
+          "description": "The session of the authenticated user, to finalize the authorization request."
+        },
+        "error": {
+          "$ref": "#/definitions/v2AuthorizationError",
+          "description": "Set this field when the authorization flow failed. It creates a response depending on the SP, with the error details set."
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2AuthorizationError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/v2ErrorReason"
+        },
+        "errorDescription": {
+          "type": "string"
+        }
+      }
+    },
+    "v2CreateResponseResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        },
+        "url": {
+          "type": "string",
+          "example": "https://client.example.org/cb",
+          "description": "URL including the Assertion Consumer Service where the user should be redirected or has to call per POST, depending on the binding. Contains details for the application to obtain the response on success, or error details on failure. Note that this field must be treated as credentials, as the contained SAMLResponse or code can be used on behalve of the user."
+        },
+        "redirect": {
+          "$ref": "#/definitions/v2RedirectResponse",
+          "description": "Set if the binding is Redirect-Binding, where the user can directly be redirected to the application, using a \\\"302 FOUND\\\" status to the URL."
+        },
+        "post": {
+          "$ref": "#/definitions/v2PostResponse",
+          "description": "Set if the binding is POST-Binding, where the application expects to be called per HTTP POST with the SAMLResponse and RelayState in the form body."
+        }
+      }
+    },
+    "v2Details": {
+      "type": "object",
+      "properties": {
+        "sequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2",
+          "description": "on read: the sequence of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "sequence represents the order of events. It's always counting"
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "on read: the timestamp of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "change_date is the timestamp when the object was changed"
+        },
+        "resourceOwner": {
+          "type": "string",
+          "example": "69629023906488334",
+          "title": "resource_owner is the organization or instance_id an object belongs to"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "title": "creation_date is the timestamp where the first operation on the object was made"
+        }
+      }
+    },
+    "v2ErrorReason": {
+      "type": "string",
+      "enum": [
+        "ERROR_REASON_UNSPECIFIED",
+        "ERROR_REASON_VERSION_MISSMATCH",
+        "ERROR_REASON_AUTH_N_FAILED",
+        "ERROR_REASON_INVALID_ATTR_NAME_OR_VALUE",
+        "ERROR_REASON_INVALID_NAMEID_POLICY",
+        "ERROR_REASON_REQUEST_DENIED",
+        "ERROR_REASON_REQUEST_UNSUPPORTED",
+        "ERROR_REASON_UNSUPPORTED_BINDING"
+      ],
+      "default": "ERROR_REASON_UNSPECIFIED"
+    },
+    "v2GetSAMLRequestResponse": {
+      "type": "object",
+      "properties": {
+        "samlRequest": {
+          "$ref": "#/definitions/v2SAMLRequest"
+        }
+      }
+    },
+    "v2PostResponse": {
+      "type": "object",
+      "properties": {
+        "relayState": {
+          "type": "string",
+          "description": "The SAML RelaySate, that needs to be returned to the application to match the response to the request."
+        },
+        "samlResponse": {
+          "type": "string",
+          "description": "The SAML Response, that needs to be returned to the application to complete the SAML flow."
+        }
+      }
+    },
+    "v2RedirectResponse": {
+      "type": "object"
+    },
+    "v2SAMLRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of the created SAMLRequest."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Time when the SAMLRequest was created."
+        },
+        "issuer": {
+          "type": "string",
+          "description": "SAML entityID of the application that created the SAMLRequest."
+        },
+        "assertionConsumerService": {
+          "type": "string",
+          "description": "URL which points back to the assertion consumer service of the application that created the SAMLRequest."
+        },
+        "relayState": {
+          "type": "string",
+          "description": "RelayState provided by the application for the request."
+        },
+        "binding": {
+          "type": "string",
+          "description": "Binding used by the application for the request."
+        }
+      },
+      "title": "SAMLRequest contains information about a SAML authentication request.\nsee: https://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html",
+      "externalDocs": {
+        "description": "Find out more about SAMLRequest parameters",
+        "url": "https://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html"
+      }
+    },
+    "v2Session": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "ID of the session, used to login the user. Connects the session to the SAML Request.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "sessionToken": {
+          "type": "string",
+          "description": "Token to verify the session is valid.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "sessionId",
+        "sessionToken"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

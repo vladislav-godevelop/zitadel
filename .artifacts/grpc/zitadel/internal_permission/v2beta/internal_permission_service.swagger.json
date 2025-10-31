@@ -1,0 +1,834 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Internal Permission Service",
+    "description": "This API is intended to manage internal permissions in ZITADEL. This service is in beta state. It can AND will continue breaking until a stable version is released.",
+    "version": "2.0-beta",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "InternalPermissionService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/v2beta/administrators": {
+      "post": {
+        "summary": "CreateAdministrator grants a administrator role to a user for a specific resource.",
+        "description": "Deprecated: please move to the corresponding endpoint under internal permission service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nNote that the roles are specific to the resource type.\nThis means that if you want to grant a user the administrator role for an organization and a project,\nyou need to create two administrator roles.\n\nRequired permissions depend on the resource type:\n  - \"iam.member.write\" for instance administrators\n  - \"org.member.write\" for organization administrators\n  - \"project.member.write\" for project administrators\n  - \"project.grant.member.write\" for project grant administrators",
+        "operationId": "InternalPermissionService_CreateAdministrator",
+        "responses": {
+          "200": {
+            "description": "Administrator created successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateAdministratorResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "409": {
+            "description": "The administrator to create already exists.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateAdministratorRequest"
+            }
+          }
+        ],
+        "tags": [
+          "InternalPermissionService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/administrators/search": {
+      "post": {
+        "summary": "ListAdministrators returns all administrators and its roles matching the request and necessary permissions.",
+        "description": "Deprecated: please move to the corresponding endpoint under internal permission service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nRequired permissions depend on the resource type:\n  - \"iam.member.read\" for instance administrators\n  - \"org.member.read\" for organization administrators\n  - \"project.member.read\" for project administrators\n  - \"project.grant.member.read\" for project grant administrators\n  - no permissions required for listing own administrator roles",
+        "operationId": "InternalPermissionService_ListAdministrators",
+        "responses": {
+          "200": {
+            "description": "A list of all administrators matching the query",
+            "schema": {
+              "$ref": "#/definitions/v2betaListAdministratorsResponse"
+            }
+          },
+          "400": {
+            "description": "invalid list query",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaListAdministratorsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "InternalPermissionService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/administrators/{userId}": {
+      "delete": {
+        "summary": "DeleteAdministrator revokes a administrator role from a user.",
+        "description": "Deprecated: please move to the corresponding endpoint under internal permission service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nIn case the administrator role is not found, the request will return a successful response as\nthe desired state is already achieved.\nYou can check the deletion date in the response to verify if the administrator role was deleted during the request.\n\nRequired permissions depend on the resource type:\n  - \"iam.member.delete\" for instance administrators\n  - \"org.member.delete\" for organization administrators\n  - \"project.member.delete\" for project administrators\n  - \"project.grant.member.delete\" for project grant administrators",
+        "operationId": "InternalPermissionService_DeleteAdministrator",
+        "responses": {
+          "200": {
+            "description": "Administrator deleted successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteAdministratorResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "UserID is the ID of the user who should have his administrator roles removed.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "resource.instance",
+            "description": "Instance is the resource type for granting administrator privileges on the instance level.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "resource.organizationId",
+            "description": "OrganizationID is required to grant administrator privileges for a specific organization.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "resource.projectId",
+            "description": "ProjectID is required to grant administrator privileges for a specific project.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "resource.projectGrant.projectId",
+            "description": "ProjectID is required to grant administrator privileges for a specific project.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "resource.projectGrant.organizationId",
+            "description": "OrganizationID is required to grant administrator privileges for a specific project grant.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InternalPermissionService"
+        ],
+        "deprecated": true
+      },
+      "post": {
+        "summary": "UpdateAdministrator updates the specific administrator role.",
+        "description": "Deprecated: please move to the corresponding endpoint under internal permission service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nNote that any role previously granted to the user and not present in the request will be revoked.\n\nRequired permissions depend on the resource type:\n  - \"iam.member.write\" for instance administrators\n  - \"org.member.write\" for organization administrators\n  - \"project.member.write\" for project administrators\n  - \"project.grant.member.write\" for project grant administrators",
+        "operationId": "InternalPermissionService_UpdateAdministrator",
+        "responses": {
+          "200": {
+            "description": "Administrator successfully updated or left unchanged",
+            "schema": {
+              "$ref": "#/definitions/v2betaUpdateAdministratorResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "The administrator to update does not exist.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "description": "UserID is the ID of the user who should have his administrator roles update.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InternalPermissionServiceUpdateAdministratorBody"
+            }
+          }
+        ],
+        "tags": [
+          "InternalPermissionService"
+        ],
+        "deprecated": true
+      }
+    }
+  },
+  "definitions": {
+    "InternalPermissionServiceUpdateAdministratorBody": {
+      "type": "object",
+      "properties": {
+        "resource": {
+          "$ref": "#/definitions/v2betaResourceType",
+          "description": "Resource is the type of the resource the administrator roles should be granted for."
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Roles are the roles that the user should be granted.\nNote that any role previously granted to the user and not present in the list will be revoked."
+        }
+      }
+    },
+    "internal_permissionv2betaProjectGrant": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID is the unique identifier of the project grant the user was granted the administrator role for."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "ProjectID is the ID of the project the project grant belongs to."
+        },
+        "projectName": {
+          "type": "string",
+          "description": "ProjectName is the name of the project the project grant belongs to."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "OrganizationID is the ID of the organization the project grant belongs to."
+        },
+        "grantedOrganizationId": {
+          "type": "string",
+          "description": "OrganizationID is the ID of the organization the project grant belongs to."
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2betaAdministrator": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "CreationDate is the timestamp when the administrator role was granted."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ChangeDate is the timestamp when the administrator role was last updated.\nIn case the administrator role was not updated, this field is equal to the creation date."
+        },
+        "user": {
+          "$ref": "#/definitions/v2betaUser",
+          "description": "User is the user who was granted the administrator role."
+        },
+        "instance": {
+          "type": "boolean",
+          "description": "Instance is returned if the administrator roles were granted on the instance level."
+        },
+        "organization": {
+          "$ref": "#/definitions/v2betaOrganization",
+          "description": "Organization provides information about the organization the administrator roles were granted for."
+        },
+        "project": {
+          "$ref": "#/definitions/v2betaProject",
+          "description": "Project provides information about the project the administrator roles were granted for."
+        },
+        "projectGrant": {
+          "$ref": "#/definitions/internal_permissionv2betaProjectGrant",
+          "description": "ProjectGrant provides information about the project grant the administrator roles were granted for."
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Roles are the roles that were granted to the user for the specified resource."
+        }
+      }
+    },
+    "v2betaAdministratorFieldName": {
+      "type": "string",
+      "enum": [
+        "ADMINISTRATOR_FIELD_NAME_UNSPECIFIED",
+        "ADMINISTRATOR_FIELD_NAME_USER_ID",
+        "ADMINISTRATOR_FIELD_NAME_CREATION_DATE",
+        "ADMINISTRATOR_FIELD_NAME_CHANGE_DATE"
+      ],
+      "default": "ADMINISTRATOR_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2betaAdministratorSearchFilter": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "$ref": "#/definitions/v2betaTimestampFilter",
+          "description": "Search for administrator roles by their creation date."
+        },
+        "changeDate": {
+          "$ref": "#/definitions/v2betaTimestampFilter",
+          "description": "Search for administrator roles by their change date."
+        },
+        "inUserIdsFilter": {
+          "$ref": "#/definitions/v2betaInIDsFilter",
+          "description": "Search for administrators roles by the IDs of the users who was granted the administrator role."
+        },
+        "userOrganizationId": {
+          "$ref": "#/definitions/v2betaIDFilter",
+          "description": "Search for administrators roles by the ID of the organization the user is part of."
+        },
+        "userPreferredLoginName": {
+          "$ref": "#/definitions/v2betaUserPreferredLoginNameFilter",
+          "description": "Search for administrators roles by the preferred login name of the user."
+        },
+        "userDisplayName": {
+          "$ref": "#/definitions/v2betaUserDisplayNameFilter",
+          "description": "Search for administrators roles by the display name of the user."
+        },
+        "resource": {
+          "$ref": "#/definitions/v2betaResourceFilter",
+          "description": "Search for administrators roles granted for a specific resource."
+        },
+        "role": {
+          "$ref": "#/definitions/v2betaRoleFilter",
+          "description": "Search for administrators roles granted with a specific role."
+        },
+        "and": {
+          "$ref": "#/definitions/v2betaAndFilter",
+          "description": "Combine multiple authorization queries with an AND operation."
+        },
+        "or": {
+          "$ref": "#/definitions/v2betaOrFilter",
+          "description": "Combine multiple authorization queries with an OR operation.\nFor example, to search for authorizations of multiple OrganizationIDs."
+        },
+        "not": {
+          "$ref": "#/definitions/v2betaNotFilter",
+          "description": "Negate an authorization query."
+        }
+      }
+    },
+    "v2betaAndFilter": {
+      "type": "object",
+      "properties": {
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaAdministratorSearchFilter"
+          }
+        }
+      }
+    },
+    "v2betaCreateAdministratorRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "UserID is the ID of the user who should be granted the administrator role."
+        },
+        "resource": {
+          "$ref": "#/definitions/v2betaResourceType",
+          "description": "Resource is the type of the resource the administrator roles should be granted for."
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Roles are the roles that should be granted to the user for the specified resource.\nNote that roles are currently specific to the resource type.\nThis means that if you want to grant a user the administrator role for an organization and a project,\nyou need to create two administrator roles."
+        }
+      }
+    },
+    "v2betaCreateAdministratorResponse": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "CreationDate is the timestamp when the administrator role was created."
+        }
+      }
+    },
+    "v2betaDeleteAdministratorResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "DeletionDate is the timestamp when the administrator role was deleted.\nNote that the deletion date is only guaranteed to be set if the deletion was successful during the request.\nIn case the deletion occurred in a previous request, the deletion date might not be set."
+        }
+      }
+    },
+    "v2betaIDFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488337",
+          "description": "Only return resources that belong to this id.",
+          "maxLength": 200
+        }
+      }
+    },
+    "v2betaInIDsFilter": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "example": [
+            "69629023906488334",
+            "69622366012355662"
+          ],
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "description": "Defines the ids to query for."
+        }
+      }
+    },
+    "v2betaListAdministratorsRequest": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "List limitations and ordering."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaAdministratorFieldName",
+          "default": "\"ADMINISTRATOR_FIELD_NAME_CREATION_DATE\"",
+          "description": "The field the result is sorted by. The default is the creation date. Beware that if you change this, your result pagination might be inconsistent."
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaAdministratorSearchFilter"
+          },
+          "description": "Filter the administrator roles to be returned."
+        }
+      }
+    },
+    "v2betaListAdministratorsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse"
+        },
+        "administrators": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaAdministrator"
+          }
+        }
+      }
+    },
+    "v2betaNotFilter": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/v2betaAdministratorSearchFilter"
+        }
+      }
+    },
+    "v2betaOrFilter": {
+      "type": "object",
+      "properties": {
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaAdministratorSearchFilter"
+          }
+        }
+      }
+    },
+    "v2betaOrganization": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID is the unique identifier of the organization the user was granted the administrator role for."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name is the name of the organization the user was granted the administrator role for."
+        }
+      }
+    },
+    "v2betaPaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "v2betaPaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "v2betaProject": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID is the unique identifier of the project the user was granted the administrator role for."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name is the name of the project the user was granted the administrator role for."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "OrganizationID is the ID of the organization the project belongs to."
+        }
+      }
+    },
+    "v2betaResourceFilter": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "type": "boolean",
+          "description": "Search for administrators granted on the instance level."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "Search for administrators granted on a specific organization."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Search for administrators granted on a specific project."
+        },
+        "projectGrantId": {
+          "type": "string",
+          "description": "Search for administrators granted on a specific project grant."
+        }
+      }
+    },
+    "v2betaResourceType": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "type": "boolean",
+          "description": "Instance is the resource type for granting administrator privileges on the instance level."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "OrganizationID is required to grant administrator privileges for a specific organization."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "ProjectID is required to grant administrator privileges for a specific project."
+        },
+        "projectGrant": {
+          "$ref": "#/definitions/v2betaResourceTypeProjectGrant",
+          "description": "ProjectGrantID is required to grant administrator privileges for a specific project grant."
+        }
+      }
+    },
+    "v2betaResourceTypeProjectGrant": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "ProjectID is required to grant administrator privileges for a specific project."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "OrganizationID is required to grant administrator privileges for a specific project grant."
+        }
+      }
+    },
+    "v2betaRoleFilter": {
+      "type": "object",
+      "properties": {
+        "roleKey": {
+          "type": "string",
+          "description": "Search for administrators by the granted role."
+        }
+      }
+    },
+    "v2betaTextFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_FILTER_METHOD_EQUALS",
+        "TEXT_FILTER_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_STARTS_WITH",
+        "TEXT_FILTER_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_CONTAINS",
+        "TEXT_FILTER_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_ENDS_WITH",
+        "TEXT_FILTER_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_FILTER_METHOD_EQUALS"
+    },
+    "v2betaTimestampFilter": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "Filter resources by timestamp."
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTimestampFilterMethod",
+          "description": "Defines the condition (e.g., equals, before, after) that the timestamp of the retrieved resources should match."
+        }
+      }
+    },
+    "v2betaTimestampFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TIMESTAMP_FILTER_METHOD_EQUALS",
+        "TIMESTAMP_FILTER_METHOD_GREATER",
+        "TIMESTAMP_FILTER_METHOD_GREATER_OR_EQUALS",
+        "TIMESTAMP_FILTER_METHOD_LESS",
+        "TIMESTAMP_FILTER_METHOD_LESS_OR_EQUALS"
+      ],
+      "default": "TIMESTAMP_FILTER_METHOD_EQUALS"
+    },
+    "v2betaUpdateAdministratorResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ChangeDate is the timestamp when the administrator role was last updated."
+        }
+      }
+    },
+    "v2betaUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID is the unique identifier of the user."
+        },
+        "preferredLoginName": {
+          "type": "string",
+          "description": "PreferredLoginName is the preferred login name of the user. This value is unique across the whole instance."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "DisplayName is the public display name of the user.\nBy default it's the user's given name and family name, their username or their email address."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "The organization the user belong to."
+        }
+      }
+    },
+    "v2betaUserDisplayNameFilter": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "description": "Search for administrators by the display name of the user."
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextFilterMethod",
+          "description": "Specify the method to search for the display name. Default is EQUAL.\nFor example, to search for all administrator roles of a user with a display name\ncontaining a specific string, use CONTAINS or CONTAINS_IGNORE_CASE."
+        }
+      }
+    },
+    "v2betaUserPreferredLoginNameFilter": {
+      "type": "object",
+      "properties": {
+        "preferredLoginName": {
+          "type": "string",
+          "description": "Search for administrators by the preferred login name of the user."
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextFilterMethod",
+          "description": "Specify the method to search for the preferred login name. Default is EQUAL.\nFor example, to search for all administrator roles of a user with a preferred login name\ncontaining a specific string, use CONTAINS or CONTAINS_IGNORE_CASE."
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

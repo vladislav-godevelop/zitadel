@@ -1,0 +1,691 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "zitadel/project/v2/project_service.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "ProjectService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2ActivateProjectGrantResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "ChangeDate is the timestamp of the change of the project grant."
+        }
+      }
+    },
+    "v2ActivateProjectResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "ChangeDate is the timestamp of the change of the project."
+        }
+      }
+    },
+    "v2AddProjectRoleResponse": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "CreationDate is the timestamp of the project role creation."
+        }
+      }
+    },
+    "v2CreateProjectGrantResponse": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "CreationDate is the timestamp of the project grant creation."
+        }
+      }
+    },
+    "v2CreateProjectResponse": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "ProjectID is the unique identifier of the newly created project."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "CreationDate is the timestamp of the project creation."
+        }
+      }
+    },
+    "v2DeactivateProjectGrantResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "ChangeDate is the timestamp of the change of the project grant."
+        }
+      }
+    },
+    "v2DeactivateProjectResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "ChangeDate is the timestamp of the change of the project."
+        }
+      }
+    },
+    "v2DeleteProjectGrantResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "DeletionDate is the timestamp of the deletion of the project grant.\nNote that the deletion date is only guaranteed to be set if the deletion was successful during the request.\nIn case the deletion occurred in a previous request, the deletion date might be empty."
+        }
+      }
+    },
+    "v2DeleteProjectResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "DeletionDate is the timestamp of the deletion of the project.\nNote that the deletion date is only guaranteed to be set if the deletion was successful during the request.\nIn case the deletion occurred in a previous request, the deletion date might be empty."
+        }
+      }
+    },
+    "v2GetProjectResponse": {
+      "type": "object",
+      "properties": {
+        "project": {
+          "$ref": "#/definitions/v2Project",
+          "description": "Project is the project that matches the project ID used in the request."
+        }
+      }
+    },
+    "v2GrantedProjectState": {
+      "type": "string",
+      "enum": [
+        "GRANTED_PROJECT_STATE_UNSPECIFIED",
+        "GRANTED_PROJECT_STATE_ACTIVE",
+        "GRANTED_PROJECT_STATE_INACTIVE"
+      ],
+      "default": "GRANTED_PROJECT_STATE_UNSPECIFIED"
+    },
+    "v2IDFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488337",
+          "description": "Only return resources that belong to this id.",
+          "maxLength": 200
+        }
+      }
+    },
+    "v2InIDsFilter": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "example": [
+            "69629023906488334",
+            "69622366012355662"
+          ],
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "description": "Defines the ids to query for."
+        }
+      }
+    },
+    "v2ListProjectGrantsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2PaginationResponse",
+          "description": "Pagination contains the total number of project grants matching the query and the applied limit."
+        },
+        "projectGrants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2ProjectGrant"
+          },
+          "description": "ProjectGrants is a list of project grants matching the query."
+        }
+      }
+    },
+    "v2ListProjectRolesResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2PaginationResponse",
+          "description": "Pagination contains the total number of project roles matching the query and the applied limit."
+        },
+        "projectRoles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2ProjectRole"
+          },
+          "description": "ProjectRoles is a list of roles matching the query."
+        }
+      }
+    },
+    "v2ListProjectsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2PaginationResponse",
+          "description": "Pagination contains the total number of projects matching the query and the applied limit."
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2Project"
+          },
+          "description": "Projects is a list of projects matching the query."
+        }
+      }
+    },
+    "v2PaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "example": 0,
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "example": 10,
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "example": false,
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "v2PaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100,
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100,
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "v2PrivateLabelingSetting": {
+      "type": "string",
+      "enum": [
+        "PRIVATE_LABELING_SETTING_UNSPECIFIED",
+        "PRIVATE_LABELING_SETTING_ENFORCE_PROJECT_RESOURCE_OWNER_POLICY",
+        "PRIVATE_LABELING_SETTING_ALLOW_LOGIN_USER_RESOURCE_OWNER_POLICY"
+      ],
+      "default": "PRIVATE_LABELING_SETTING_UNSPECIFIED"
+    },
+    "v2Project": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "ProjectID is the unique identifier of the project."
+        },
+        "organizationId": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "OrganizationID is the unique identifier of the organization the project belongs to."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "CreationDate is the timestamp of the project creation."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "ChangeDate is the timestamp of the last change to the project (e.g. creation, activation, deactivation)."
+        },
+        "name": {
+          "type": "string",
+          "example": "ip_allow_list",
+          "description": "Name is the name of the project. This might be presented to users, e.g. in sign-in flows."
+        },
+        "state": {
+          "$ref": "#/definitions/v2ProjectState",
+          "description": "State describes the current state of the project."
+        },
+        "projectRoleAssertion": {
+          "type": "boolean",
+          "description": "ProjectRoleAssertion is a boolean flag that describes if the roles of the user should be added to the token."
+        },
+        "authorizationRequired": {
+          "type": "boolean",
+          "description": "AuthorizationRequired is a boolean flag that can be enabled to check if a user has\nan authorization to use this project assigned when login into an application of this project."
+        },
+        "projectAccessRequired": {
+          "type": "boolean",
+          "description": "ProjectAccessRequired is a boolean flag that can be enabled to check if the organization of the user,\nthat is trying to log in, has access to this project (either owns the project or is granted)."
+        },
+        "privateLabelingSetting": {
+          "$ref": "#/definitions/v2PrivateLabelingSetting",
+          "description": "PrivateLabelingSetting defines from where the private labeling should be triggered."
+        },
+        "grantedOrganizationId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "GrantedOrganizationID is the ID of the organization the project is granted to.\nIn case the project is not granted, this field is unset."
+        },
+        "grantedOrganizationName": {
+          "type": "string",
+          "example": "Some Organization",
+          "description": "GrantedOrganizationName is the name of the organization the project is granted to.\nIn case the project is not granted, this field is unset."
+        },
+        "grantedState": {
+          "$ref": "#/definitions/v2GrantedProjectState",
+          "description": "GrantedProjectState describes the current state of the granted project.\nIn case the project is not granted, this field is set to GrantedProjectState.GRANTED_PROJECT_STATE_UNSPECIFIED."
+        }
+      }
+    },
+    "v2ProjectFieldName": {
+      "type": "string",
+      "enum": [
+        "PROJECT_FIELD_NAME_UNSPECIFIED",
+        "PROJECT_FIELD_NAME_ID",
+        "PROJECT_FIELD_NAME_CREATION_DATE",
+        "PROJECT_FIELD_NAME_CHANGE_DATE",
+        "PROJECT_FIELD_NAME_NAME"
+      ],
+      "default": "PROJECT_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2ProjectGrant": {
+      "type": "object",
+      "properties": {
+        "organizationId": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "The unique identifier of the organization which granted the project to the granted_organization_id."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the granted project creation."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the last change to the granted project (e.g. creation, activation, deactivation)."
+        },
+        "grantedOrganizationId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "The ID of the organization the project is granted to."
+        },
+        "grantedOrganizationName": {
+          "type": "string",
+          "example": "Some Organization",
+          "description": "The name of the organization the project is granted to."
+        },
+        "grantedRoleKeys": {
+          "type": "array",
+          "example": [
+            "role.super.man"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "The roles granted to the organization for self-management of the project."
+        },
+        "projectId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "The ID of the granted project."
+        },
+        "projectName": {
+          "type": "string",
+          "example": "ZITADEL",
+          "description": "The name of the granted project."
+        },
+        "state": {
+          "$ref": "#/definitions/v2ProjectGrantState",
+          "description": "Describes the current state of the granted project."
+        }
+      }
+    },
+    "v2ProjectGrantFieldName": {
+      "type": "string",
+      "enum": [
+        "PROJECT_GRANT_FIELD_NAME_UNSPECIFIED",
+        "PROJECT_GRANT_FIELD_NAME_PROJECT_ID",
+        "PROJECT_GRANT_FIELD_NAME_CREATION_DATE",
+        "PROJECT_GRANT_FIELD_NAME_CHANGE_DATE"
+      ],
+      "default": "PROJECT_GRANT_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2ProjectGrantSearchFilter": {
+      "type": "object",
+      "properties": {
+        "projectNameFilter": {
+          "$ref": "#/definitions/v2ProjectNameFilter",
+          "description": "Filter for project grants with a specific project name."
+        },
+        "roleKeyFilter": {
+          "$ref": "#/definitions/v2ProjectRoleKeyFilter",
+          "description": "Filter for project grants where a specific role is granted."
+        },
+        "inProjectIdsFilter": {
+          "$ref": "#/definitions/v2InIDsFilter",
+          "description": "Filter for project grants of a specific project ID."
+        },
+        "organizationIdFilter": {
+          "$ref": "#/definitions/v2IDFilter",
+          "description": "Filter for project grants that were granted from a specific organization."
+        },
+        "grantedOrganizationIdFilter": {
+          "$ref": "#/definitions/v2IDFilter",
+          "description": "Filter for project grants that were granted to a specific organization."
+        }
+      }
+    },
+    "v2ProjectGrantState": {
+      "type": "string",
+      "enum": [
+        "PROJECT_GRANT_STATE_UNSPECIFIED",
+        "PROJECT_GRANT_STATE_ACTIVE",
+        "PROJECT_GRANT_STATE_INACTIVE"
+      ],
+      "default": "PROJECT_GRANT_STATE_UNSPECIFIED"
+    },
+    "v2ProjectNameFilter": {
+      "type": "object",
+      "properties": {
+        "projectName": {
+          "type": "string",
+          "example": "ip_allow_list",
+          "description": "Defines the name of the project to query for.",
+          "maxLength": 200
+        },
+        "method": {
+          "$ref": "#/definitions/v2TextFilterMethod",
+          "description": "Defines which text comparison method used for the name query."
+        }
+      }
+    },
+    "v2ProjectOrganizationIDFilter": {
+      "type": "object",
+      "properties": {
+        "organizationId": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "OrganizationID Is the ID of the organization to query for."
+        },
+        "type": {
+          "$ref": "#/definitions/v2ProjectOrganizationIDFilterType",
+          "description": "Defines whether to filter for owned, granted or both types of projects.\nIf not specified, defaults to OWNED_OR_GRANTED and will return both owned and granted projects."
+        }
+      },
+      "required": [
+        "organizationId"
+      ]
+    },
+    "v2ProjectOrganizationIDFilterType": {
+      "type": "string",
+      "enum": [
+        "TYPE_UNSPECIFIED",
+        "OWNED",
+        "GRANTED",
+        "OWNED_OR_GRANTED"
+      ],
+      "default": "TYPE_UNSPECIFIED",
+      "description": " - OWNED: Filter for projects that are owned by the organization.\n - GRANTED: Filter for projects that are granted to the organization.\n - OWNED_OR_GRANTED: Filter for projects that are either owned by or granted to the organization."
+    },
+    "v2ProjectRole": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "example": "69629026806489455",
+          "description": "ProjectID is the ID of the project the role belongs to."
+        },
+        "key": {
+          "type": "string",
+          "example": "role.super.man",
+          "description": "Key of the project role. The key identifies the role. It's the only relevant attribute for ZITADEL and\nwill be used for authorization checks and as claim in tokens and user info responses."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "CreationDate is the timestamp of the project role creation."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "ChangeDate is the timestamp of the last change to the project role."
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Super man",
+          "description": "DisplayName is a human readable name for the role, which might be displayed to users."
+        },
+        "group": {
+          "type": "string",
+          "example": "people",
+          "description": "Group allows grouping roles for display purposes. Zitadel will not handle it in any way.\nIt can be used to group roles in a UI to allow easier management for administrators.\nThis attribute is not to be confused with groups as a collection of users."
+        }
+      }
+    },
+    "v2ProjectRoleDisplayNameFilter": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "example": "SUPER",
+          "description": "The display name of the project role to query for."
+        },
+        "method": {
+          "$ref": "#/definitions/v2TextFilterMethod",
+          "description": "Defines which text comparison method used for the name query."
+        }
+      }
+    },
+    "v2ProjectRoleFieldName": {
+      "type": "string",
+      "enum": [
+        "PROJECT_ROLE_FIELD_NAME_UNSPECIFIED",
+        "PROJECT_ROLE_FIELD_NAME_KEY",
+        "PROJECT_ROLE_FIELD_NAME_CREATION_DATE",
+        "PROJECT_ROLE_FIELD_NAME_CHANGE_DATE"
+      ],
+      "default": "PROJECT_ROLE_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2ProjectRoleKeyFilter": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "example": "role.super.man",
+          "description": "The key of the project role to query for."
+        },
+        "method": {
+          "$ref": "#/definitions/v2TextFilterMethod",
+          "description": "Defines which text comparison method used for the key query."
+        }
+      }
+    },
+    "v2ProjectRoleSearchFilter": {
+      "type": "object",
+      "properties": {
+        "roleKeyFilter": {
+          "$ref": "#/definitions/v2ProjectRoleKeyFilter",
+          "description": "Filter for project roles with a specific key."
+        },
+        "displayNameFilter": {
+          "$ref": "#/definitions/v2ProjectRoleDisplayNameFilter",
+          "description": "Filter for project roles with a specific display name."
+        }
+      }
+    },
+    "v2ProjectSearchFilter": {
+      "type": "object",
+      "properties": {
+        "projectNameFilter": {
+          "$ref": "#/definitions/v2ProjectNameFilter",
+          "description": "Filter for projects with a specific name."
+        },
+        "inProjectIdsFilter": {
+          "$ref": "#/definitions/v2InIDsFilter",
+          "description": "Filter for projects with a specific ID."
+        },
+        "organizationIdFilter": {
+          "$ref": "#/definitions/v2ProjectOrganizationIDFilter",
+          "description": "Filter for projects that are owned by or granted to a specific organization.\nYou can specify whether to search for owned, granted or both types of projects."
+        }
+      }
+    },
+    "v2ProjectState": {
+      "type": "string",
+      "enum": [
+        "PROJECT_STATE_UNSPECIFIED",
+        "PROJECT_STATE_ACTIVE",
+        "PROJECT_STATE_INACTIVE"
+      ],
+      "default": "PROJECT_STATE_UNSPECIFIED"
+    },
+    "v2RemoveProjectRoleResponse": {
+      "type": "object",
+      "properties": {
+        "removalDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "RemovalDate is the timestamp of the removal of the project role.\nNote that the removal date is only guaranteed to be set if the removal was successful during the request.\nIn case the removal occurred in a previous request, the removal date might be empty."
+        }
+      }
+    },
+    "v2TextFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_FILTER_METHOD_EQUALS",
+        "TEXT_FILTER_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_STARTS_WITH",
+        "TEXT_FILTER_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_CONTAINS",
+        "TEXT_FILTER_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_ENDS_WITH",
+        "TEXT_FILTER_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_FILTER_METHOD_EQUALS"
+    },
+    "v2UpdateProjectGrantResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "ChangeDate is the timestamp of the change of the project grant."
+        }
+      }
+    },
+    "v2UpdateProjectResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "ChangeDate is the timestamp of the change of the project."
+        }
+      }
+    },
+    "v2UpdateProjectRoleResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "ChangeDate is the timestamp of the change of the project role."
+        }
+      }
+    }
+  }
+}

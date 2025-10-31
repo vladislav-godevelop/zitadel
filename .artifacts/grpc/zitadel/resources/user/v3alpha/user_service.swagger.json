@@ -1,0 +1,4539 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "User Service",
+    "description": "This API is intended to manage users with your own data schema in a ZITADEL instance. This project is in preview state. It can AND will continue breaking until the service provides the same functionality as the v1 and v2 user services.",
+    "version": "3.0-alpha",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "ZITADELUsers"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/resources/v3alpha/idp_intents": {
+      "post": {
+        "summary": "Start an IDP authentication intent",
+        "description": "Start a new authentication intent on configured identity provider (IDP) for external login, registration or linking.",
+        "operationId": "ZITADELUsers_StartIdentityProviderIntent",
+        "responses": {
+          "200": {
+            "description": "IDP intent successfully started",
+            "schema": {
+              "$ref": "#/definitions/v3alphaStartIdentityProviderIntentResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v3alphaStartIdentityProviderIntentRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/idp_intents/{idpIntentId}": {
+      "get": {
+        "summary": "Get the information of the IDP authentication intent",
+        "description": "Get the information returned by the identity provider (IDP) for registration or updating an existing user with new information.",
+        "operationId": "ZITADELUsers_GetIdentityProviderIntent",
+        "responses": {
+          "200": {
+            "description": "IDP intent successfully retrieved",
+            "schema": {
+              "$ref": "#/definitions/v3alphaGetIdentityProviderIntentResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "idpIntentId",
+            "description": "ID of the identity provider (IDP) intent, previously returned on the success response of the start identity provider intent.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "idpIntentToken",
+            "description": "Token of the identity provider (IDP) intent, previously returned on the success response of the start identity provider intent.",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users": {
+      "post": {
+        "summary": "Create a user",
+        "description": "Create a new user with an optional data schema.",
+        "operationId": "ZITADELUsers_CreateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v3alphaCreateUserResponse"
+            }
+          },
+          "201": {
+            "description": "User successfully created",
+            "schema": {
+              "$ref": "#/definitions/v3alphaCreateUserResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userv3alphaCreateUser"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/_search": {
+      "post": {
+        "summary": "Search users",
+        "description": "Search all matching users. By default, we will return all users of your instance.\nMake sure to include a limit and sorting for pagination.",
+        "operationId": "ZITADELUsers_SearchUsers",
+        "responses": {
+          "200": {
+            "description": "A list of all users matching the query",
+            "schema": {
+              "$ref": "#/definitions/v3alphaSearchUsersResponse"
+            }
+          },
+          "400": {
+            "description": "invalid list query",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "filters",
+            "description": "Define the criteria to query for.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/v3alphaSearchFilter"
+              }
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "query.offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "query.limit",
+            "description": "Maximum amount of events returned. If not configured otherwise, the default is 100, the maximum is 1000. If the limit exceeds the maximum, ZITADEL throws an error.",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "query.desc",
+            "description": "default is ascending, because together with the creation date sorting column, this returns the most deterministic pagination results.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "sortingColumn",
+            "description": "the field the result is sorted.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "FIELD_NAME_UNSPECIFIED",
+              "FIELD_NAME_ID",
+              "FIELD_NAME_CREATION_DATE",
+              "FIELD_NAME_CHANGE_DATE",
+              "FIELD_NAME_EMAIL",
+              "FIELD_NAME_PHONE",
+              "FIELD_NAME_STATE",
+              "FIELD_NAME_SCHEMA_ID",
+              "FIELD_NAME_SCHEMA_TYPE"
+            ],
+            "default": "FIELD_NAME_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}": {
+      "get": {
+        "summary": "User by ID",
+        "description": "Returns the user identified by the requested ID.",
+        "operationId": "ZITADELUsers_GetUser",
+        "responses": {
+          "200": {
+            "description": "User successfully retrieved",
+            "schema": {
+              "$ref": "#/definitions/v3alphaGetUserResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      },
+      "delete": {
+        "summary": "Delete a user",
+        "description": "Delete an existing user and change the state to 'deleted'.\nThe user will be able to log in anymore.",
+        "operationId": "ZITADELUsers_DeleteUser",
+        "responses": {
+          "200": {
+            "description": "User successfully deleted",
+            "schema": {
+              "$ref": "#/definitions/v3alphaDeleteUserResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      },
+      "patch": {
+        "summary": "Patch a user",
+        "description": "Patch an existing user with data based on a user schema.",
+        "operationId": "ZITADELUsers_PatchUser",
+        "responses": {
+          "200": {
+            "description": "User successfully updated or left unchanged",
+            "schema": {
+              "$ref": "#/definitions/v3alphaPatchUserResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userv3alphaPatchUser"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/_activate": {
+      "post": {
+        "summary": "Activate a user",
+        "description": "Activate a previously deactivated user and change the state to 'active'.\nThe user will be able to log in again.\n\nThe endpoint returns an error if the user is not in the state 'deactivated'.",
+        "operationId": "ZITADELUsers_ActivateUser",
+        "responses": {
+          "200": {
+            "description": "User successfully activated",
+            "schema": {
+              "$ref": "#/definitions/v3alphaActivateUserResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/_deactivate": {
+      "post": {
+        "summary": "Deactivate a user",
+        "description": "Deactivate an existing user and change the state 'deactivated'.\nThe user will not be able to log in anymore.\nUse deactivate user when the user should not be able to use the account anymore,\nbut you still need access to the user data.\n\nThe endpoint returns an error if the user is already in the state 'deactivated'.",
+        "operationId": "ZITADELUsers_DeactivateUser",
+        "responses": {
+          "200": {
+            "description": "User successfully deactivated",
+            "schema": {
+              "$ref": "#/definitions/v3alphaDeactivateUserResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/_lock": {
+      "post": {
+        "summary": "Lock a user",
+        "description": "Lock an existing user and change the state 'locked'.\nThe user will not be able to log in anymore.\nUse lock user when the user should temporarily not be able to log in\nbecause of an event that happened (wrong password, etc.)\n\nThe endpoint returns an error if the user is already in the state 'locked'.",
+        "operationId": "ZITADELUsers_LockUser",
+        "responses": {
+          "200": {
+            "description": "User successfully locked",
+            "schema": {
+              "$ref": "#/definitions/v3alphaLockUserResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/_unlock": {
+      "post": {
+        "summary": "Unlock a user",
+        "description": "Unlock a previously locked user and change the state to 'active'.\nThe user will be able to log in again.\n\nThe endpoint returns an error if the user is not in the state 'locked'.",
+        "operationId": "ZITADELUsers_UnlockUser",
+        "responses": {
+          "200": {
+            "description": "User successfully unlocked",
+            "schema": {
+              "$ref": "#/definitions/v3alphaUnlockUserResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/email": {
+      "put": {
+        "summary": "Set contact email",
+        "description": "Add or update the contact email address of a user.\nIf the email is not passed as verified, a verification code will be generated,\nwhich can be either returned or will be sent to the user by email.",
+        "operationId": "ZITADELUsers_SetContactEmail",
+        "responses": {
+          "200": {
+            "description": "Email successfully set",
+            "schema": {
+              "$ref": "#/definitions/v3alphaSetContactEmailResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "description": "Set the user's contact email and it's verification state.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v3alphaSetEmail"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/email/_resend": {
+      "post": {
+        "summary": "Resend the contact email code",
+        "description": "Resend the email with the verification code for the contact email address.",
+        "operationId": "ZITADELUsers_ResendContactEmailCode",
+        "responses": {
+          "200": {
+            "description": "Code resend successfully requested",
+            "schema": {
+              "$ref": "#/definitions/v3alphaResendContactEmailCodeResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ZITADELUsersResendContactEmailCodeBody"
+            }
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/email/_verify": {
+      "post": {
+        "summary": "Verify the contact email",
+        "description": "Verify the contact email with the provided code.",
+        "operationId": "ZITADELUsers_VerifyContactEmail",
+        "responses": {
+          "200": {
+            "description": "Email successfully verified",
+            "schema": {
+              "$ref": "#/definitions/v3alphaVerifyContactEmailResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "verificationCode",
+            "description": "Set the verification code generated during the set contact email request.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/idps": {
+      "post": {
+        "summary": "Add an IDP authenticator to a user",
+        "description": "Add a new identity provider (IDP) authenticator to an existing user.\nThis will allow the user to authenticate with the provided IDP.",
+        "operationId": "ZITADELUsers_AddIDPAuthenticator",
+        "responses": {
+          "200": {
+            "description": "IDP authenticator successfully added",
+            "schema": {
+              "$ref": "#/definitions/v3alphaAddIDPAuthenticatorResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authenticator",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v3alphaIDPAuthenticator"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/idps/{idpId}": {
+      "delete": {
+        "summary": "Remove an IDP authenticator",
+        "description": "Remove an existing identity provider (IDP) authenticator from a user, so it cannot be used for authentication anymore.",
+        "operationId": "ZITADELUsers_RemoveIDPAuthenticator",
+        "responses": {
+          "200": {
+            "description": "IDP authenticator successfully removed",
+            "schema": {
+              "$ref": "#/definitions/v3alphaRemoveIDPAuthenticatorResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "idpId",
+            "description": "unique identifier of the identity provider (IDP) authenticator.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/otp_email": {
+      "post": {
+        "summary": "Add a OTP Email authenticator",
+        "description": "Add a new one-time password (OTP) Email authenticator to a user.\nIf the email is not passed as verified, a verification code will be generated,\nwhich can be either returned or will be sent to the user by email.",
+        "operationId": "ZITADELUsers_AddOTPEmailAuthenticator",
+        "responses": {
+          "200": {
+            "description": "OTP Email authenticator successfully added",
+            "schema": {
+              "$ref": "#/definitions/v3alphaAddOTPEmailAuthenticatorResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "description": "Set the user's email for the OTP Email authenticator and it's verification state.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v3alphaSetEmail"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/otp_email/{otpEmailId}": {
+      "delete": {
+        "summary": "Remove a OTP Email authenticator",
+        "description": "Remove an existing one-time password (OTP) Email authenticator from a user, so it cannot be used for authentication anymore.",
+        "operationId": "ZITADELUsers_RemoveOTPEmailAuthenticator",
+        "responses": {
+          "200": {
+            "description": "OTP Email authenticator successfully removed",
+            "schema": {
+              "$ref": "#/definitions/v3alphaRemoveOTPEmailAuthenticatorResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "otpEmailId",
+            "description": "unique identifier of the OTP Email authenticator.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/otp_email/{otpEmailId}/_verify": {
+      "post": {
+        "summary": "Verify OTP Email registration",
+        "description": "Verify the OTP Email registration with the provided code.",
+        "operationId": "ZITADELUsers_VerifyOTPEmailRegistration",
+        "responses": {
+          "200": {
+            "description": "OTP Email authenticator successfully verified",
+            "schema": {
+              "$ref": "#/definitions/v3alphaVerifyOTPEmailRegistrationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "otpEmailId",
+            "description": "unique identifier of the OTP Email registration, which was returned in the add OTP Email.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "description": "Set the verification code generated during the add OTP Email request.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/otp_sms": {
+      "post": {
+        "summary": "Add a OTP SMS authenticator",
+        "description": "Add a new one-time password (OTP) SMS authenticator to a user.\nIf the phone is not passed as verified, a verification code will be generated,\nwhich can be either returned or will be sent to the user by SMS.",
+        "operationId": "ZITADELUsers_AddOTPSMSAuthenticator",
+        "responses": {
+          "200": {
+            "description": "OTP SMS authenticator successfully added",
+            "schema": {
+              "$ref": "#/definitions/v3alphaAddOTPSMSAuthenticatorResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "description": "Set the user's phone for the OTP SMS authenticator and it's verification state.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v3alphaSetPhone"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/otp_sms/{otpSmsId}": {
+      "delete": {
+        "summary": "Remove a OTP SMS authenticator",
+        "description": "Remove an existing one-time password (OTP) SMS authenticator from a user, so it cannot be used for authentication anymore.",
+        "operationId": "ZITADELUsers_RemoveOTPSMSAuthenticator",
+        "responses": {
+          "200": {
+            "description": "OTP SMS authenticator successfully removed",
+            "schema": {
+              "$ref": "#/definitions/v3alphaRemoveOTPSMSAuthenticatorResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "otpSmsId",
+            "description": "unique identifier of the OTP SMS authenticator.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/otp_sms/{otpSmsId}/_verify": {
+      "post": {
+        "summary": "Verify OTP SMS registration",
+        "description": "Verify the OTP SMS registration with the provided code.",
+        "operationId": "ZITADELUsers_VerifyOTPSMSRegistration",
+        "responses": {
+          "200": {
+            "description": "OTP SMS authenticator successfully verified",
+            "schema": {
+              "$ref": "#/definitions/v3alphaVerifyOTPSMSRegistrationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "otpSmsId",
+            "description": "unique identifier of the OTP SMS registration, which was returned in the add OTP SMS.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "description": "Set the verification code generated during the add OTP SMS request.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/password": {
+      "post": {
+        "summary": "Set a password",
+        "description": "Add, update or reset a user's password with either a verification code or the current password.",
+        "operationId": "ZITADELUsers_SetPassword",
+        "responses": {
+          "200": {
+            "description": "Password successfully set",
+            "schema": {
+              "$ref": "#/definitions/v3alphaSetPasswordResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "newPassword",
+            "description": "Provide the new password (in plain text or as hash).",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userv3alphaSetPassword"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/password/_reset": {
+      "post": {
+        "summary": "Request password reset",
+        "description": "Request a code to be able to set a new password.",
+        "operationId": "ZITADELUsers_RequestPasswordReset",
+        "responses": {
+          "200": {
+            "description": "Password reset successfully requested",
+            "schema": {
+              "$ref": "#/definitions/v3alphaRequestPasswordResetResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ZITADELUsersRequestPasswordResetBody"
+            }
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/phone": {
+      "put": {
+        "summary": "Set contact phone",
+        "description": "Add or update the contact phone number of a user.\nIf the phone is not passed as verified, a verification code will be generated,\nwhich can be either returned or will be sent to the user by SMS.",
+        "operationId": "ZITADELUsers_SetContactPhone",
+        "responses": {
+          "200": {
+            "description": "Contact phone successfully set",
+            "schema": {
+              "$ref": "#/definitions/v3alphaSetContactPhoneResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "description": "Set the user's contact phone and it's verification state.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v3alphaSetPhone"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/phone/_resend": {
+      "post": {
+        "summary": "Resend the contact phone code",
+        "description": "Resend the phone with the verification code for the contact phone number.",
+        "operationId": "ZITADELUsers_ResendContactPhoneCode",
+        "responses": {
+          "200": {
+            "description": "Code resend successfully requested",
+            "schema": {
+              "$ref": "#/definitions/v3alphaResendContactPhoneCodeResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ZITADELUsersResendContactPhoneCodeBody"
+            }
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/phone/_verify": {
+      "post": {
+        "summary": "Verify the contact phone",
+        "description": "Verify the contact phone with the provided code.",
+        "operationId": "ZITADELUsers_VerifyContactPhone",
+        "responses": {
+          "200": {
+            "description": "Contact phone successfully verified",
+            "schema": {
+              "$ref": "#/definitions/v3alphaVerifyContactPhoneResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "verificationCode",
+            "description": "Set the verification code generated during the set contact phone request.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/totp": {
+      "post": {
+        "summary": "Start a TOTP registration",
+        "description": "Start the registration of a new time-based one-time password (TOTP) generator for a user.\nAs a response a secret is returned, which is used to initialize a TOTP app or device.",
+        "operationId": "ZITADELUsers_StartTOTPRegistration",
+        "responses": {
+          "200": {
+            "description": "TOTP registration successfully started",
+            "schema": {
+              "$ref": "#/definitions/v3alphaStartTOTPRegistrationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/totp/{totpId}": {
+      "delete": {
+        "summary": "Remove a TOTP authenticator",
+        "description": "Remove an existing time-based one-time password (TOTP) authenticator from a user, so it cannot be used for authentication anymore.",
+        "operationId": "ZITADELUsers_RemoveTOTPAuthenticator",
+        "responses": {
+          "200": {
+            "description": "TOTP authenticator successfully removed",
+            "schema": {
+              "$ref": "#/definitions/v3alphaRemoveTOTPAuthenticatorResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "totpId",
+            "description": "unique identifier of the TOTP authenticator.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/totp/{totpId}/_verify": {
+      "post": {
+        "summary": "Verify a TOTP registration",
+        "description": "Verify the time-based one-time password (TOTP) registration with the generated code.",
+        "operationId": "ZITADELUsers_VerifyTOTPRegistration",
+        "responses": {
+          "200": {
+            "description": "TOTP registration successfully verified",
+            "schema": {
+              "$ref": "#/definitions/v3alphaVerifyTOTPRegistrationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "totpId",
+            "description": "unique identifier of the TOTP registration, which was returned in the start TOTP registration.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "description": "Code generated by TOTP app or device.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/username": {
+      "post": {
+        "summary": "Add a username",
+        "description": "Add a new unique username to a user. The username will be used to identify the user on authentication.",
+        "operationId": "ZITADELUsers_AddUsername",
+        "responses": {
+          "200": {
+            "description": "Username successfully added",
+            "schema": {
+              "$ref": "#/definitions/v3alphaAddUsernameResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "username",
+            "description": "Set the user's new username.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v3alphaSetUsername"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/username/{usernameId}": {
+      "delete": {
+        "summary": "Remove a username",
+        "description": "Remove an existing username of a user, so it cannot be used for authentication anymore.",
+        "operationId": "ZITADELUsers_RemoveUsername",
+        "responses": {
+          "200": {
+            "description": "Username successfully removed",
+            "schema": {
+              "$ref": "#/definitions/v3alphaRemoveUsernameResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "usernameId",
+            "description": "unique identifier of the username.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/webauthn": {
+      "post": {
+        "summary": "Start a WebAuthN registration",
+        "description": "Start the registration of a new WebAuthN device (e.g. Passkeys) for a user.\nAs a response the public key credential creation options are returned,\nwhich are used to verify the device.",
+        "operationId": "ZITADELUsers_StartWebAuthNRegistration",
+        "responses": {
+          "200": {
+            "description": "WebAuthN registration successfully started",
+            "schema": {
+              "$ref": "#/definitions/v3alphaStartWebAuthNRegistrationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "registration",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userv3alphaStartWebAuthNRegistration"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/webauthn/registration_link": {
+      "post": {
+        "summary": "Create a WebAuthN registration link",
+        "description": "Create a link, which includes a code, that can either be returned or directly sent to the user.\nThe code will allow the user to start a new WebAuthN registration.",
+        "operationId": "ZITADELUsers_CreateWebAuthNRegistrationLink",
+        "responses": {
+          "200": {
+            "description": "WebAuthN registration successfully created",
+            "schema": {
+              "$ref": "#/definitions/v3alphaCreateWebAuthNRegistrationLinkResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ZITADELUsersCreateWebAuthNRegistrationLinkBody"
+            }
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/webauthn/{webAuthNId}": {
+      "delete": {
+        "summary": "Remove a WebAuthN authenticator",
+        "description": "Remove an existing WebAuthN authenticator from a user, so it cannot be used for authentication anymore.",
+        "operationId": "ZITADELUsers_RemoveWebAuthNAuthenticator",
+        "responses": {
+          "200": {
+            "description": "WebAuthN authenticator successfully removed",
+            "schema": {
+              "$ref": "#/definitions/v3alphaRemoveWebAuthNAuthenticatorResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "webAuthNId",
+            "description": "unique identifier of the WebAuthN authenticator.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    },
+    "/resources/v3alpha/users/{id}/webauthn/{webAuthNId}/_verify": {
+      "post": {
+        "summary": "Verify a WebAuthN registration",
+        "description": "Verify the WebAuthN registration started by StartWebAuthNRegistration with the public key credential.",
+        "operationId": "ZITADELUsers_VerifyWebAuthNRegistration",
+        "responses": {
+          "200": {
+            "description": "WebAuthN registration successfully verified",
+            "schema": {
+              "$ref": "#/definitions/v3alphaVerifyWebAuthNRegistrationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the user.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "webAuthNId",
+            "description": "unique identifier of the WebAuthN registration, which was returned in the start webauthn registration.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "verify",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userv3alphaVerifyWebAuthNRegistration"
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "organization.orgDomain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELUsers"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ZITADELUsersCreateWebAuthNRegistrationLinkBody": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "$ref": "#/definitions/v3alphaInstance",
+          "default": "\"domain from HOST or :authority header\""
+        },
+        "organization": {
+          "$ref": "#/definitions/v3alphaOrganization",
+          "description": "Optionally expect the user to be in this organization."
+        },
+        "sendLink": {
+          "$ref": "#/definitions/v3alphaSendWebAuthNRegistrationLink",
+          "description": "Let ZITADEL send the link to the user via email."
+        },
+        "returnCode": {
+          "$ref": "#/definitions/v3alphaReturnWebAuthNRegistrationCode",
+          "description": "Get the code back to provide it to the user in your preferred mechanism."
+        }
+      }
+    },
+    "ZITADELUsersRequestPasswordResetBody": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "$ref": "#/definitions/v3alphaInstance",
+          "default": "\"domain from HOST or :authority header\""
+        },
+        "organization": {
+          "$ref": "#/definitions/v3alphaOrganization",
+          "description": "Optionally expect the user to be in this organization."
+        },
+        "sendEmail": {
+          "$ref": "#/definitions/v3alphaSendPasswordResetEmail",
+          "description": "Let ZITADEL send the link to the user via email."
+        },
+        "sendSms": {
+          "$ref": "#/definitions/v3alphaSendPasswordResetSMS",
+          "description": "Let ZITADEL send the link to the user via SMS."
+        },
+        "returnCode": {
+          "$ref": "#/definitions/v3alphaReturnPasswordResetCode",
+          "description": "Get the code back to provide it to the user in your preferred mechanism."
+        }
+      }
+    },
+    "ZITADELUsersResendContactEmailCodeBody": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "$ref": "#/definitions/v3alphaInstance",
+          "default": "\"domain from HOST or :authority header\""
+        },
+        "organization": {
+          "$ref": "#/definitions/v3alphaOrganization",
+          "description": "Optionally expect the user to be in this organization."
+        },
+        "sendCode": {
+          "$ref": "#/definitions/v3alphaSendEmailVerificationCode",
+          "description": "Let ZITADEL send the link to the user via email."
+        },
+        "returnCode": {
+          "$ref": "#/definitions/v3alphaReturnEmailVerificationCode",
+          "description": "Get the code back to provide it to the user in your preferred mechanism."
+        }
+      }
+    },
+    "ZITADELUsersResendContactPhoneCodeBody": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "$ref": "#/definitions/v3alphaInstance",
+          "default": "\"domain from HOST or :authority header\""
+        },
+        "organization": {
+          "$ref": "#/definitions/v3alphaOrganization",
+          "description": "Optionally expect the user to be in this organization."
+        },
+        "sendCode": {
+          "$ref": "#/definitions/v3alphaSendPhoneVerificationCode",
+          "description": "Let ZITADEL send the link to the user via SMS."
+        },
+        "returnCode": {
+          "$ref": "#/definitions/v3alphaReturnPhoneVerificationCode",
+          "description": "Get the code back to provide it to the user in your preferred mechanism."
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "protobufNullValue": {
+      "type": "string",
+      "enum": [
+        "NULL_VALUE"
+      ],
+      "default": "NULL_VALUE",
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\nThe JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "userv3alphaContact": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "$ref": "#/definitions/v3alphaEmail",
+          "description": "Email contact information of the user."
+        },
+        "phone": {
+          "$ref": "#/definitions/v3alphaPhone",
+          "description": "Phone contact information of the user."
+        }
+      }
+    },
+    "userv3alphaCreateUser": {
+      "type": "object",
+      "properties": {
+        "schemaId": {
+          "type": "string",
+          "example": "69629026806489455",
+          "description": "Define the schema the user's data schema by providing it's ID.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "name": "Gigi",
+            "description": "the giraffe"
+          }
+        },
+        "contact": {
+          "$ref": "#/definitions/v3alphaSetContact",
+          "description": "Set the contact information (email, phone) for the user."
+        },
+        "authenticators": {
+          "$ref": "#/definitions/v3alphaSetAuthenticators",
+          "description": "Set the initial authenticators of the user."
+        },
+        "userId": {
+          "type": "string",
+          "example": "69629026806489455",
+          "description": "Optionally set a unique identifier of the user. If unset, ZITADEL will take care of it.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "schemaId"
+      ]
+    },
+    "userv3alphaGetUser": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails",
+          "description": "Details provide some base information (such as the last change date) of the user."
+        },
+        "schema": {
+          "$ref": "#/definitions/v3alphaGetSchema",
+          "description": "The schema the user and it's data is based on."
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "name": "Gigi",
+            "description": "the giraffe"
+          }
+        },
+        "contact": {
+          "$ref": "#/definitions/userv3alphaContact",
+          "description": "Contact information for the user. ZITADEL will use this in case of internal notifications."
+        },
+        "authenticators": {
+          "$ref": "#/definitions/v3alphaAuthenticators",
+          "description": "The user's authenticators. They are used to identify and authenticate the user\nduring the authentication process."
+        },
+        "state": {
+          "$ref": "#/definitions/v3alphaState",
+          "description": "State of the user."
+        }
+      }
+    },
+    "userv3alphaPatchUser": {
+      "type": "object",
+      "properties": {
+        "schemaId": {
+          "type": "string",
+          "example": "69629026806489455",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "data": {
+          "type": "object",
+          "example": {
+            "name": "Gigi",
+            "description": "the giraffe"
+          }
+        },
+        "contact": {
+          "$ref": "#/definitions/v3alphaSetContact",
+          "description": "Set the contact information (email, phone) for the user.\n\nTODO: No SetAuthenticators?"
+        }
+      }
+    },
+    "userv3alphaSetPassword": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string",
+          "example": "Secr3tP4ssw0rd!",
+          "description": "Provide the plain text password. ZITADEL will take care to store it in a secure way (hash).",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "hash": {
+          "type": "string",
+          "example": "$2a$12$lJ08fqVr8bFJilRVnDT9QeULI7YW.nT3iwUv6dyg0aCrfm3UY8XR2",
+          "description": "Encoded hash of a password in Modular Crypt Format:\nhttps://zitadel.com/docs/concepts/architecture/secrets#hashed-secrets.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "changeRequired": {
+          "type": "boolean",
+          "description": "Provide if the user needs to change the password on the next use."
+        },
+        "currentPassword": {
+          "type": "string",
+          "example": "Secr3tP4ssw0rd!",
+          "description": "Provide the current password to verify you're allowed to change the password.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "verificationCode": {
+          "type": "string",
+          "example": "SKJd342k",
+          "description": "Or provider the verification code generated during password reset request.",
+          "maxLength": 20,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "password",
+        "hash",
+        "currentPassword",
+        "verificationCode"
+      ]
+    },
+    "userv3alphaStartWebAuthNRegistration": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "example": "my-domain.zitadel.cloud",
+          "description": "Domain on which the user currently is or will be authenticated.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "authenticatorType": {
+          "$ref": "#/definitions/v3alphaWebAuthNAuthenticatorType",
+          "description": "Optionally specify the authenticator type of the passkey device (platform or cross-platform).\nIf none is provided, both values are allowed."
+        },
+        "code": {
+          "$ref": "#/definitions/v3alphaAuthenticatorRegistrationCode",
+          "description": "Optionally provide a one time code generated by ZITADEL.\nThis is required to start the passkey registration without user authentication."
+        }
+      },
+      "required": [
+        "domain"
+      ]
+    },
+    "userv3alphaVerifyWebAuthNRegistration": {
+      "type": "object",
+      "properties": {
+        "publicKeyCredential": {
+          "type": "object",
+          "example": {
+            "type": "public-key",
+            "id": "pawVarF4xPxLFmfCnRkwXWeTrKGzabcAi92LEI1WC00",
+            "rawId": "pawVarF4xPxLFmfCnRkwXWeTrKGzabcAi92LEI1WC00",
+            "response": {
+              "attestationObject": "o2NmbXRmcGFja2VkZ2F0dFN0bXSiY2FsZyZjc2lnWEcwRQIgRKS3VpeE9tfExXRzkoUKnG4rQWPvtSSt4YtDGgTx32oCIQDPey-2YJ4uIg-QCM4jj6aE2U3tgMFM_RP7Efx6xRu3JGhhdXRoRGF0YVikSZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFAAAAADju76085Yhmlt1CEOHkwLQAIKWsFWqxeMT8SxZnwp0ZMF1nk6yhs2m3AIvdixCNVgtNpQECAyYgASFYIMGUDSP2FAQn2MIfPMy7cyB_Y30VqixVgGULTBtFjfRiIlggjUGfQo3_-CrMmH3S-ZQkFKWKnNBQEAMkFtG-9A4zqW0",
+              "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiQlhXdHh0WGxJeFZZa0pHT1dVaUVmM25zby02aXZKdWw2YmNmWHdMVlFIayIsIm9yaWdpbiI6Imh0dHBzOi8vbG9jYWxob3N0OjgwODAifQ"
+            }
+          },
+          "title": "PublicKeyCredential Interface.\nGenerated helper methods populate the field from JSON created by a WebAuthN client.\nSee also:  https://www.w3.org/TR/webauthn/#publickeycredential",
+          "maxLength": 1048576,
+          "minLength": 55
+        },
+        "webAuthNName": {
+          "type": "string",
+          "example": "fido key",
+          "description": "Provide a name for the WebAuthN device. This will help identify it in the future.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "publicKeyCredential",
+        "webAuthNName"
+      ]
+    },
+    "v3alphaActivateUserResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaAddIDPAuthenticatorResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaAddOTPEmailAuthenticatorResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "otpEmailId": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "unique identifier of the OTP Email registration."
+        },
+        "verificationCode": {
+          "type": "string",
+          "example": "SKJd342k",
+          "description": "The OTP verification code will be set if a email was set with a return_code verification option."
+        }
+      }
+    },
+    "v3alphaAddOTPSMSAuthenticatorResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "otpSmsId": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "unique identifier of the OTP SMS registration."
+        },
+        "verificationCode": {
+          "type": "string",
+          "example": "SKJd342k",
+          "description": "The OTP verification code will be set if a phone was set with a return_code verification option."
+        }
+      }
+    },
+    "v3alphaAddUsernameResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "usernameId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "unique identifier of the username."
+        }
+      }
+    },
+    "v3alphaAndFilter": {
+      "type": "object",
+      "properties": {
+        "queries": {
+          "type": "array",
+          "example": [
+            {
+              "organizationIdFilter": {
+                "id": "163840776835432705",
+                "method": "TEXT_FILTER_METHOD_EQUALS"
+              }
+            },
+            {
+              "usernameFilter": {
+                "username": "gigi",
+                "method": "TEXT_FILTER_METHOD_EQUALS"
+              }
+            }
+          ],
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaSearchFilter"
+          }
+        }
+      }
+    },
+    "v3alphaAuthNKeyType": {
+      "type": "string",
+      "enum": [
+        "AUTHN_KEY_TYPE_UNSPECIFIED",
+        "AUTHN_KEY_TYPE_JSON"
+      ],
+      "default": "AUTHN_KEY_TYPE_UNSPECIFIED"
+    },
+    "v3alphaAuthenticationKey": {
+      "type": "object",
+      "properties": {
+        "authenticationKeyId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "ID is the read-only unique identifier of the authentication key."
+        },
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "type": {
+          "$ref": "#/definitions/v3alphaAuthNKeyType",
+          "example": "KEY_TYPE_JSON",
+          "title": "the file type of the key"
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "3019-04-01T08:45:00.000000Z",
+          "description": "After the expiration date, the key will no longer be usable for authentication."
+        }
+      }
+    },
+    "v3alphaAuthenticatorRegistrationCode": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "e2a48d6a-362b-4db6-a1fb-34feab84dc62",
+          "description": "ID to the one time code generated by ZITADEL.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "code": {
+          "type": "string",
+          "example": "SKJd342k",
+          "description": "one time code generated by ZITADEL.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "code"
+      ]
+    },
+    "v3alphaAuthenticators": {
+      "type": "object",
+      "properties": {
+        "usernames": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaUsername"
+          },
+          "description": "All of the user's usernames, which will be used for identification during authentication."
+        },
+        "password": {
+          "$ref": "#/definitions/v3alphaPassword",
+          "description": "If the user has set a password, the time it was last changed will be returned."
+        },
+        "webAuthN": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaWebAuthN"
+          },
+          "description": "Meta information about the user's WebAuthN authenticators."
+        },
+        "totps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaTOTP"
+          },
+          "description": "A list of the user's time-based one-time password (TOTP) authenticators,\nincl. the name for identification."
+        },
+        "otpSms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaOTPSMS"
+          },
+          "description": "A list of the user's one-time password (OTP) SMS authenticators."
+        },
+        "otpEmail": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaOTPEmail"
+          },
+          "description": "A list of the user's one-time password (OTP) Email authenticators."
+        },
+        "authenticationKeys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaAuthenticationKey"
+          },
+          "description": "A list of the user's authentication keys. They can be used to authenticate e.g. by JWT Profile."
+        },
+        "identityProviders": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaIdentityProvider"
+          },
+          "description": "A list of the user's linked identity providers (IDPs)."
+        }
+      }
+    },
+    "v3alphaCreateUserResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "emailCode": {
+          "type": "string",
+          "example": "SKJd342k",
+          "description": "The email code will be set if a contact email was set with a return_code verification option."
+        },
+        "phoneCode": {
+          "type": "string",
+          "example": "IFi39dk2",
+          "description": "The phone code will be set if a contact phone was set with a return_code verification option."
+        }
+      }
+    },
+    "v3alphaCreateWebAuthNRegistrationLinkResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "code": {
+          "$ref": "#/definitions/v3alphaAuthenticatorRegistrationCode",
+          "description": "In case the medium was set to return_code, the code will be returned."
+        }
+      }
+    },
+    "v3alphaDeactivateUserResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaDeleteUserResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaDetails": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "the timestamp of the first event applied to the object."
+        },
+        "changed": {
+          "type": "string",
+          "format": "date-time",
+          "description": "the timestamp of the last event applied to the object."
+        },
+        "owner": {
+          "$ref": "#/definitions/v3alphaOwner",
+          "example": "69629023906488334",
+          "description": "the parent object representing the returned objects context."
+        }
+      }
+    },
+    "v3alphaEmail": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string",
+          "example": "mini@mouse.com",
+          "description": "Email address of the user."
+        },
+        "isVerified": {
+          "type": "boolean",
+          "description": "IsVerified states if the email address has been verified to belong to the user."
+        }
+      }
+    },
+    "v3alphaEmailFilter": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string",
+          "example": "gigi@zitadel.com",
+          "description": "email address of the user",
+          "maxLength": 200
+        },
+        "method": {
+          "$ref": "#/definitions/v3alphaTextFilterMethod",
+          "description": "Defines which text comparison method used for the email query."
+        }
+      },
+      "required": [
+        "address"
+      ]
+    },
+    "v3alphaFieldName": {
+      "type": "string",
+      "enum": [
+        "FIELD_NAME_UNSPECIFIED",
+        "FIELD_NAME_ID",
+        "FIELD_NAME_CREATION_DATE",
+        "FIELD_NAME_CHANGE_DATE",
+        "FIELD_NAME_EMAIL",
+        "FIELD_NAME_PHONE",
+        "FIELD_NAME_STATE",
+        "FIELD_NAME_SCHEMA_ID",
+        "FIELD_NAME_SCHEMA_TYPE"
+      ],
+      "default": "FIELD_NAME_UNSPECIFIED"
+    },
+    "v3alphaGetIdentityProviderIntentResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "idpInformation": {
+          "$ref": "#/definitions/v3alphaIDPInformation",
+          "description": "Information returned by the identity provider (IDP) such as the identification of the user\nand detailed / profile information."
+        },
+        "id": {
+          "type": "string",
+          "example": "163840776835432345",
+          "description": "If the user was already federated and linked to a ZITADEL user, it's id will be returned."
+        }
+      }
+    },
+    "v3alphaGetSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629026806489455",
+          "description": "The unique identifier of the user schema."
+        },
+        "type": {
+          "type": "string",
+          "example": "employees",
+          "description": "The human readable name of the user schema."
+        },
+        "revision": {
+          "type": "integer",
+          "format": "int64",
+          "example": 7,
+          "description": "The revision the user's data is based on of the revision."
+        }
+      }
+    },
+    "v3alphaGetUserResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/userv3alphaGetUser"
+        }
+      }
+    },
+    "v3alphaIDPAuthenticator": {
+      "type": "object",
+      "properties": {
+        "idpId": {
+          "type": "string",
+          "example": "69629026806489455",
+          "title": "ID of the identity provider",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "userId": {
+          "type": "string",
+          "example": "d654e6ba-70a3-48ef-a95d-37c8d8a7901a",
+          "title": "ID of the user provided by the identity provider",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "userName": {
+          "type": "string",
+          "example": "user@external.com",
+          "description": "Username of the user provided by the identity provider.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "idpId",
+        "userId",
+        "userName"
+      ]
+    },
+    "v3alphaIDPInformation": {
+      "type": "object",
+      "properties": {
+        "idpId": {
+          "type": "string",
+          "example": "69629026806489455",
+          "description": "ID of the identity provider."
+        },
+        "userId": {
+          "type": "string",
+          "example": "d654e6ba-70a3-48ef-a95d-37c8d8a7901a",
+          "description": "ID of the user provided by the identity provider."
+        },
+        "userName": {
+          "type": "string",
+          "example": "user@external.com",
+          "description": "Username of the user provided by the identity provider."
+        },
+        "rawInformation": {
+          "type": "object",
+          "description": "Complete information returned by the identity provider."
+        },
+        "oauth": {
+          "$ref": "#/definitions/v3alphaIDPOAuthAccessInformation",
+          "description": "OAuth/OIDC access (and id_token) returned by the identity provider."
+        },
+        "ldap": {
+          "$ref": "#/definitions/v3alphaIDPLDAPAccessInformation",
+          "title": "LDAP entity attributes returned by the identity provider"
+        },
+        "saml": {
+          "$ref": "#/definitions/v3alphaIDPSAMLAccessInformation",
+          "title": "SAMLResponse returned by the identity provider"
+        }
+      }
+    },
+    "v3alphaIDPLDAPAccessInformation": {
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "description": "The attributes of the user returned by the identity provider."
+        }
+      }
+    },
+    "v3alphaIDPOAuthAccessInformation": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string",
+          "example": "JWLKFSJlijorifjOJOIehjt8jOIEWJGh3tgiEN3WIUGH8Ehgiewhg",
+          "description": "The access_token returned by the identity provider."
+        },
+        "idToken": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+          "description": "In case the provider returned an id_token."
+        }
+      }
+    },
+    "v3alphaIDPSAMLAccessInformation": {
+      "type": "object",
+      "properties": {
+        "assertion": {
+          "type": "string",
+          "format": "byte",
+          "example": "PEFzc2VydGlvbiB4bWxucz11cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6YXNzZXJ0aW9uIElEPV9mNjc5NDE5MjliZGY5MTcyOTMyMyBJc3N1ZUluc3RhbnQ9MjAyNC0wMi0wOFQxMzo1MTozNy45NDdaIFZlcnNpb249Mi4wPjxJc3N1ZXIgeG1sbnM9dXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOmFzc2VydGlvbiBOYW1lUXVhbGlmaWVyPSBTUE5hbWVRdWFsaWZpZXI9IEZvcm1hdD11cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6bmFtZWlkLWZvcm1hdDplbnRpdHkgU1BQcm92aWRlZElEPT5odHRwczovL3NhbWwuZXhhbXBsZS5jb20vZW50aXR5aWRcPC9Jc3N1ZXJcPlw8U2lnbmF0dXJlXD5cPFNwYWNlXD5cPC9TcGFjZVw+XDxUYWdcPlw8L1RhZ1w+XDwvU2lnbmF0dXJlXD5cPFN1YmplY3QgeG1sbnM9dXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOmFzc2VydGlvbj48TmFtZUlEIE5hbWVRdWFsaWZpZXI9IFNQTmFtZVF1YWxpZmllcj0gRm9ybWF0PXVybjpvYXNpczpuYW1lczp0YzpTQU1MOjEuMTpuYW1laWQtZm9ybWF0OmVtYWlsQWRkcmVzcyBTUFByb3ZpZGVkSUQ9PmphY2tzb25AZXhhbXBsZS5jb208L05hbWVJRD48U3ViamVjdENvbmZpcm1hdGlvbiBNZXRob2Q9dXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOmNtOmJlYXJlcj48U3ViamVjdENvbmZpcm1hdGlvbkRhdGEgTm90T25PckFmdGVyPTIwMjQtMDItMDhUMTM6NTY6MzcuOTQ3WiBOb3RCZWZvcmU9MDAwMS0wMS0wMVQwMDowMDowMFogUmVjaXBpZW50PWh0dHBzOi8vZGVtby56aXRhZGVsLmNsb3VkL2lkcHMvMjUyODM0OTQ3NjU4NzA5NzYyL3NhbWwvYWNzIEluUmVzcG9uc2VUbz1pZC0yMGIxZGEyNWUzNzVhYWQyYmZmNjIxOGY2ZmUzMWRmMzYzNTRjMmI2IEFkZHJlc3M9PjwvU3ViamVjdENvbmZpcm1hdGlvbkRhdGE+PC9TdWJqZWN0Q29uZmlybWF0aW9uPjwvU3ViamVjdD48Q29uZGl0aW9ucyBOb3RCZWZvcmU9MjAyNC0wMi0wOFQxMzo0NjozNy45NDdaIE5vdE9uT3JBZnRlcj0yMDI0LTAyLTA4VDEzOjU2OjM3Ljk0N1o+PEF1ZGllbmNlUmVzdHJpY3Rpb24+PEF1ZGllbmNlPmh0dHBzOi8vZGVtby56aXRhZGVsLmNsb3VkL2lkcHMvMjUyODM0OTQ3NjU4NzA5NzYyL3NhbWwvbWV0YWRhdGFcPC9BdWRpZW5jZVw+XDwvQXVkaWVuY2VSZXN0cmljdGlvblw+XDwvQ29uZGl0aW9uc1w+XDxBdXRoblN0YXRlbWVudCBBdXRobkluc3RhbnQ9MjAyNC0wMi0wOFQxMzo1MTozNy45NDdaIFNlc3Npb25JbmRleD1pZC0yMGIxZGEyNWUzNzVhYWQyYmZmNjIxOGY2ZmUzMWRmMzYzNTRjMmI2PjxBdXRobkNvbnRleHQ+PEF1dGhuQ29udGV4dENsYXNzUmVmPnVybjpvYXNpczpuYW1lczp0YzpTQU1MOjIuMDphYzpjbGFzc2VzOlBhc3N3b3JkUHJvdGVjdGVkVHJhbnNwb3J0PC9BdXRobkNvbnRleHRDbGFzc1JlZj48L0F1dGhuQ29udGV4dD48L0F1dGhuU3RhdGVtZW50PjxBdHRyaWJ1dGVTdGF0ZW1lbnQ+PEF0dHJpYnV0ZSBGcmllbmRseU5hbWU9IE5hbWU9aWQgTmFtZUZvcm1hdD11cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6YXR0cm5hbWUtZm9ybWF0OnVuc3BlY2lmaWVkPjxBdHRyaWJ1dGVWYWx1ZSB4bWxuczpfWE1MU2NoZW1hLWluc3RhbmNlPWh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1hLWluc3RhbmNlIF9YTUxTY2hlbWEtaW5zdGFuY2U6dHlwZT14czpzdHJpbmc+MWRkYTlmYjQ5MWRjMDFiZDI0ZDI0MjNiYTJmMjJhZTU2MWY1NmRkZjIzNzZiMjlhMTFjODAyODFkMjEyMDFmOTwvQXR0cmlidXRlVmFsdWU+PC9BdHRyaWJ1dGU+PEF0dHJpYnV0ZSBGcmllbmRseU5hbWU9IE5hbWU9ZW1haWwgTmFtZUZvcm1hdD11cm46b2FzaXM6bmFtZXM6dGM6U0FNTDoyLjA6YXR0cm5hbWUtZm9ybWF0OnVuc3BlY2lmaWVkPjxBdHRyaWJ1dGVWYWx1ZSB4bWxuczpfWE1MU2NoZW1hLWluc3RhbmNlPWh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1hLWluc3RhbmNlIF9YTUxTY2hlbWEtaW5zdGFuY2U6dHlwZT14czpzdHJpbmc+amFja3NvbkBleGFtcGxlLmNvbTwvQXR0cmlidXRlVmFsdWU+PC9BdHRyaWJ1dGU+PEF0dHJpYnV0ZSBGcmllbmRseU5hbWU9IE5hbWU9Zmlyc3ROYW1lIE5hbWVGb3JtYXQ9dXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOmF0dHJuYW1lLWZvcm1hdDp1bnNwZWNpZmllZD48QXR0cmlidXRlVmFsdWUgeG1sbnM6X1hNTFNjaGVtYS1pbnN0YW5jZT1odHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSBfWE1MU2NoZW1hLWluc3RhbmNlOnR5cGU9eHM6c3RyaW5nPmphY2tzb248L0F0dHJpYnV0ZVZhbHVlPjwvQXR0cmlidXRlPjxBdHRyaWJ1dGUgRnJpZW5kbHlOYW1lPSBOYW1lPWxhc3ROYW1lIE5hbWVGb3JtYXQ9dXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOmF0dHJuYW1lLWZvcm1hdDp1bnNwZWNpZmllZD48QXR0cmlidXRlVmFsdWUgeG1sbnM6X1hNTFNjaGVtYS1pbnN0YW5jZT1odHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSBfWE1MU2NoZW1hLWluc3RhbmNlOnR5cGU9eHM6c3RyaW5nPmphY2tzb248L0F0dHJpYnV0ZVZhbHVlPjwvQXR0cmlidXRlPjwvQXR0cmlidXRlU3RhdGVtZW50PjwvQXNzZXJ0aW9uPg==",
+          "description": "The SAML assertion returned by the identity provider."
+        }
+      }
+    },
+    "v3alphaIdentityProvider": {
+      "type": "object",
+      "properties": {
+        "idpId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "IDP ID is the read-only unique identifier of the identity provider in ZITADEL."
+        },
+        "idpName": {
+          "type": "string",
+          "example": "google",
+          "description": "IDP name is the name of the identity provider in ZITADEL."
+        },
+        "userId": {
+          "type": "string",
+          "example": "as-12-df-89",
+          "description": "The user ID represents the ID provided by the identity provider.\nThis ID is used to link the user in ZITADEL with the identity provider."
+        },
+        "username": {
+          "type": "string",
+          "example": "gigi.long-neck@gmail.com",
+          "description": "The username represents the username provided by the identity provider."
+        }
+      }
+    },
+    "v3alphaIdentityProviderIntent": {
+      "type": "object",
+      "properties": {
+        "idpIntentId": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "ID of the identity provider (IDP) intent."
+        },
+        "idpIntentToken": {
+          "type": "string",
+          "example": "SJKL3ioIDpo342ioqw98fjp3sdf32wahb=",
+          "description": "Token of the identity provider (IDP) intent."
+        },
+        "userId": {
+          "type": "string",
+          "example": "163840776835432345",
+          "description": "If the user was already federated and linked to a ZITADEL user, it's id will be returned."
+        }
+      }
+    },
+    "v3alphaInstance": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        }
+      }
+    },
+    "v3alphaLDAPCredentials": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "username",
+          "description": "Username used to login through LDAP.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "password": {
+          "type": "string",
+          "example": "Password1!",
+          "description": "Password used to login through LDAP.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "username",
+        "password"
+      ]
+    },
+    "v3alphaListDetails": {
+      "type": "object",
+      "properties": {
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100
+        },
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "the last time the projection got updated"
+        }
+      }
+    },
+    "v3alphaLockUserResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaNotFilter": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/v3alphaSearchFilter",
+          "example": {
+            "schemaIDFilter": {
+              "id": "163840776835432705"
+            }
+          }
+        }
+      }
+    },
+    "v3alphaOTPEmail": {
+      "type": "object",
+      "properties": {
+        "otpEmailId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "unique identifier of the one-time password (OTP) Email authenticator."
+        },
+        "address": {
+          "type": "string",
+          "example": "mini@mouse.com",
+          "description": "The email address used for the OTP Email authenticator."
+        },
+        "isVerified": {
+          "type": "boolean",
+          "description": "State whether the OTP Email registration has been completed."
+        }
+      }
+    },
+    "v3alphaOTPSMS": {
+      "type": "object",
+      "properties": {
+        "otpSmsId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "unique identifier of the one-time password (OTP) SMS authenticator."
+        },
+        "phone": {
+          "type": "string",
+          "example": "+41791234567",
+          "description": "The phone number used for the OTP SMS authenticator."
+        },
+        "isVerified": {
+          "type": "boolean",
+          "description": "State whether the OTP SMS registration has been completed."
+        }
+      }
+    },
+    "v3alphaOrFilter": {
+      "type": "object",
+      "properties": {
+        "queries": {
+          "type": "array",
+          "example": [
+            {
+              "userIdFilter": {
+                "id": "163840776835432705",
+                "method": "TEXT_FILTER_METHOD_EQUALS"
+              }
+            },
+            {
+              "userIdFilter": {
+                "id": "163840776835943483",
+                "method": "TEXT_FILTER_METHOD_EQUALS"
+              }
+            }
+          ],
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaSearchFilter"
+          }
+        }
+      }
+    },
+    "v3alphaOrganization": {
+      "type": "object",
+      "properties": {
+        "orgId": {
+          "type": "string"
+        },
+        "orgDomain": {
+          "type": "string"
+        }
+      }
+    },
+    "v3alphaOrganizationIDFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "Defines the ID of the organization to query for.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "method": {
+          "$ref": "#/definitions/v3alphaTextFilterMethod",
+          "description": "Defines which text comparison method used for the id query."
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "v3alphaOwner": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/v3alphaOwnerType"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "v3alphaOwnerType": {
+      "type": "string",
+      "enum": [
+        "OWNER_TYPE_UNSPECIFIED",
+        "OWNER_TYPE_SYSTEM",
+        "OWNER_TYPE_INSTANCE",
+        "OWNER_TYPE_ORG"
+      ],
+      "default": "OWNER_TYPE_UNSPECIFIED"
+    },
+    "v3alphaPassword": {
+      "type": "object",
+      "properties": {
+        "lastChanged": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019-04-01T08:45:00.000000Z",
+          "description": "States the time the password was last changed."
+        }
+      }
+    },
+    "v3alphaPatchUserResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "emailCode": {
+          "type": "string",
+          "example": "SKJd342k",
+          "description": "The email code will be set if a contact email was set with a return_code verification option."
+        },
+        "phoneCode": {
+          "type": "string",
+          "example": "IFi39dk2",
+          "description": "The phone code will be set if a contact phone was set with a return_code verification option."
+        }
+      }
+    },
+    "v3alphaPhone": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "string",
+          "example": "+41791234567",
+          "description": "Phone number of the user."
+        },
+        "isVerified": {
+          "type": "boolean",
+          "description": "IsVerified states if the phone number has been verified to belong to the user."
+        }
+      }
+    },
+    "v3alphaPhoneFilter": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "string",
+          "example": "+41791234567",
+          "description": "Defines the phone of the user to query for.",
+          "maxLength": 20,
+          "minLength": 1
+        },
+        "method": {
+          "$ref": "#/definitions/v3alphaTextFilterMethod",
+          "description": "Defines which text comparison method used for the phone query."
+        }
+      },
+      "required": [
+        "number"
+      ]
+    },
+    "v3alphaRedirectURLs": {
+      "type": "object",
+      "properties": {
+        "successUrl": {
+          "type": "string",
+          "example": "https://custom.com/login/idp/success",
+          "description": "URL to which the user will be redirected after a successful login.",
+          "maxLength": 2048,
+          "minLength": 1
+        },
+        "failureUrl": {
+          "type": "string",
+          "example": "https://custom.com/login/idp/fail",
+          "description": "URL to which the user will be redirected after a failed login.",
+          "maxLength": 2048,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "successUrl",
+        "failureUrl"
+      ]
+    },
+    "v3alphaRemoveIDPAuthenticatorResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaRemoveOTPEmailAuthenticatorResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaRemoveOTPSMSAuthenticatorResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaRemoveTOTPAuthenticatorResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaRemoveUsernameResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaRemoveWebAuthNAuthenticatorResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaRequestPasswordResetResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "verificationCode": {
+          "type": "string",
+          "example": "SKJd342k",
+          "description": "In case the medium was set to return_code, the code will be returned."
+        }
+      }
+    },
+    "v3alphaResendContactEmailCodeResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "verificationCode": {
+          "type": "string",
+          "description": "in case the verification was set to return_code, the code will be returned."
+        }
+      }
+    },
+    "v3alphaResendContactPhoneCodeResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "verificationCode": {
+          "type": "string",
+          "description": "in case the verification was set to return_code, the code will be returned."
+        }
+      }
+    },
+    "v3alphaReturnEmailVerificationCode": {
+      "type": "object"
+    },
+    "v3alphaReturnPasswordResetCode": {
+      "type": "object"
+    },
+    "v3alphaReturnPhoneVerificationCode": {
+      "type": "object"
+    },
+    "v3alphaReturnWebAuthNRegistrationCode": {
+      "type": "object"
+    },
+    "v3alphaSchemaIDFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "Defines the ID of the schema to query for.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "v3alphaSchemaTypeFilter": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "employees",
+          "description": "Defines which type to query for.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "method": {
+          "$ref": "#/definitions/v3alphaTextFilterMethod",
+          "description": "Defines which text comparison method used for the type query."
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "v3alphaSearchFilter": {
+      "type": "object",
+      "properties": {
+        "orFilter": {
+          "$ref": "#/definitions/v3alphaOrFilter",
+          "description": "Union the results of each sub filter ('OR')."
+        },
+        "andFilter": {
+          "$ref": "#/definitions/v3alphaAndFilter",
+          "description": "Limit the result to match all sub queries ('AND').\nNote that if you specify multiple queries, they will be implicitly used as andQueries.\nUse the andFilter in combination with orFilter and notFilter."
+        },
+        "notFilter": {
+          "$ref": "#/definitions/v3alphaNotFilter",
+          "description": "Exclude / Negate the result of the sub query ('NOT')."
+        },
+        "userIdFilter": {
+          "$ref": "#/definitions/v3alphaUserIDFilter",
+          "description": "Limit the result to a specific user ID."
+        },
+        "organizationIdFilter": {
+          "$ref": "#/definitions/v3alphaOrganizationIDFilter",
+          "description": "Limit the result to a specific organization."
+        },
+        "usernameFilter": {
+          "$ref": "#/definitions/v3alphaUsernameFilter",
+          "description": "Limit the result to a specific username."
+        },
+        "emailFilter": {
+          "$ref": "#/definitions/v3alphaEmailFilter",
+          "description": "Limit the result to a specific contact email."
+        },
+        "phoneFilter": {
+          "$ref": "#/definitions/v3alphaPhoneFilter",
+          "description": "Limit the result to a specific contact phone."
+        },
+        "stateFilter": {
+          "$ref": "#/definitions/v3alphaStateFilter",
+          "description": "Limit the result to a specific state of the user."
+        },
+        "schemaIdFilter": {
+          "$ref": "#/definitions/v3alphaSchemaIDFilter",
+          "description": "Limit the result to a specific schema ID."
+        },
+        "schemaTypeFilter": {
+          "$ref": "#/definitions/v3alphaSchemaTypeFilter",
+          "description": "Limit the result to a specific schema type."
+        }
+      }
+    },
+    "v3alphaSearchQuery": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "example": "0"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "example": 100,
+          "description": "Maximum amount of events returned. If not configured otherwise, the default is 100, the maximum is 1000. If the limit exceeds the maximum, ZITADEL throws an error."
+        },
+        "desc": {
+          "type": "boolean",
+          "description": "default is ascending, because together with the creation date sorting column, this returns the most deterministic pagination results."
+        }
+      },
+      "description": "Object unspecific list filters like offset, limit and asc/desc.",
+      "title": "General List Query"
+    },
+    "v3alphaSearchUsersResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaListDetails",
+          "description": "Details provides information about the returned result including total amount found."
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/userv3alphaGetUser"
+          },
+          "description": "The result contains the user schemas, which matched the queries."
+        }
+      }
+    },
+    "v3alphaSendEmailVerificationCode": {
+      "type": "object",
+      "properties": {
+        "urlTemplate": {
+          "type": "string",
+          "example": "https://example.com/email/verify?userID={{.UserID}}\u0026code={{.Code}}\u0026orgID={{.OrgID}}",
+          "description": "Optionally set a url_template, which will be used in the verification mail sent by ZITADEL\nto guide the user to your verification page.\nIf no template is set, the default ZITADEL url will be used.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      }
+    },
+    "v3alphaSendPasswordResetEmail": {
+      "type": "object",
+      "properties": {
+        "urlTemplate": {
+          "type": "string",
+          "example": "https://example.com/password/changey?userID={{.UserID}}\u0026code={{.Code}}\u0026orgID={{.OrgID}}",
+          "description": "Optionally set a url_template, which will be used in the password reset mail\nsent by ZITADEL to guide the user to your password change page.\nIf no template is set, the default ZITADEL url will be used.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      }
+    },
+    "v3alphaSendPasswordResetSMS": {
+      "type": "object"
+    },
+    "v3alphaSendPhoneVerificationCode": {
+      "type": "object"
+    },
+    "v3alphaSendWebAuthNRegistrationLink": {
+      "type": "object",
+      "properties": {
+        "urlTemplate": {
+          "type": "string",
+          "example": "https://example.com/passkey/register?userID={{.UserID}}\u0026orgID={{.OrgID}}\u0026codeID={{.CodeID}}\u0026code={{.Code}}",
+          "description": "Optionally set a url_template, which will be used in the mail sent by ZITADEL\nto guide the user to your passkey registration page.\nIf no template is set, the default ZITADEL url will be used.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      }
+    },
+    "v3alphaSetAuthenticators": {
+      "type": "object",
+      "properties": {
+        "usernames": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaSetUsername"
+          }
+        },
+        "password": {
+          "$ref": "#/definitions/userv3alphaSetPassword"
+        }
+      }
+    },
+    "v3alphaSetContact": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "$ref": "#/definitions/v3alphaSetEmail"
+        },
+        "phone": {
+          "$ref": "#/definitions/v3alphaSetPhone"
+        }
+      }
+    },
+    "v3alphaSetContactEmailResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "verificationCode": {
+          "type": "string",
+          "example": "SKJd342k",
+          "description": "The verification code will be set if a contact email was set with a return_code verification option."
+        }
+      }
+    },
+    "v3alphaSetContactPhoneResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "verificationCode": {
+          "type": "string",
+          "example": "SKJd342k",
+          "description": "The phone verification code will be set if a contact phone was set with a return_code verification option."
+        }
+      }
+    },
+    "v3alphaSetEmail": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string",
+          "example": "mini@mouse.com",
+          "description": "Set the email address.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "sendCode": {
+          "$ref": "#/definitions/v3alphaSendEmailVerificationCode",
+          "description": "Let ZITADEL send the link to the user via email."
+        },
+        "returnCode": {
+          "$ref": "#/definitions/v3alphaReturnEmailVerificationCode",
+          "description": "Get the code back to provide it to the user in your preferred mechanism."
+        },
+        "isVerified": {
+          "type": "boolean",
+          "description": "Set the email as already verified."
+        }
+      },
+      "required": [
+        "address"
+      ]
+    },
+    "v3alphaSetPasswordResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaSetPhone": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "string",
+          "example": "+41791234567",
+          "description": "Set the user's phone number.",
+          "maxLength": 20,
+          "minLength": 1
+        },
+        "sendCode": {
+          "$ref": "#/definitions/v3alphaSendPhoneVerificationCode",
+          "description": "Let ZITADEL send the link to the user via SMS."
+        },
+        "returnCode": {
+          "$ref": "#/definitions/v3alphaReturnPhoneVerificationCode",
+          "description": "Get the code back to provide it to the user in your preferred mechanism."
+        },
+        "isVerified": {
+          "type": "boolean",
+          "description": "Set the phone as already verified."
+        }
+      },
+      "required": [
+        "number"
+      ]
+    },
+    "v3alphaSetUsername": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "gigi-giraffe",
+          "description": "Set the user's username. This will be used for identification during authentication.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "isOrganizationSpecific": {
+          "type": "boolean",
+          "description": "By default username must be unique across all organizations in an instance.\nThis option allow to restrict the uniqueness to the user's own organization.\nAs a result, this username can only be used if the authentication is limited\nto the corresponding organization.\n\nThis can be useful if you provide multiple usernames for a single user, where one\nif specific to your organization, e.g.:\n- gigi-giraffe@zitadel.com (unique across organizations)\n- gigi-giraffe (unique only inside the ZITADEL organization)"
+        }
+      },
+      "required": [
+        "username"
+      ]
+    },
+    "v3alphaStartIdentityProviderIntentRequest": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "$ref": "#/definitions/v3alphaInstance",
+          "default": "\"domain from HOST or :authority header\""
+        },
+        "organization": {
+          "$ref": "#/definitions/v3alphaOrganization",
+          "description": "Optionally expect the user to be in this organization."
+        },
+        "idpId": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "ID of an existing identity provider (IDP).",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "urls": {
+          "$ref": "#/definitions/v3alphaRedirectURLs"
+        },
+        "ldap": {
+          "$ref": "#/definitions/v3alphaLDAPCredentials"
+        }
+      },
+      "required": [
+        "idpId"
+      ]
+    },
+    "v3alphaStartIdentityProviderIntentResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "authUrl": {
+          "type": "string",
+          "example": "https://accounts.google.com/o/oauth2/v2/auth?client_id=clientID\u0026callback=https%3A%2F%2Fzitadel.cloud%2Fidps%2Fcallback",
+          "description": "The authentication URL to which the client should redirect."
+        },
+        "idpIntent": {
+          "$ref": "#/definitions/v3alphaIdentityProviderIntent",
+          "description": "The Start Intent directly succeeded and returned the IDP Intent.\nFurther information can be retrieved by using the retrieve identity provider intent request."
+        },
+        "postForm": {
+          "type": "string",
+          "format": "byte",
+          "description": "The HTML form with the embedded POST call information to render and execute."
+        }
+      }
+    },
+    "v3alphaStartTOTPRegistrationResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "totpId": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "unique identifier of the TOTP registration."
+        },
+        "uri": {
+          "type": "string",
+          "example": "otpauth://totp/ZITADEL:gigi@acme.zitadel.cloud?algorithm=SHA1\u0026digits=6\u0026issuer=ZITADEL\u0026period=30\u0026secret=TJOPWSDYILLHXFV4MLKNNJOWFG7VSDCK",
+          "description": "The TOTP URI, which can be used to create a QR Code for scanning with an authenticator app."
+        },
+        "secret": {
+          "type": "string",
+          "example": "TJOPWSDYILLHXFV4MLKNNJOWFG7VSDCK",
+          "description": "The TOTP secret, which can be used for manually adding in an authenticator app."
+        }
+      }
+    },
+    "v3alphaStartWebAuthNRegistrationResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        },
+        "webAuthNId": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "unique identifier of the WebAuthN registration."
+        },
+        "publicKeyCredentialCreationOptions": {
+          "type": "object",
+          "example": {
+            "publicKey": {
+              "attestation": "none",
+              "authenticatorSelection": {
+                "userVerification": "required"
+              },
+              "challenge": "XaMYwWOZ5hj6pwtwJJlpcI-ExkO5TxevBMG4R8DoKQQ",
+              "excludeCredentials": [
+                {
+                  "id": "tVp1QfYhT8DkyEHVrv7blnpAo2YJzbZgZNBf7zPs6CI",
+                  "type": "public-key"
+                }
+              ],
+              "pubKeyCredParams": [
+                {
+                  "alg": -7,
+                  "type": "public-key"
+                }
+              ],
+              "rp": {
+                "id": "localhost",
+                "name": "ZITADEL"
+              },
+              "timeout": 300000,
+              "user": {
+                "displayName": "Tim Mohlmann",
+                "id": "MjE1NTk4MDAwNDY0OTk4OTQw",
+                "name": "tim"
+              }
+            }
+          },
+          "title": "Options for Credential Creation (dictionary PublicKeyCredentialCreationOptions).\nGenerated helper methods transform the field to JSON, for use in a WebauthN client.\nSee also:  https://www.w3.org/TR/webauthn/#dictdef-publickeycredentialcreationoptions"
+        }
+      }
+    },
+    "v3alphaState": {
+      "type": "string",
+      "enum": [
+        "USER_STATE_UNSPECIFIED",
+        "USER_STATE_ACTIVE",
+        "USER_STATE_INACTIVE",
+        "USER_STATE_DELETED",
+        "USER_STATE_LOCKED"
+      ],
+      "default": "USER_STATE_UNSPECIFIED"
+    },
+    "v3alphaStateFilter": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/v3alphaState",
+          "example": "STATE_ACTIVE",
+          "description": "Defines the state to query for."
+        }
+      }
+    },
+    "v3alphaTOTP": {
+      "type": "object",
+      "properties": {
+        "totpId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "unique identifier of the time-based one-time password (TOTP) authenticator."
+        },
+        "name": {
+          "type": "string",
+          "example": "Google Authenticator",
+          "description": "The name provided during registration. This is used for easier identification."
+        },
+        "isVerified": {
+          "type": "boolean",
+          "description": "State whether the TOTP registration has been completed."
+        }
+      }
+    },
+    "v3alphaTextFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_FILTER_METHOD_EQUALS",
+        "TEXT_FILTER_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_STARTS_WITH",
+        "TEXT_FILTER_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_CONTAINS"
+      ],
+      "default": "TEXT_FILTER_METHOD_EQUALS"
+    },
+    "v3alphaUnlockUserResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaUserIDFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "Defines the ID of the user to query for.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "method": {
+          "$ref": "#/definitions/v3alphaTextFilterMethod",
+          "description": "Defines which text comparison method used for the id query."
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "v3alphaUsername": {
+      "type": "object",
+      "properties": {
+        "usernameId": {
+          "type": "string",
+          "description": "unique identifier of the username."
+        },
+        "username": {
+          "type": "string",
+          "example": "gigi-giraffe",
+          "description": "The user's unique username. It is used for identification during authentication."
+        },
+        "isOrganizationSpecific": {
+          "type": "boolean",
+          "description": "By default usernames must be unique across all organizations in an instance.\nThis option allow to restrict the uniqueness to the user's own organization.\nAs a result, this username can only be used if the authentication is limited\nto the corresponding organization.\n\nThis can be useful if you provide multiple usernames for a single user, where one\nif specific to your organization, e.g.:\n- gigi-giraffe@zitadel.com (unique across organizations)\n- gigi-giraffe (unique only inside the ZITADEL organization)"
+        }
+      }
+    },
+    "v3alphaUsernameFilter": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "example": "gigi-giraffe",
+          "description": "Defines the username to query for.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "method": {
+          "$ref": "#/definitions/v3alphaTextFilterMethod",
+          "description": "Defines which text comparison method used for the username query."
+        },
+        "isOrganizationSpecific": {
+          "type": "boolean",
+          "description": "Defines that the username must only be unique in the organisation."
+        }
+      },
+      "required": [
+        "username"
+      ]
+    },
+    "v3alphaVerifyContactEmailResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaVerifyContactPhoneResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaVerifyOTPEmailRegistrationResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaVerifyOTPSMSRegistrationResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaVerifyTOTPRegistrationResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaVerifyWebAuthNRegistrationResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaWebAuthN": {
+      "type": "object",
+      "properties": {
+        "webAuthNId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "unique identifier of the WebAuthN authenticator."
+        },
+        "name": {
+          "type": "string",
+          "example": "fido key",
+          "description": "Name of the WebAuthN authenticator. This is used for easier identification."
+        },
+        "isVerified": {
+          "type": "boolean",
+          "description": "State whether the WebAuthN registration has been completed."
+        },
+        "userVerified": {
+          "type": "boolean",
+          "description": "States if the user has been verified during the registration. Authentication with this device\nwill be considered as multi-factor authentication (MFA) without the need to check a password\n(typically known as Passkeys).\nWithout user verification it will be a second factor authentication (2FA), typically done\nafter a password check.\n\nMore on WebAuthN User Verification: https://www.w3.org/TR/webauthn/#user-verification"
+        }
+      }
+    },
+    "v3alphaWebAuthNAuthenticatorType": {
+      "type": "string",
+      "enum": [
+        "WEB_AUTH_N_AUTHENTICATOR_UNSPECIFIED",
+        "WEB_AUTH_N_AUTHENTICATOR_PLATFORM",
+        "WEB_AUTH_N_AUTHENTICATOR_CROSS_PLATFORM"
+      ],
+      "default": "WEB_AUTH_N_AUTHENTICATOR_UNSPECIFIED"
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

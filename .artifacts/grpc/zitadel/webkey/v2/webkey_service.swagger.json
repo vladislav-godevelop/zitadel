@@ -1,0 +1,361 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Web Key Service",
+    "description": "This API is intended to manage web keys for a ZITADEL instance, used to sign and validate OIDC tokens.\n\nThe public key endpoint (outside of this service) is used to retrieve the public keys of the active and inactive keys.\n\nPlease make sure to enable the `web_key` feature flag on your instance to use this service.",
+    "version": "2.0",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "WebKeyService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/v2/web_keys": {
+      "get": {
+        "summary": "List Web Keys",
+        "description": "List all web keys and their states.\n\nRequired permission:\n  - `iam.web_key.read`",
+        "operationId": "WebKeyService_ListWebKeys",
+        "responses": {
+          "200": {
+            "description": "List of all web keys.",
+            "schema": {
+              "$ref": "#/definitions/v2ListWebKeysResponse"
+            }
+          },
+          "400": {
+            "description": "The feature flag `web_key` is not enabled.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "WebKeyService"
+        ]
+      }
+    },
+    "/v2/web_keys/{id}": {
+      "delete": {
+        "summary": "Delete Web Key",
+        "description": "Delete a web key pair. Only inactive keys can be deleted. Once a key is deleted,\nany tokens signed by this key will be invalid.\nNote that the JWKs OIDC endpoint returns a cacheable response.\nIn case the web key is not found, the request will return a successful response as\nthe desired state is already achieved.\nYou can check the change date in the response to verify if the web key was deleted during the request.\n\nRequired permission:\n  - `iam.web_key.delete`",
+        "operationId": "WebKeyService_DeleteWebKey",
+        "responses": {
+          "200": {
+            "description": "Web key deleted successfully.",
+            "schema": {
+              "$ref": "#/definitions/v2DeleteWebKeyResponse"
+            }
+          },
+          "400": {
+            "description": "The feature flag `web_key` is not enabled or the web key is currently active.",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The unique identifier of the key to delete.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "WebKeyService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2ActivateWebKeyResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the activation of the key."
+        }
+      }
+    },
+    "v2CreateWebKeyResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "The unique identifier of the newly created key."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the key creation."
+        }
+      }
+    },
+    "v2DeleteWebKeyResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the deletion of the key.\nNote that the deletion date is only guaranteed to be set if the deletion was successful during the request.\nIn case the deletion occurred in a previous request, the deletion date might be empty."
+        }
+      }
+    },
+    "v2ECDSA": {
+      "type": "object",
+      "properties": {
+        "curve": {
+          "$ref": "#/definitions/v2ECDSACurve",
+          "default": "ECDSA_CURVE_P256",
+          "description": "Curve of the ECDSA key. Default is P-256."
+        }
+      }
+    },
+    "v2ECDSACurve": {
+      "type": "string",
+      "enum": [
+        "ECDSA_CURVE_UNSPECIFIED",
+        "ECDSA_CURVE_P256",
+        "ECDSA_CURVE_P384",
+        "ECDSA_CURVE_P512"
+      ],
+      "default": "ECDSA_CURVE_UNSPECIFIED",
+      "title": "- ECDSA_CURVE_P256: NIST P-256 curve resulting in the ES256 algorithm header\n - ECDSA_CURVE_P384: NIST P-384 curve resulting in the ES384 algorithm header\n - ECDSA_CURVE_P512: NIST P-512 curve resulting in the ES512 algorithm header"
+    },
+    "v2ED25519": {
+      "type": "object"
+    },
+    "v2ListWebKeysResponse": {
+      "type": "object",
+      "properties": {
+        "webKeys": {
+          "type": "array",
+          "example": [
+            {
+              "id": "69629012906488334",
+              "creationDate": "2024-12-18T07:50:47.492Z",
+              "changeDate": "2024-12-18T08:04:47.492Z",
+              "state": "STATE_ACTIVE",
+              "rsa": {
+                "bits": "RSA_BITS_2048",
+                "hasher": "RSA_HASHER_SHA256"
+              }
+            },
+            {
+              "id": "69629012909346200",
+              "creationDate": "2025-01-18T12:05:47.492Z",
+              "state": "STATE_INITIAL",
+              "ecdsa": {
+                "curve": "ECDSA_CURVE_P256"
+              }
+            }
+          ],
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2WebKey"
+          }
+        }
+      }
+    },
+    "v2RSA": {
+      "type": "object",
+      "properties": {
+        "bits": {
+          "$ref": "#/definitions/v2RSABits",
+          "default": "RSA_BITS_2048",
+          "description": "Bit size of the RSA key. Default is 2048 bits."
+        },
+        "hasher": {
+          "$ref": "#/definitions/v2RSAHasher",
+          "default": "RSA_HASHER_SHA256",
+          "description": "Signing algorithm used. Default is SHA256."
+        }
+      }
+    },
+    "v2RSABits": {
+      "type": "string",
+      "enum": [
+        "RSA_BITS_UNSPECIFIED",
+        "RSA_BITS_2048",
+        "RSA_BITS_3072",
+        "RSA_BITS_4096"
+      ],
+      "default": "RSA_BITS_UNSPECIFIED",
+      "title": "- RSA_BITS_2048: 2048 bit RSA key\n - RSA_BITS_3072: 3072 bit RSA key\n - RSA_BITS_4096: 4096 bit RSA key"
+    },
+    "v2RSAHasher": {
+      "type": "string",
+      "enum": [
+        "RSA_HASHER_UNSPECIFIED",
+        "RSA_HASHER_SHA256",
+        "RSA_HASHER_SHA384",
+        "RSA_HASHER_SHA512"
+      ],
+      "default": "RSA_HASHER_UNSPECIFIED",
+      "title": "- RSA_HASHER_SHA256: SHA256 hashing algorithm resulting in the RS256 algorithm header\n - RSA_HASHER_SHA384: SHA384 hashing algorithm resulting in the RS384 algorithm header\n - RSA_HASHER_SHA512: SHA512 hashing algorithm resulting in the RS512 algorithm header"
+    },
+    "v2State": {
+      "type": "string",
+      "enum": [
+        "STATE_UNSPECIFIED",
+        "STATE_INITIAL",
+        "STATE_ACTIVE",
+        "STATE_INACTIVE",
+        "STATE_REMOVED"
+      ],
+      "default": "STATE_UNSPECIFIED",
+      "description": " - STATE_INITIAL: A newly created key is in the initial state and published to the public key endpoint.\n - STATE_ACTIVE: The active key is used to sign tokens. Only one key can be active at a time.\n - STATE_INACTIVE: The inactive key is not used to sign tokens anymore, but still published to the public key endpoint.\n - STATE_REMOVED: The removed key is not used to sign tokens anymore and not published to the public key endpoint."
+    },
+    "v2WebKey": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "The unique identifier of the key."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the key creation."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the last change to the key (e.g. creation, activation, deactivation)."
+        },
+        "state": {
+          "$ref": "#/definitions/v2State",
+          "title": "State of the key"
+        },
+        "rsa": {
+          "$ref": "#/definitions/v2RSA"
+        },
+        "ecdsa": {
+          "$ref": "#/definitions/v2ECDSA"
+        },
+        "ed25519": {
+          "$ref": "#/definitions/v2ED25519"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

@@ -1,0 +1,533 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "zitadel/internal_permission/v2/internal_permission_service.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "InternalPermissionService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "internal_permissionv2ProjectGrant": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID is the unique identifier of the project grant the user was granted the administrator role for."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "ProjectID is the ID of the project the project grant belongs to."
+        },
+        "projectName": {
+          "type": "string",
+          "description": "ProjectName is the name of the project the project grant belongs to."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "OrganizationID is the ID of the organization the project belongs to."
+        },
+        "grantedOrganizationId": {
+          "type": "string",
+          "description": "GrantedOrganizationID is the ID of the organization the project grant belongs to."
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2Administrator": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "CreationDate is the timestamp when the administrator role was granted."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ChangeDate is the timestamp when the administrator role was last updated.\nIn case the administrator role was not updated, this field is equal to the creation date."
+        },
+        "user": {
+          "$ref": "#/definitions/v2User",
+          "description": "User is the user who was granted the administrator role."
+        },
+        "instance": {
+          "type": "boolean",
+          "description": "Instance is returned if the administrator roles were granted on the instance level."
+        },
+        "organization": {
+          "$ref": "#/definitions/v2Organization",
+          "description": "Organization provides information about the organization the administrator roles were granted for."
+        },
+        "project": {
+          "$ref": "#/definitions/v2Project",
+          "description": "Project provides information about the project the administrator roles were granted for."
+        },
+        "projectGrant": {
+          "$ref": "#/definitions/internal_permissionv2ProjectGrant",
+          "description": "ProjectGrant provides information about the project grant the administrator roles were granted for."
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Roles are the roles that were granted to the user for the specified resource."
+        }
+      }
+    },
+    "v2AdministratorFieldName": {
+      "type": "string",
+      "enum": [
+        "ADMINISTRATOR_FIELD_NAME_UNSPECIFIED",
+        "ADMINISTRATOR_FIELD_NAME_USER_ID",
+        "ADMINISTRATOR_FIELD_NAME_CREATION_DATE",
+        "ADMINISTRATOR_FIELD_NAME_CHANGE_DATE"
+      ],
+      "default": "ADMINISTRATOR_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2AdministratorSearchFilter": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "$ref": "#/definitions/v2TimestampFilter",
+          "description": "Search for administrator roles by their creation date."
+        },
+        "changeDate": {
+          "$ref": "#/definitions/v2TimestampFilter",
+          "description": "Search for administrator roles by their change date."
+        },
+        "inUserIdsFilter": {
+          "$ref": "#/definitions/v2InIDsFilter",
+          "description": "Search for administrators roles by the IDs of the users who was granted the administrator role."
+        },
+        "userOrganizationId": {
+          "$ref": "#/definitions/v2IDFilter",
+          "description": "Search for administrators roles by the ID of the organization the user is part of."
+        },
+        "userPreferredLoginName": {
+          "$ref": "#/definitions/v2UserPreferredLoginNameFilter",
+          "description": "Search for administrators roles by the preferred login name of the user."
+        },
+        "userDisplayName": {
+          "$ref": "#/definitions/v2UserDisplayNameFilter",
+          "description": "Search for administrators roles by the display name of the user."
+        },
+        "resource": {
+          "$ref": "#/definitions/v2ResourceFilter",
+          "description": "Search for administrators roles granted for a specific resource."
+        },
+        "role": {
+          "$ref": "#/definitions/v2RoleFilter",
+          "description": "Search for administrators roles granted with a specific role."
+        },
+        "and": {
+          "$ref": "#/definitions/v2AndFilter",
+          "description": "Combine multiple authorization queries with an AND operation."
+        },
+        "or": {
+          "$ref": "#/definitions/v2OrFilter",
+          "description": "Combine multiple authorization queries with an OR operation.\nFor example, to search for authorizations of multiple OrganizationIDs."
+        },
+        "not": {
+          "$ref": "#/definitions/v2NotFilter",
+          "description": "Negate an authorization query."
+        }
+      }
+    },
+    "v2AndFilter": {
+      "type": "object",
+      "properties": {
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2AdministratorSearchFilter"
+          }
+        }
+      }
+    },
+    "v2CreateAdministratorResponse": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "CreationDate is the timestamp when the administrator role was created."
+        }
+      }
+    },
+    "v2DeleteAdministratorResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "DeletionDate is the timestamp when the administrator role was deleted.\nNote that the deletion date is only guaranteed to be set if the deletion was successful during the request.\nIn case the deletion occurred in a previous request, the deletion date might not be set."
+        }
+      }
+    },
+    "v2IDFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488337",
+          "description": "Only return resources that belong to this id.",
+          "maxLength": 200
+        }
+      }
+    },
+    "v2InIDsFilter": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "example": [
+            "69629023906488334",
+            "69622366012355662"
+          ],
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "description": "Defines the ids to query for."
+        }
+      }
+    },
+    "v2ListAdministratorsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2PaginationResponse",
+          "description": "Pagination contains the current sequence and the total result count."
+        },
+        "administrators": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2Administrator"
+          },
+          "description": "Administrators contains the list of administrators matching the request."
+        }
+      }
+    },
+    "v2NotFilter": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "$ref": "#/definitions/v2AdministratorSearchFilter"
+        }
+      }
+    },
+    "v2OrFilter": {
+      "type": "object",
+      "properties": {
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2AdministratorSearchFilter"
+          }
+        }
+      }
+    },
+    "v2Organization": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID is the unique identifier of the organization the user was granted the administrator role for."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name is the name of the organization the user was granted the administrator role for."
+        }
+      }
+    },
+    "v2PaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "example": 0,
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "example": 10,
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "example": false,
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "v2PaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100,
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100,
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "v2Project": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID is the unique identifier of the project the user was granted the administrator role for."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name is the name of the project the user was granted the administrator role for."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "OrganizationID is the ID of the organization the project belongs to."
+        }
+      }
+    },
+    "v2ResourceFilter": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "type": "boolean",
+          "description": "Search for administrators granted on the instance level."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "Search for administrators granted on a specific organization."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "Search for administrators granted on a specific project."
+        },
+        "projectGrant": {
+          "$ref": "#/definitions/v2ResourceFilterProjectGrant",
+          "description": "Search for administrators granted on a specific project grant\nby providing both the project ID and the organization ID."
+        }
+      }
+    },
+    "v2ResourceFilterProjectGrant": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "ProjectID is the unique identifier of the project the project grant belongs to."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "OrganizationID is the unique identifier of the organization the project was granted to\nand on which the administrator role was granted too."
+        }
+      },
+      "required": [
+        "projectId",
+        "organizationId"
+      ]
+    },
+    "v2ResourceType": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "type": "boolean",
+          "description": "Instance is the resource type for granting administrator privileges on the instance level."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "OrganizationID is required to grant administrator privileges for a specific organization."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "ProjectID is required to grant administrator privileges for a specific project."
+        },
+        "projectGrant": {
+          "$ref": "#/definitions/v2ResourceTypeProjectGrant",
+          "description": "ProjectGrantID is required to grant administrator privileges for a specific project grant."
+        }
+      }
+    },
+    "v2ResourceTypeProjectGrant": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "ProjectID is the unique identifier of the project the project grant belongs to."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "OrganizationID is the unique identifier of the organization the project was granted to\nand on which the administrator role should be granted."
+        }
+      },
+      "required": [
+        "projectId",
+        "organizationId"
+      ]
+    },
+    "v2RoleFilter": {
+      "type": "object",
+      "properties": {
+        "roleKey": {
+          "type": "string",
+          "description": "Search for administrators by the granted role."
+        }
+      },
+      "required": [
+        "roleKey"
+      ]
+    },
+    "v2TextFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_FILTER_METHOD_EQUALS",
+        "TEXT_FILTER_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_STARTS_WITH",
+        "TEXT_FILTER_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_CONTAINS",
+        "TEXT_FILTER_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_ENDS_WITH",
+        "TEXT_FILTER_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_FILTER_METHOD_EQUALS"
+    },
+    "v2TimestampFilter": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "Filter resources by timestamp."
+        },
+        "method": {
+          "$ref": "#/definitions/v2TimestampFilterMethod",
+          "description": "Defines the condition (e.g., equals, before, after) that the timestamp of the retrieved resources should match."
+        }
+      }
+    },
+    "v2TimestampFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TIMESTAMP_FILTER_METHOD_EQUALS",
+        "TIMESTAMP_FILTER_METHOD_AFTER",
+        "TIMESTAMP_FILTER_METHOD_AFTER_OR_EQUALS",
+        "TIMESTAMP_FILTER_METHOD_BEFORE",
+        "TIMESTAMP_FILTER_METHOD_BEFORE_OR_EQUALS"
+      ],
+      "default": "TIMESTAMP_FILTER_METHOD_EQUALS"
+    },
+    "v2UpdateAdministratorResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ChangeDate is the timestamp when the administrator role was last updated."
+        }
+      }
+    },
+    "v2User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID is the unique identifier of the user."
+        },
+        "preferredLoginName": {
+          "type": "string",
+          "description": "PreferredLoginName is the preferred login name of the user. This value is unique across the whole instance."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "DisplayName is the public display name of the user.\nBy default it's the user's given name and family name, their username or their email address."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "The organization the user belong to."
+        }
+      }
+    },
+    "v2UserDisplayNameFilter": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "description": "Search for administrators by the display name of the user."
+        },
+        "method": {
+          "$ref": "#/definitions/v2TextFilterMethod",
+          "description": "Specify the method to search for the display name. Default is EQUAL.\nFor example, to search for all administrator roles of a user with a display name\ncontaining a specific string, use CONTAINS or CONTAINS_IGNORE_CASE."
+        }
+      },
+      "required": [
+        "displayName"
+      ]
+    },
+    "v2UserPreferredLoginNameFilter": {
+      "type": "object",
+      "properties": {
+        "preferredLoginName": {
+          "type": "string",
+          "description": "Search for administrators by the preferred login name of the user."
+        },
+        "method": {
+          "$ref": "#/definitions/v2TextFilterMethod",
+          "description": "Specify the method to search for the preferred login name. Default is EQUAL.\nFor example, to search for all administrator roles of a user with a preferred login name\ncontaining a specific string, use CONTAINS or CONTAINS_IGNORE_CASE."
+        }
+      },
+      "required": [
+        "preferredLoginName"
+      ]
+    }
+  }
+}

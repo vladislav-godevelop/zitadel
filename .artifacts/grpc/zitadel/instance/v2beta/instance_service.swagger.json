@@ -1,0 +1,1080 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Instance Service",
+    "description": "This API is intended to manage instances in ZITADEL.",
+    "version": "2.0-beta",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "AGPL-3.0-only",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "InstanceService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/v2beta/instances/search": {
+      "post": {
+        "summary": "List Instances",
+        "description": "Deprecated: please move to the corresponding endpoint under instance service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nLists instances matching the given query.\nThe query can be used to filter either by instance ID or domain.\nThe request is paginated and returns 100 results by default.\n\nRequired permissions:\n - `system.instance.read`",
+        "operationId": "InstanceService_ListInstances",
+        "responses": {
+          "200": {
+            "description": "The list of instances.",
+            "schema": {
+              "$ref": "#/definitions/v2betaListInstancesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaListInstancesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "InstanceService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/instances/{instanceId}": {
+      "get": {
+        "summary": "Get Instance",
+        "description": "Deprecated: please move to the corresponding endpoint under instance service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nReturns the instance in the current context.\n\nThe instance_id in the input message will be used in the future.\n\nRequired permissions:\n  - `iam.read`",
+        "operationId": "InstanceService_GetInstance",
+        "responses": {
+          "200": {
+            "description": "The instance of the context.",
+            "schema": {
+              "$ref": "#/definitions/v2betaGetInstanceResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InstanceService"
+        ],
+        "deprecated": true
+      },
+      "delete": {
+        "summary": "Delete Instance",
+        "description": "Deprecated: please move to the corresponding endpoint under instance service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nDeletes an instance with the given ID.\n\nRequired permissions:\n  - `system.instance.delete`",
+        "operationId": "InstanceService_DeleteInstance",
+        "responses": {
+          "200": {
+            "description": "The deleted instance.",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteInstanceResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InstanceService"
+        ],
+        "deprecated": true
+      },
+      "put": {
+        "summary": "Update Instance",
+        "description": "Deprecated: please move to the corresponding endpoint under instance service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nUpdates instance in context with the given name.\n\nThe instance_id in the input message will be used in the future.\n\nRequired permissions:\n  - `iam.write`",
+        "operationId": "InstanceService_UpdateInstance",
+        "responses": {
+          "200": {
+            "description": "The instance was successfully updated.",
+            "schema": {
+              "$ref": "#/definitions/v2betaUpdateInstanceResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "description": "used only to identify the instance to change.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InstanceServiceUpdateInstanceBody"
+            }
+          }
+        ],
+        "tags": [
+          "InstanceService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/instances/{instanceId}/custom-domains": {
+      "post": {
+        "summary": "Add Custom Domain",
+        "description": "Deprecated: please move to the corresponding endpoint under instance service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nAdds a custom domain to the instance in context.\n\nThe instance_id in the input message will be used in the future\n\nRequired permissions:\n  - `system.domain.write`",
+        "operationId": "InstanceService_AddCustomDomain",
+        "responses": {
+          "200": {
+            "description": "The added custom domain.",
+            "schema": {
+              "$ref": "#/definitions/v2betaAddCustomDomainResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InstanceServiceAddCustomDomainBody"
+            }
+          }
+        ],
+        "tags": [
+          "InstanceService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/instances/{instanceId}/custom-domains/search": {
+      "post": {
+        "summary": "List Custom Domains",
+        "description": "Deprecated: please move to the corresponding endpoint under instance service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nLists custom domains of the instance.\n\nThe instance_id in the input message will be used in the future.\n\nRequired permissions:\n - `iam.read`",
+        "operationId": "InstanceService_ListCustomDomains",
+        "responses": {
+          "200": {
+            "description": "The list of custom domains.",
+            "schema": {
+              "$ref": "#/definitions/v2betaListCustomDomainsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InstanceServiceListCustomDomainsBody"
+            }
+          }
+        ],
+        "tags": [
+          "InstanceService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/instances/{instanceId}/custom-domains/{domain}": {
+      "delete": {
+        "summary": "Remove Custom Domain",
+        "description": "Deprecated: please move to the corresponding endpoint under instance service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nRemoves a custom domain from the instance.\n\nThe instance_id in the input message will be used in the future.\n\nRequired permissions:\n - `system.domain.write`",
+        "operationId": "InstanceService_RemoveCustomDomain",
+        "responses": {
+          "200": {
+            "description": "The removed custom domain.",
+            "schema": {
+              "$ref": "#/definitions/v2betaRemoveCustomDomainResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InstanceService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/instances/{instanceId}/trusted-domains": {
+      "post": {
+        "summary": "Add Trusted Domain",
+        "description": "Deprecated: please move to the corresponding endpoint under instance service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nAdds a trusted domain to the instance.\n\nThe instance_id in the input message will be used in the future.\n\nRequired permissions:\n - `iam.write`",
+        "operationId": "InstanceService_AddTrustedDomain",
+        "responses": {
+          "200": {
+            "description": "The added trusted domain.",
+            "schema": {
+              "$ref": "#/definitions/v2betaAddTrustedDomainResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InstanceServiceAddTrustedDomainBody"
+            }
+          }
+        ],
+        "tags": [
+          "InstanceService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/instances/{instanceId}/trusted-domains/search": {
+      "post": {
+        "summary": "List Trusted Domains",
+        "description": "Deprecated: please move to the corresponding endpoint under instance service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nLists trusted domains of the instance.\n\nThe instance_id in the input message will be used in the future.\n\nRequired permissions:\n  - `iam.read`",
+        "operationId": "InstanceService_ListTrustedDomains",
+        "responses": {
+          "200": {
+            "description": "The list of trusted domains.",
+            "schema": {
+              "$ref": "#/definitions/v2betaListTrustedDomainsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InstanceServiceListTrustedDomainsBody"
+            }
+          }
+        ],
+        "tags": [
+          "InstanceService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/instances/{instanceId}/trusted-domains/{domain}": {
+      "delete": {
+        "summary": "Remove Trusted Domain",
+        "description": "Deprecated: please move to the corresponding endpoint under instance service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nRemoves a trusted domain from the instance.\n\nThe instance_id in the input message will be used in the future.\n\nRequired permissions:\n - `iam.write`",
+        "operationId": "InstanceService_RemoveTrustedDomain",
+        "responses": {
+          "200": {
+            "description": "The removed trusted domain.",
+            "schema": {
+              "$ref": "#/definitions/v2betaRemoveTrustedDomainResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "instanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InstanceService"
+        ],
+        "deprecated": true
+      }
+    }
+  },
+  "definitions": {
+    "InstanceServiceAddCustomDomainBody": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "maxLength": 253,
+          "minLength": 1
+        }
+      }
+    },
+    "InstanceServiceAddTrustedDomainBody": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "example": "login.example.com",
+          "maxLength": 253,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "domain"
+      ]
+    },
+    "InstanceServiceListCustomDomainsBody": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "Pagination and sorting."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaDomainFieldName",
+          "description": "The field the result is sorted by."
+        },
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaDomainSearchQuery"
+          },
+          "description": "Criterias the client is looking for."
+        }
+      }
+    },
+    "InstanceServiceListTrustedDomainsBody": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "Pagination and sorting."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaTrustedDomainFieldName",
+          "description": "The field the result is sorted by."
+        },
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaTrustedDomainSearchQuery"
+          },
+          "description": "Criterias the client is looking for."
+        }
+      }
+    },
+    "InstanceServiceUpdateInstanceBody": {
+      "type": "object",
+      "properties": {
+        "instanceName": {
+          "type": "string",
+          "example": "my instance",
+          "description": "\"name of the instance to update\"",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2TextQueryMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_QUERY_METHOD_EQUALS",
+        "TEXT_QUERY_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_QUERY_METHOD_STARTS_WITH",
+        "TEXT_QUERY_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_QUERY_METHOD_CONTAINS",
+        "TEXT_QUERY_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_QUERY_METHOD_ENDS_WITH",
+        "TEXT_QUERY_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_QUERY_METHOD_EQUALS"
+    },
+    "v2betaAddCustomDomainResponse": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        }
+      }
+    },
+    "v2betaAddTrustedDomainResponse": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        }
+      }
+    },
+    "v2betaDeleteInstanceResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        }
+      }
+    },
+    "v2betaDomain": {
+      "type": "object",
+      "properties": {
+        "instanceId": {
+          "type": "string"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        },
+        "domain": {
+          "type": "string",
+          "example": "zitadel.com"
+        },
+        "primary": {
+          "type": "boolean"
+        },
+        "generated": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v2betaDomainFieldName": {
+      "type": "string",
+      "enum": [
+        "DOMAIN_FIELD_NAME_UNSPECIFIED",
+        "DOMAIN_FIELD_NAME_DOMAIN",
+        "DOMAIN_FIELD_NAME_PRIMARY",
+        "DOMAIN_FIELD_NAME_GENERATED",
+        "DOMAIN_FIELD_NAME_CREATION_DATE"
+      ],
+      "default": "DOMAIN_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2betaDomainGeneratedQuery": {
+      "type": "object",
+      "properties": {
+        "generated": {
+          "type": "boolean",
+          "description": "Generated domains"
+        }
+      }
+    },
+    "v2betaDomainPrimaryQuery": {
+      "type": "object",
+      "properties": {
+        "primary": {
+          "type": "boolean",
+          "description": "Primary domains"
+        }
+      }
+    },
+    "v2betaDomainQuery": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "example": "zitadel.com",
+          "maxLength": 200
+        },
+        "method": {
+          "$ref": "#/definitions/v2TextQueryMethod",
+          "description": "Defines which text equality method is used"
+        }
+      }
+    },
+    "v2betaDomainSearchQuery": {
+      "type": "object",
+      "properties": {
+        "domainQuery": {
+          "$ref": "#/definitions/v2betaDomainQuery"
+        },
+        "generatedQuery": {
+          "$ref": "#/definitions/v2betaDomainGeneratedQuery"
+        },
+        "primaryQuery": {
+          "$ref": "#/definitions/v2betaDomainPrimaryQuery"
+        }
+      }
+    },
+    "v2betaDomainsQuery": {
+      "type": "object",
+      "properties": {
+        "domains": {
+          "type": "array",
+          "example": [
+            "my-instace.zitadel.cloud",
+            "auth.custom.com"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Return the instances that have the requested domains",
+          "maxItems": 20
+        }
+      }
+    },
+    "v2betaFieldName": {
+      "type": "string",
+      "enum": [
+        "FIELD_NAME_UNSPECIFIED",
+        "FIELD_NAME_ID",
+        "FIELD_NAME_NAME",
+        "FIELD_NAME_CREATION_DATE"
+      ],
+      "default": "FIELD_NAME_UNSPECIFIED"
+    },
+    "v2betaGetInstanceResponse": {
+      "type": "object",
+      "properties": {
+        "instance": {
+          "$ref": "#/definitions/v2betaInstance"
+        }
+      }
+    },
+    "v2betaIdsQuery": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "example": [
+            "4820840938402429",
+            "4820840938402422"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Instance ID"
+        }
+      }
+    },
+    "v2betaInstance": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334"
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "on read: the timestamp of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "change_date is the timestamp when the object was changed"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        },
+        "state": {
+          "$ref": "#/definitions/v2betaState",
+          "description": "current state of the instance"
+        },
+        "name": {
+          "type": "string",
+          "example": "ZITADEL"
+        },
+        "version": {
+          "type": "string",
+          "example": "1.0.0"
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaDomain"
+          }
+        }
+      }
+    },
+    "v2betaListCustomDomainsResponse": {
+      "type": "object",
+      "properties": {
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaDomain"
+          }
+        },
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse",
+          "description": "Contains the total number of domains matching the query and the applied limit."
+        }
+      }
+    },
+    "v2betaListInstancesRequest": {
+      "type": "object",
+      "properties": {
+        "queries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaQuery"
+          },
+          "description": "Criterias the client is looking for."
+        },
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "Pagination and sorting."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaFieldName",
+          "description": "The field the result is sorted by."
+        }
+      }
+    },
+    "v2betaListInstancesResponse": {
+      "type": "object",
+      "properties": {
+        "instances": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaInstance"
+          },
+          "description": "The list of instances."
+        },
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse",
+          "description": "Contains the total number of instances matching the query and the applied limit."
+        }
+      }
+    },
+    "v2betaListTrustedDomainsResponse": {
+      "type": "object",
+      "properties": {
+        "trustedDomain": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaTrustedDomain"
+          }
+        },
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse",
+          "description": "Contains the total number of domains matching the query and the applied limit."
+        }
+      }
+    },
+    "v2betaPaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "v2betaPaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "v2betaQuery": {
+      "type": "object",
+      "properties": {
+        "idQuery": {
+          "$ref": "#/definitions/v2betaIdsQuery"
+        },
+        "domainQuery": {
+          "$ref": "#/definitions/v2betaDomainsQuery"
+        }
+      }
+    },
+    "v2betaRemoveCustomDomainResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        }
+      }
+    },
+    "v2betaRemoveTrustedDomainResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        }
+      }
+    },
+    "v2betaState": {
+      "type": "string",
+      "enum": [
+        "STATE_UNSPECIFIED",
+        "STATE_CREATING",
+        "STATE_RUNNING",
+        "STATE_STOPPING",
+        "STATE_STOPPED"
+      ],
+      "default": "STATE_UNSPECIFIED"
+    },
+    "v2betaTrustedDomain": {
+      "type": "object",
+      "properties": {
+        "instanceId": {
+          "type": "string"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        },
+        "domain": {
+          "type": "string",
+          "example": "zitadel.com"
+        }
+      }
+    },
+    "v2betaTrustedDomainFieldName": {
+      "type": "string",
+      "enum": [
+        "TRUSTED_DOMAIN_FIELD_NAME_UNSPECIFIED",
+        "TRUSTED_DOMAIN_FIELD_NAME_DOMAIN",
+        "TRUSTED_DOMAIN_FIELD_NAME_CREATION_DATE"
+      ],
+      "default": "TRUSTED_DOMAIN_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2betaTrustedDomainSearchQuery": {
+      "type": "object",
+      "properties": {
+        "domainQuery": {
+          "$ref": "#/definitions/v2betaDomainQuery"
+        }
+      }
+    },
+    "v2betaUpdateInstanceResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

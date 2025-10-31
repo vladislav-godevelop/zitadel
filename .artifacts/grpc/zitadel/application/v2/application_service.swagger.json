@@ -1,0 +1,1059 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "zitadel/application/v2/application_service.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "ApplicationService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2APIAuthMethodType": {
+      "type": "string",
+      "enum": [
+        "API_AUTH_METHOD_TYPE_BASIC",
+        "API_AUTH_METHOD_TYPE_PRIVATE_KEY_JWT"
+      ],
+      "default": "API_AUTH_METHOD_TYPE_BASIC"
+    },
+    "v2APIConfiguration": {
+      "type": "object",
+      "properties": {
+        "clientId": {
+          "type": "string",
+          "example": "69629023906488334@ZITADEL",
+          "description": "The unique OAuth2 client_id used for authentication of the API,\ne.g. at the introspection endpoint."
+        },
+        "authMethodType": {
+          "$ref": "#/definitions/v2APIAuthMethodType",
+          "description": "The authentication method type used by the API to authenticate at the introspection endpoint."
+        }
+      }
+    },
+    "v2Application": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "The unique identifier of the application."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the application creation."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the last update to the application."
+        },
+        "state": {
+          "$ref": "#/definitions/v2ApplicationState",
+          "description": "The current state of the application."
+        },
+        "name": {
+          "type": "string",
+          "example": "Console",
+          "description": "The name of the application. This can be displayed to users."
+        },
+        "oidcConfiguration": {
+          "$ref": "#/definitions/v2OIDCConfiguration"
+        },
+        "apiConfiguration": {
+          "$ref": "#/definitions/v2APIConfiguration"
+        },
+        "samlConfiguration": {
+          "$ref": "#/definitions/v2SAMLConfiguration"
+        }
+      }
+    },
+    "v2ApplicationKey": {
+      "type": "object",
+      "properties": {
+        "keyId": {
+          "type": "string",
+          "description": "The unique identifier of the application key."
+        },
+        "applicationId": {
+          "type": "string",
+          "description": "The identifier of the application this key belongs to."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "The identifier of the project this application belongs to."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the key creation."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "The identifier of the organization this application belongs to."
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp the key expires."
+        }
+      }
+    },
+    "v2ApplicationKeyApplicationIDFilter": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "Search for application keys belonging to the application with this ID."
+        }
+      },
+      "required": [
+        "applicationId"
+      ]
+    },
+    "v2ApplicationKeyOrganizationIDFilter": {
+      "type": "object",
+      "properties": {
+        "organizationId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "Search for application keys belonging to applications in the organization with this ID."
+        }
+      },
+      "required": [
+        "organizationId"
+      ]
+    },
+    "v2ApplicationKeyProjectIDFilter": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "Search for application keys belonging to applications in the project with this ID."
+        }
+      },
+      "required": [
+        "projectId"
+      ]
+    },
+    "v2ApplicationKeySearchFilter": {
+      "type": "object",
+      "properties": {
+        "applicationIdFilter": {
+          "$ref": "#/definitions/v2ApplicationKeyApplicationIDFilter",
+          "description": "Filter the application keys by the application ID they belong to."
+        },
+        "projectIdFilter": {
+          "$ref": "#/definitions/v2ApplicationKeyProjectIDFilter",
+          "description": "Filter the application keys by the project ID the corresponding application belong to."
+        },
+        "organizationIdFilter": {
+          "$ref": "#/definitions/v2ApplicationKeyOrganizationIDFilter",
+          "description": "Filter the application keys by the organization ID the corresponding application belong to."
+        }
+      }
+    },
+    "v2ApplicationKeysSorting": {
+      "type": "string",
+      "enum": [
+        "APPLICATION_KEYS_SORT_BY_ID",
+        "APPLICATION_KEYS_SORT_BY_PROJECT_ID",
+        "APPLICATION_KEYS_SORT_BY_APPLICATION_ID",
+        "APPLICATION_KEYS_SORT_BY_CREATION_DATE",
+        "APPLICATION_KEYS_SORT_BY_ORGANIZATION_ID",
+        "APPLICATION_KEYS_SORT_BY_EXPIRATION",
+        "APPLICATION_KEYS_SORT_BY_TYPE"
+      ],
+      "default": "APPLICATION_KEYS_SORT_BY_ID"
+    },
+    "v2ApplicationNameFilter": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Conso",
+          "description": "The name of the application to search for."
+        },
+        "method": {
+          "$ref": "#/definitions/v2TextFilterMethod",
+          "description": "The method to use for text comparison. If not set, defaults to EQUALS."
+        }
+      }
+    },
+    "v2ApplicationSearchFilter": {
+      "type": "object",
+      "properties": {
+        "projectIdFilter": {
+          "$ref": "#/definitions/v2ProjectIDFilter",
+          "description": "Filter the projectID the application has to belong to."
+        },
+        "nameFilter": {
+          "$ref": "#/definitions/v2ApplicationNameFilter",
+          "description": "Filter the applications by their name."
+        },
+        "stateFilter": {
+          "$ref": "#/definitions/v2ApplicationState",
+          "description": "Filter the applications by their state."
+        },
+        "typeFilter": {
+          "$ref": "#/definitions/v2ApplicationType",
+          "description": "Filter for specific application types."
+        }
+      }
+    },
+    "v2ApplicationSorting": {
+      "type": "string",
+      "enum": [
+        "APPLICATION_SORT_BY_ID",
+        "APPLICATION_SORT_BY_NAME",
+        "APPLICATION_SORT_BY_STATE",
+        "APPLICATION_SORT_BY_CREATION_DATE",
+        "APPLICATION_SORT_BY_CHANGE_DATE"
+      ],
+      "default": "APPLICATION_SORT_BY_ID"
+    },
+    "v2ApplicationState": {
+      "type": "string",
+      "enum": [
+        "APPLICATION_STATE_UNSPECIFIED",
+        "APPLICATION_STATE_ACTIVE",
+        "APPLICATION_STATE_INACTIVE",
+        "APPLICATION_STATE_REMOVED"
+      ],
+      "default": "APPLICATION_STATE_UNSPECIFIED"
+    },
+    "v2ApplicationType": {
+      "type": "string",
+      "enum": [
+        "APPLICATION_TYPE_UNSPECIFIED",
+        "APPLICATION_TYPE_OIDC",
+        "APPLICATION_TYPE_API",
+        "APPLICATION_TYPE_SAML"
+      ],
+      "default": "APPLICATION_TYPE_UNSPECIFIED"
+    },
+    "v2CreateAPIApplicationRequest": {
+      "type": "object",
+      "properties": {
+        "authMethodType": {
+          "$ref": "#/definitions/v2APIAuthMethodType",
+          "description": "The authentication method type used by the API to authenticate at the introspection endpoint."
+        }
+      }
+    },
+    "v2CreateAPIApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "clientId": {
+          "type": "string",
+          "example": "3950723409029374",
+          "description": "The unique OAuth2 client_id used for authentication of the API, e.g. at the introspection endpoint."
+        },
+        "clientSecret": {
+          "type": "string",
+          "example": "gjoq34589uasgh",
+          "description": "In case of using the APIAuthMethodType.API_AUTH_METHOD_TYPE_BASIC the client_secret is generated and returned.\nIt must be stored safely, as it will not be possible to retrieve it again.\nA new client_secret can be generated using the GenerateClientSecret endpoint."
+        }
+      }
+    },
+    "v2CreateApplicationKeyResponse": {
+      "type": "object",
+      "properties": {
+        "keyId": {
+          "type": "string",
+          "example": "28746028909593987",
+          "description": "The unique ID of the newly created application key."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the application key creation."
+        },
+        "keyDetails": {
+          "type": "string",
+          "format": "byte",
+          "example": "eyJ0eXBlIjoiYXBwbGljYXRpb24iLCJrZXlJZCI6IjIwMjcxMDE4NjYyMjcxNDExMyIsImtleSI6Ii0tLS0tQkVHSU4gUlNBIFBSSVZBVEUgS0VZLS0tLS1cbk1JSUVvd0lCQUFLQ0FRRUFuMUxyNStTV0pGRllURU1kaXQ2U0dNY0E2Yks5dG0xMmhlcm55V0wrZm9PWnA3eEVcbk9wcmsvWE81QVplSU5NY0x0ZVhxckJlK1NPdVVNMFpLU2xCMHFTNzNjVStDVTVMTGoycVB0UzhNOFI0N3BGdFhcbjJXRTFJNjNhZHB1N01TejA2SXduQ2lyNnJYOTVPQ2ZneHA3VU1Dd0pSTUZmYXJqdjVBRXY3NXpsSS9lYUV6bUJcbkxKWU1xanZFRmZoN2x3M2lPT3VsWW9kNjNpN3RDNWl5czNlYjNLZW4yWU0rN1FSbXB2dE5qcTJMVmlIMnkrUGJcbk9ESlI3MU9ib05TYVJDNTZDUFpWVytoWDByYXI3VzMwUjI2eGtIQ09oSytQbUpSeGtOY0g1VTdja0xXMEw0WEVcbnNNZkVUSmszeDR3Q0psbisxbElXUzkrNmw0R1E2TWRzWURyOU5RSURBUUFCQW9JQkFCSkx6WGQxMHFBZEQwekNcbnNGUFFOMnJNLzVmV3hONThONDR0YWF6QXg0VHp5K050UlZDTmxScGQvYkxuR2VjbHJIeVpDSmYycWcxcHNEMHJcbkowRGRlR2d0VXBFYWxsYk9scjNEZVBsUGkrYnNsK0RKOUk2c0VSUWwxTjZtQjVzZ0ZJZllBR3UwZjlFSXdIem9cblozR25yNnBRaEVmM0JPUVdsTVhVTlJNSksyOHp3M2E1L01nRmtKVUZUSTUzeXFwbGRtZ2hLajRZR1hLRk1LUGhcbkV3RkxrRncwK2s3K0xuSjFQNGp1ZVd1RXo3WlAyaFpvUWxCcXdSajVyTG9QZ05RbUU4UytFVDRuczlUYzByOFFcbnFyaHlacDZBczJrTDhGTytCZnF3SVpDZnpnWHN2cC9PLzRaSHIzVTB2Ymp3UW1sSzdVSm42U0J6T2hpWFpNU0lcbk5Wc0V5VUVDZ1lFQTFEaktkRGo3NTM1MWQzdlRNQlRFd2JSQ3hoUVZOdENFMnMwVUw4ckJQZ1I0K1dlblNUWmFcbnprWUprcEV0bE54VGxzYnN1Y0RTUXZqeWRYYk5nSHFBeDYzMm1vdTVkak9lR0VTUDFWVGtUdElsZFZQZWszQWxcbjVYbkpQa1dqWGVyVVJZNm5KeUQ5UWhlREx3MVp4NEFYVzNHWURiTFkrT05XV0VKUlJaQUloNjBDZ1lFQXdEQ2xcbnc1MHc4dkcvbEJ4RzNSYW9FaHdLOWNna1VXOHk2T25DekNwcEtjOEZUUmY1VE5iWjl5TzNXUmdYajhkeHRCakFcbkl5VGlzYk9NQk1VaFZKUUtGZHRQaDhoVDBwRkRjeE9ndzY0aHBtYzhyY2RTbXVKNzlYSVRTaHUySjA0N0UvNFZcbnJOTThpWVk5ZGR3VGdGUUlsdFNZL0l0RnFxWERmdjhqK1dVY25La0NnWUVBaENOUU80bDNuNjRucWR2WnBTaHBcblVrclJBTkJrWFJyOGZkZ1BaNnFSSS9KWStNSEhjVmg4dGM3NkN0NkdTUmZlbkJVRU5LeVF2czZPK1FDZCtBOU9cbnZBWGZkRjduZldlcVdtWG1RT2g0dDNNMWk1WkxFZlpVUWt2UU9BdllLcFFhMDZ4OCsyb1pCdHZvL0pVTmY2Q0xcbjZvNFNKUVZrLzZOZGtkckpDODBnNG9rQ2dZQkZsNWYrbkVYa1F0dWZVeG5wNXRGWE5XWldsM0ZuTjMvVXpRaW5cbmkxZm5OcnB4cnhPcjJrUzA4KzdwU1FzSEdpNDNDNXRQWG9UajJlTUN1eXNWaUVHYXBuNUc2YWhJb0NjdlhWVWlcblprUnpFQUR0NERZdU5ZS3pYdXBUTkhPaUNmYmtoMlhyM2RXVzZ0QUloSGRmU1k2T3AwNzZhNmYvWWVUSGNMWGpcbkVkVHBlUUtCZ0FPdnBqcDQ4TzRUWEZkU0JLSnYya005OHVhUjlSQURtdGxTWHd2cTlyQkhTV084NFk4bzE0L1Bcbkl1UmxUOHhROGRYKzhMR21UUCtjcUtiOFFRQ1grQk1YUWxMSEVtWnpnb0xFa0pGMUVIMm4vZEZ5bngxS3prdFNcbm9UZUdsRzZhbXhVOVh4eW9RVFlEVGJCbERwc2FZUlFBZ2FUQzM3UVZRUjhmK1ZoRzFHSFFcbi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tXG4iLCJhcHBJZCI6IjIwMjcwNjM5ODgxMzg4MDU3NyIsImNsaWVudElkIjoiMjAyNzA2Mzk4ODEzOTQ2MTEzQG15dGVzdHByb2plY3QifQ==",
+          "description": "KeyDetails contains the serialized private key and additional information depending on the key type.\nIt must be stored safely, as it will not be possible to retrieve it again.\nA new key can be generated using the CreateApplicationKey endpoint."
+        }
+      }
+    },
+    "v2CreateApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "string",
+          "description": "The unique ID of the newly created application."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the application creation."
+        },
+        "oidcConfiguration": {
+          "$ref": "#/definitions/v2CreateOIDCApplicationResponse"
+        },
+        "samlConfiguration": {
+          "$ref": "#/definitions/v2CreateSAMLApplicationResponse"
+        },
+        "apiConfiguration": {
+          "$ref": "#/definitions/v2CreateAPIApplicationResponse"
+        }
+      }
+    },
+    "v2CreateOIDCApplicationRequest": {
+      "type": "object",
+      "properties": {
+        "redirectUris": {
+          "type": "array",
+          "example": [
+            "http://localhost:4200/auth/callback"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "RedirectURIs are the allowed callback URIs for the OAuth2 / OIDC flows,\nwhere the authorization code or tokens will be sent to.\nThe redirect_uri parameter in the authorization request must exactly match one of these URIs."
+        },
+        "responseTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2OIDCResponseType"
+          },
+          "description": "ResponseTypes define whether a code, id_token token or just id_token will be returned.\nThe response_type parameter in the authorization request must exactly match one of these values."
+        },
+        "grantTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2OIDCGrantType"
+          },
+          "description": "GrantTypes define the flow type the application is allowed to use.\nThe grant_type parameter in the token request must exactly match one of these values.\nMinimum one grant type must be provided, but multiple grant types can be provided to allow\ndifferent flows, e.g. authorization code flow and refresh token flow."
+        },
+        "applicationType": {
+          "$ref": "#/definitions/v2OIDCApplicationType",
+          "description": "ApplicationType defines the OAuth2/OIDC client type and their ability to maintain\nconfidentiality of their credentials.\nThis influences the allowed grant types and the required authentication method."
+        },
+        "authMethodType": {
+          "$ref": "#/definitions/v2OIDCAuthMethodType",
+          "description": "The authentication method type used by the application to authenticate at the token endpoint."
+        },
+        "postLogoutRedirectUris": {
+          "type": "array",
+          "example": [
+            "http://localhost:4200/signedout"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "PostLogoutRedirectURIs are the allowed URIs to redirect to after a logout.\nThe post_logout_redirect_uri parameter in the logout request must exactly match one of these URIs."
+        },
+        "version": {
+          "$ref": "#/definitions/v2OIDCVersion",
+          "description": "Version defines the OIDC version used by the application.\nCurrently, only version 1.0 is supported.\nFuture versions might introduce breaking changes."
+        },
+        "developmentMode": {
+          "type": "boolean",
+          "description": "DevelopmentMode can be enabled for development purposes. This allows the use of\nOIDC non-compliant and potentially insecure settings, such as the use of\nHTTP redirect URIs or wildcard redirect URIs."
+        },
+        "accessTokenType": {
+          "$ref": "#/definitions/v2OIDCTokenType",
+          "description": "The AccessTokenType defines the type of the access token returned from ZITADEL.\nBearer tokens are opaque to clients. JWT tokens are self-contained and can be validated by the client.\nBearer tokens must be introspected at the ZITADEL token endpoint."
+        },
+        "accessTokenRoleAssertion": {
+          "type": "boolean",
+          "description": "If AccessTokenRoleAssertion is enabled, the roles of the user are added to the access token.\nEnsure that the access token is a JWT token and not a bearer token. And either request the roles\nby scope or enable the user role assertion on the project."
+        },
+        "idTokenRoleAssertion": {
+          "type": "boolean",
+          "description": "If IDTokenRoleAssertion is enabled, the roles of the user are added to the id token.\nEnsure that either the roles are requested by scope or enable the user role assertion on the\nproject."
+        },
+        "idTokenUserinfoAssertion": {
+          "type": "boolean",
+          "description": "If IDTokenUserinfoAssertion is enabled, the claims of profile, email, address and phone scopes\nare added to the id token even if an access token is issued. This can be required by some applications\nthat do not call the userinfo endpoint after authentication or directly use the id_token for retrieving\nuser information.\nAttention: this violates the OIDC specification, which states that these claims must only be\nrequested from the userinfo endpoint if an access token is issued. This is to prevent\nleaking of personal information in the id token, which is often stored in the browser and\ntherefore more vulnerable."
+        },
+        "clockSkew": {
+          "type": "string",
+          "example": "1s",
+          "description": "ClockSkew is used to compensate time differences between the servers of ZITADEL and the application.\nIt is added to the \"exp\" claim and subtracted from \"iat\", \"auth_time\" and \"nbf\" claims.\nThe default is 0s, the maximum is 5s."
+        },
+        "additionalOrigins": {
+          "type": "array",
+          "example": [
+            "scheme://localhost:8080"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "AdditionalOrigins are HTTP origins (scheme + host + port) from where the API can be used\nadditional to the redirect_uris.\nThis is useful if the application is used from an origin different to the redirect_uris,\ne.g. if the application is a SPA served in a native app, where the redirect_uri is a custom scheme,\nbut the application is served from a https origin."
+        },
+        "skipNativeAppSuccessPage": {
+          "type": "boolean",
+          "description": "For native apps a successful login usually shows a success page with a link to open the application again.\nSkipNativeAppSuccessPage can be used to skip this page and open the application directly."
+        },
+        "backChannelLogoutUri": {
+          "type": "string",
+          "example": [
+            "https://example.com/auth/backchannel"
+          ],
+          "description": "BackChannelLogoutURI is used to notify the application about terminated sessions according\nto the OIDC Back-Channel Logout (https://openid.net/specs/openid-connect-backchannel-1_0.html)."
+        },
+        "loginVersion": {
+          "$ref": "#/definitions/v2LoginVersion",
+          "description": "LoginVersion specifies the login UI, where the user is redirected to for authentication.\nIt can be used to select a specific login UI, e.g. for embedded UIs or for custom login pages\nhosted on any other domain.\nIf unset, the login UI is chosen by the instance default."
+        }
+      }
+    },
+    "v2CreateOIDCApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "clientId": {
+          "type": "string",
+          "example": "1035496534033449",
+          "description": "The unique OAuth2/OIDC client_id used for authentication of the application,\ne.g. at the token endpoint."
+        },
+        "clientSecret": {
+          "type": "string",
+          "example": "gjoq34589uasgh",
+          "description": "In case of using the OIDCAuthMethodType.OIDC_AUTH_METHOD_TYPE_CLIENT_SECRET_BASIC\nor OIDCAuthMethodType.OIDC_AUTH_METHOD_TYPE_CLIENT_SECRET_POST the client_secret is generated and returned.\nIt must be stored safely, as it will not be possible to retrieve it again.\nA new client_secret can be generated using the GenerateClientSecret endpoint."
+        },
+        "nonCompliant": {
+          "type": "boolean",
+          "description": "NonCompliant specifies whether the config is OIDC compliant. A production configuration SHOULD be compliant.\nNon-compliant configurations can run into interoperability issues with OIDC libraries and tools.\nCompliance problems are listed in the compliance_problems field."
+        },
+        "complianceProblems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2OIDCLocalizedMessage"
+          },
+          "description": "ComplianceProblems lists the problems for non-compliant configurations.\nIn case of a compliant configuration, this list is empty."
+        }
+      }
+    },
+    "v2CreateSAMLApplicationRequest": {
+      "type": "object",
+      "properties": {
+        "metadataXml": {
+          "type": "string",
+          "format": "byte"
+        },
+        "metadataUrl": {
+          "type": "string"
+        },
+        "loginVersion": {
+          "$ref": "#/definitions/v2LoginVersion",
+          "description": "LoginVersion specifies the login UI, where the user is redirected to for authentication.\nIt can be used to select a specific login UI, e.g. for embedded UIs or for custom login pages\nhosted on any other domain.\nIf unset, the login UI is chosen by the instance default."
+        }
+      }
+    },
+    "v2CreateSAMLApplicationResponse": {
+      "type": "object"
+    },
+    "v2DeactivateApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "deactivationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the application deactivation."
+        }
+      }
+    },
+    "v2DeleteApplicationKeyResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the application key deletion. In case the key was already deleted,\nthe previous deletion date is returned. This can be used to check if the key was\nactually deleted."
+        }
+      }
+    },
+    "v2DeleteApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the application deletion. In case the application was already deleted,\nthe previous deletion date is returned. This can be used to check if the application was\nactually deleted."
+        }
+      }
+    },
+    "v2GenerateClientSecretResponse": {
+      "type": "object",
+      "properties": {
+        "clientSecret": {
+          "type": "string",
+          "example": "gjoq34589uasgh",
+          "description": "The newly generated client secret. It must be stored safely, as it will not be possible to retrieve it again.\nA new client secret can be generated using this endpoint."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the creation of the new client secret."
+        }
+      }
+    },
+    "v2GetApplicationKeyResponse": {
+      "type": "object",
+      "properties": {
+        "keyId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "Unique ID of the application key."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the key creation."
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "3019-04-01T08:45:00.000000Z",
+          "description": "The timestamp when the key will expire."
+        }
+      }
+    },
+    "v2GetApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "application": {
+          "$ref": "#/definitions/v2Application"
+        }
+      }
+    },
+    "v2ListApplicationKeysResponse": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2ApplicationKey"
+          },
+          "description": "The list of application keys matching the query. Depending on the applied limit,\nthere might be more keys available than returned in this list.\nUse the returned pagination information to request further keys."
+        },
+        "pagination": {
+          "$ref": "#/definitions/v2PaginationResponse",
+          "description": "Contains the total number of application keys matching the query and the applied limit."
+        }
+      }
+    },
+    "v2ListApplicationsResponse": {
+      "type": "object",
+      "properties": {
+        "applications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2Application"
+          },
+          "description": "The list of applications matching the query. Depending on the applied limit,\nthere might be more applications available than included in this list.\nUse the returned pagination information to request further applications."
+        },
+        "pagination": {
+          "$ref": "#/definitions/v2PaginationResponse",
+          "description": "Contains the total number of apps matching the query and the applied limit."
+        }
+      }
+    },
+    "v2LoginV1": {
+      "type": "object"
+    },
+    "v2LoginV2": {
+      "type": "object",
+      "properties": {
+        "baseUri": {
+          "type": "string",
+          "description": "Optionally specify a base uri of the login UI. If unspecified the default URI will be used."
+        }
+      }
+    },
+    "v2LoginVersion": {
+      "type": "object",
+      "properties": {
+        "loginV1": {
+          "$ref": "#/definitions/v2LoginV1",
+          "description": "Allow the user to sign in through the ZITADEL hosted login UI."
+        },
+        "loginV2": {
+          "$ref": "#/definitions/v2LoginV2",
+          "description": "Allow the user to sign in though the new login UI or even your own UI by specifying a base_uri."
+        }
+      }
+    },
+    "v2OIDCApplicationType": {
+      "type": "string",
+      "enum": [
+        "OIDC_APP_TYPE_WEB",
+        "OIDC_APP_TYPE_USER_AGENT",
+        "OIDC_APP_TYPE_NATIVE"
+      ],
+      "default": "OIDC_APP_TYPE_WEB"
+    },
+    "v2OIDCAuthMethodType": {
+      "type": "string",
+      "enum": [
+        "OIDC_AUTH_METHOD_TYPE_BASIC",
+        "OIDC_AUTH_METHOD_TYPE_POST",
+        "OIDC_AUTH_METHOD_TYPE_NONE",
+        "OIDC_AUTH_METHOD_TYPE_PRIVATE_KEY_JWT"
+      ],
+      "default": "OIDC_AUTH_METHOD_TYPE_BASIC"
+    },
+    "v2OIDCConfiguration": {
+      "type": "object",
+      "properties": {
+        "redirectUris": {
+          "type": "array",
+          "example": [
+            "https://console.zitadel.ch/auth/callback"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "RedirectURIs are the allowed callback URIs for the OAuth2 / OIDC flows,\nwhere the authorization code or tokens will be sent to.\nThe redirect_uri parameter in the authorization request must exactly match one of these URIs."
+        },
+        "responseTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2OIDCResponseType"
+          },
+          "description": "ResponseTypes define whether a code, id_token token or just id_token will be returned.\nThe response_type parameter in the authorization request must exactly match one of these values."
+        },
+        "grantTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2OIDCGrantType"
+          },
+          "description": "GrantTypes define the flow type the application is allowed to use.\nThe grant_type parameter in the token request must exactly match one of these values."
+        },
+        "applicationType": {
+          "$ref": "#/definitions/v2OIDCApplicationType",
+          "description": "determines the paradigm of the application"
+        },
+        "clientId": {
+          "type": "string",
+          "example": "69629023906488334@ZITADEL",
+          "description": "The unique OAuth2/OIDC client_id used for authentication of the application,\ne.g. at the token endpoint."
+        },
+        "authMethodType": {
+          "$ref": "#/definitions/v2OIDCAuthMethodType",
+          "description": "The authentication method type used by the application to authenticate at the token endpoint."
+        },
+        "postLogoutRedirectUris": {
+          "type": "array",
+          "example": [
+            "https://console.zitadel.ch/logout"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "PostLogoutRedirectURIs are the allowed URIs to redirect to after a logout.\nThe post_logout_redirect_uri parameter in the logout request must exactly match one of these URIs."
+        },
+        "version": {
+          "$ref": "#/definitions/v2OIDCVersion",
+          "description": "Version defines the OIDC version used by the application.\nCurrently, only version 1.0 is supported.\nFuture versions might introduce breaking changes."
+        },
+        "nonCompliant": {
+          "type": "boolean",
+          "description": "NonCompliant specifies whether the config is OIDC compliant. A production configuration SHOULD be compliant.\nNon-compliant configurations can run into interoperability issues with OIDC libraries and tools.\nCompliance problems are listed in the compliance_problems field."
+        },
+        "complianceProblems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2OIDCLocalizedMessage"
+          },
+          "description": "ComplianceProblems lists the problems for non-compliant configurations.\nIn case of a compliant configuration, this list is empty."
+        },
+        "developmentMode": {
+          "type": "boolean",
+          "description": "DevelopmentMode can be enabled for development purposes. This allows the use of\nOIDC non-compliant and potentially insecure settings, such as the use of\nHTTP redirect URIs or wildcard redirect URIs."
+        },
+        "accessTokenType": {
+          "$ref": "#/definitions/v2OIDCTokenType",
+          "description": "The AccessTokenType defines the type of the access token returned from ZITADEL.\nBearer tokens are opaque to clients. JWT tokens are self-contained and can be validated by the client.\nBearer tokens must be introspected at the ZITADEL token endpoint."
+        },
+        "accessTokenRoleAssertion": {
+          "type": "boolean",
+          "description": "If AccessTokenRoleAssertion is enabled, the roles of the user are added to the access token.\nEnsure that the access token is a JWT token and not a bearer token. And either request the roles\nby scope or enable the user role assertion on the project."
+        },
+        "idTokenRoleAssertion": {
+          "type": "boolean",
+          "description": "If IDTokenRoleAssertion is enabled, the roles of the user are added to the id token.\nEnsure that either the roles are requested by scope or enable the user role assertion on the\nproject."
+        },
+        "idTokenUserinfoAssertion": {
+          "type": "boolean",
+          "description": "If IDTokenUserinfoAssertion is enabled, the claims of profile, email, address and phone scopes\nare added to the id token even if an access token is issued. This can be required by some applications\nthat do not call the userinfo endpoint after authentication or directly use the id_token for retrieving\nuser information.\nAttention: this violates the OIDC specification, which states that these claims must only be\nrequested from the userinfo endpoint if an access token is issued. This is to prevent\nleaking of personal information in the id token, which is often stored in the browser and\ntherefore more vulnerable."
+        },
+        "clockSkew": {
+          "type": "string",
+          "description": "ClockSkew is used to compensate time differences between the servers of ZITADEL and the application.\nIt is added to the \"exp\" claim and subtracted from \"iat\", \"auth_time\" and \"nbf\" claims.\nThe default is 0s, the maximum is 5s."
+        },
+        "additionalOrigins": {
+          "type": "array",
+          "example": [
+            "https://console.zitadel.ch/auth/callback"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "AdditionalOrigins are HTTP origins (scheme + host + port) from where the API can be used\nadditional to the redirect_uris.\nThis is useful if the application is used from an origin different to the redirect_uris,\ne.g. if the application is a SPA served in a native app, where the redirect_uri is a custom scheme,\nbut the application is served from a https origin."
+        },
+        "allowedOrigins": {
+          "type": "array",
+          "example": [
+            "https://console.zitadel.ch"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "AllowedOrigins are all HTTP origins where the application is allowed to be used from.\nThis is used to prevent CORS issues in browsers.\nIf the origin of the request is not in this list, the request will be rejected.\nThis is especially important for SPAs.\nNote that this is a generated list from the redirect_uris and additional_origins.\nIf you use the application from another origin, you have to add it to the additional_origins."
+        },
+        "skipNativeAppSuccessPage": {
+          "type": "boolean",
+          "description": "For native apps a successful login usually shows a success page with a link to open the application again.\nSkipNativeAppSuccessPage can be used to skip this page and open the application directly."
+        },
+        "backChannelLogoutUri": {
+          "type": "string",
+          "example": [
+            "https://example.com/auth/backchannel"
+          ],
+          "description": "BackChannelLogoutURI is used to notify the application about terminated sessions according\nto the OIDC Back-Channel Logout (https://openid.net/specs/openid-connect-backchannel-1_0.html)."
+        },
+        "loginVersion": {
+          "$ref": "#/definitions/v2LoginVersion",
+          "description": "LoginVersion specifies the login UI, where the user is redirected to for authentication.\nIt can be used to select a specific login UI, e.g. for embedded UIs or for custom login pages\nhosted on any other domain.\nIf unset, the login UI is chosen by the instance default."
+        }
+      }
+    },
+    "v2OIDCGrantType": {
+      "type": "string",
+      "enum": [
+        "OIDC_GRANT_TYPE_AUTHORIZATION_CODE",
+        "OIDC_GRANT_TYPE_IMPLICIT",
+        "OIDC_GRANT_TYPE_REFRESH_TOKEN",
+        "OIDC_GRANT_TYPE_DEVICE_CODE",
+        "OIDC_GRANT_TYPE_TOKEN_EXCHANGE"
+      ],
+      "default": "OIDC_GRANT_TYPE_AUTHORIZATION_CODE"
+    },
+    "v2OIDCLocalizedMessage": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "localizedMessage": {
+          "type": "string"
+        }
+      }
+    },
+    "v2OIDCResponseType": {
+      "type": "string",
+      "enum": [
+        "OIDC_RESPONSE_TYPE_UNSPECIFIED",
+        "OIDC_RESPONSE_TYPE_CODE",
+        "OIDC_RESPONSE_TYPE_ID_TOKEN",
+        "OIDC_RESPONSE_TYPE_ID_TOKEN_TOKEN"
+      ],
+      "default": "OIDC_RESPONSE_TYPE_UNSPECIFIED"
+    },
+    "v2OIDCTokenType": {
+      "type": "string",
+      "enum": [
+        "OIDC_TOKEN_TYPE_BEARER",
+        "OIDC_TOKEN_TYPE_JWT"
+      ],
+      "default": "OIDC_TOKEN_TYPE_BEARER"
+    },
+    "v2OIDCVersion": {
+      "type": "string",
+      "enum": [
+        "OIDC_VERSION_1_0"
+      ],
+      "default": "OIDC_VERSION_1_0"
+    },
+    "v2PaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "example": 0,
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "example": 10,
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "example": false,
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "v2PaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100,
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": 100,
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "v2ProjectIDFilter": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "Search for application belonging to the project with this ID."
+        }
+      },
+      "required": [
+        "projectId"
+      ]
+    },
+    "v2ReactivateApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "reactivationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the application reactivation."
+        }
+      }
+    },
+    "v2SAMLConfiguration": {
+      "type": "object",
+      "properties": {
+        "metadataXml": {
+          "type": "string",
+          "format": "byte",
+          "description": "The Metadata XML is the provided or fetched metadata stored at Zitadel.\nIf either the metadata was provided as XML or when Zitadel fetched it at the provided URL,\nit is stored here."
+        },
+        "metadataUrl": {
+          "type": "string",
+          "description": "The Metadata URL is the URL where the metadata was fetched from.\nIn case the metadata was provided as raw XML, this field is empty."
+        },
+        "loginVersion": {
+          "$ref": "#/definitions/v2LoginVersion",
+          "description": "LoginVersion specifies the login UI, where the user is redirected to for authentication.\nIt can be used to select a specific login UI, e.g. for embedded UIs or for custom login pages\nhosted on any other domain.\nIf unset, the login UI is chosen by the instance default."
+        }
+      }
+    },
+    "v2TextFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_FILTER_METHOD_EQUALS",
+        "TEXT_FILTER_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_STARTS_WITH",
+        "TEXT_FILTER_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_CONTAINS",
+        "TEXT_FILTER_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_ENDS_WITH",
+        "TEXT_FILTER_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_FILTER_METHOD_EQUALS"
+    },
+    "v2UpdateAPIApplicationConfigurationRequest": {
+      "type": "object",
+      "properties": {
+        "authMethodType": {
+          "$ref": "#/definitions/v2APIAuthMethodType",
+          "description": "The authentication method type used by the API to authenticate at the introspection endpoint."
+        }
+      }
+    },
+    "v2UpdateApplicationResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the application update. If no changes were made, the previous change date is returned.\nThis can be used to check if the application was actually updated."
+        }
+      }
+    },
+    "v2UpdateOIDCApplicationConfigurationRequest": {
+      "type": "object",
+      "properties": {
+        "redirectUris": {
+          "type": "array",
+          "example": [
+            "http://localhost:4200/auth/callback"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "RedirectURIs are the allowed callback URIs for the OAuth2 / OIDC flows,\nwhere the authorization code or tokens will be sent to.\nThe redirect_uri parameter in the authorization request must exactly match one of these URIs.\nAny existing redirect URIs not included in this list will be removed.\nIf not set, the redirect URIs will not be changed."
+        },
+        "responseTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2OIDCResponseType"
+          },
+          "description": "ResponseTypes define whether a code, id_token token or just id_token will be returned.\nThe response_type parameter in the authorization request must exactly match one of these values.\nAny existing response types not included in this list will be removed.\nIf not set, the response types will not be changed."
+        },
+        "grantTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2OIDCGrantType"
+          },
+          "description": "GrantTypes define the flow type the application is allowed to use.\nThe grant_type parameter in the token request must exactly match one of these values.\nMinimum one grant type must be provided, but multiple grant types can be provided to allow\ndifferent flows, e.g. authorization code flow and refresh token flow.\nAny existing grant types not included in this list will be removed.\nIf not set, the grant types will not be changed."
+        },
+        "applicationType": {
+          "$ref": "#/definitions/v2OIDCApplicationType",
+          "description": "ApplicationType defines the OAuth2/OIDC client type and their ability to maintain\nconfidentiality of their credentials.\nThis influences the allowed grant types and the required authentication method.\nIf not set, the application type will not be changed."
+        },
+        "authMethodType": {
+          "$ref": "#/definitions/v2OIDCAuthMethodType",
+          "description": "The authentication method type used by the application to authenticate at the token endpoint.\nIf not set, the authentication method type will not be changed."
+        },
+        "postLogoutRedirectUris": {
+          "type": "array",
+          "example": [
+            "http://localhost:4200/signedout"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "PostLogoutRedirectURIs are the allowed URIs to redirect to after a logout.\nThe post_logout_redirect_uri parameter in the logout request must exactly match one of these URIs.\nAny existing post logout redirect URIs not included in this list will be removed.\nIf not set, the post logout redirect URIs will not be changed."
+        },
+        "version": {
+          "$ref": "#/definitions/v2OIDCVersion",
+          "description": "Version defines the OIDC version used by the application.\nCurrently, only version 1.0 is supported.\nFuture versions might introduce breaking changes.\nIf not set, the version will not be changed."
+        },
+        "developmentMode": {
+          "type": "boolean",
+          "description": "DevelopmentMode can be enabled for development purposes. This allows the use of\nOIDC non-compliant and potentially insecure settings, such as the use of\nHTTP redirect URIs or wildcard redirect URIs.\nIf not set, the dev mode will not be changed."
+        },
+        "accessTokenType": {
+          "$ref": "#/definitions/v2OIDCTokenType",
+          "description": "The AccessTokenType defines the type of the access token returned from ZITADEL.\nBearer tokens are opaque to clients. JWT tokens are self-contained and can be validated by the client.\nBearer tokens must be introspected at the ZITADEL token endpoint.\nIf not set, the access token type will not be changed."
+        },
+        "accessTokenRoleAssertion": {
+          "type": "boolean",
+          "description": "If AccessTokenRoleAssertion is enabled, the roles of the user are added to the access token.\nEnsure that the access token is a JWT token and not a bearer token. And either request the roles\nby scope or enable the user role assertion on the project.\nIf not set, the access token role assertion will not be changed."
+        },
+        "idTokenRoleAssertion": {
+          "type": "boolean",
+          "description": "If IDTokenRoleAssertion is enabled, the roles of the user are added to the id token.\nEnsure that either the roles are requested by scope or enable the user role assertion on the\nproject.\nIf not set, the id token role assertion will not be changed."
+        },
+        "idTokenUserinfoAssertion": {
+          "type": "boolean",
+          "description": "If IDTokenUserinfoAssertion is enabled, the claims of profile, email, address and phone scopes\nare added to the id token even if an access token is issued. This can be required by some applications\nthat do not call the userinfo endpoint after authentication or directly use the id_token for retrieving\nuser information.\nAttention: this violates the OIDC specification, which states that these claims must only be\nrequested from the userinfo endpoint if an access token is issued. This is to prevent\nleaking of personal information in the id token, which is often stored in the browser and\ntherefore more vulnerable.\nIf not set, the id token userinfo assertion will not be changed."
+        },
+        "clockSkew": {
+          "type": "string",
+          "example": "1s",
+          "description": "ClockSkew is used to compensate time differences between the servers of ZITADEL and the application.\nIt is added to the \"exp\" claim and subtracted from \"iat\", \"auth_time\" and \"nbf\" claims.\nThe default is 0s, the maximum is 5s.\nIf not set, the clock skew will not be changed."
+        },
+        "additionalOrigins": {
+          "type": "array",
+          "example": [
+            "scheme://localhost:8080"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "AdditionalOrigins are HTTP origins (scheme + host + port) from where the API can be used\nadditional to the redirect_uris.\nThis is useful if the application is used from an origin different to the redirect_uris,\ne.g. if the application is a SPA served in a native app, where the redirect_uri is a custom scheme,\nbut the application is served from a https origin.\nAny existing additional origins not included in this list will be removed.\nIf not set, the additional origins will not be changed."
+        },
+        "skipNativeAppSuccessPage": {
+          "type": "boolean",
+          "description": "For native apps a successful login usually shows a success page with a link to open the application again.\nSkipNativeAppSuccessPage can be used to skip this page and open the application directly.\nIf not set, the skip native app success page will not be changed."
+        },
+        "backChannelLogoutUri": {
+          "type": "string",
+          "example": [
+            "https://example.com/auth/backchannel"
+          ],
+          "description": "BackChannelLogoutURI is used to notify the application about terminated sessions according\nto the OIDC Back-Channel Logout (https://openid.net/specs/openid-connect-backchannel-1_0.html).\nIf not set, the back channel logout URI will not be changed."
+        },
+        "loginVersion": {
+          "$ref": "#/definitions/v2LoginVersion",
+          "description": "LoginVersion specifies the login UI, where the user is redirected to for authentication.\nIt can be used to select a specific login UI, e.g. for embedded UIs or for custom login pages\nhosted on any other domain.\nIf unset, the login UI is chosen by the instance default."
+        }
+      }
+    },
+    "v2UpdateSAMLApplicationConfigurationRequest": {
+      "type": "object",
+      "properties": {
+        "metadataXml": {
+          "type": "string",
+          "format": "byte"
+        },
+        "metadataUrl": {
+          "type": "string"
+        },
+        "loginVersion": {
+          "$ref": "#/definitions/v2LoginVersion",
+          "description": "LoginVersion specifies the login UI, where the user is redirected to for authentication.\nIt can be used to select a specific login UI, e.g. for embedded UIs or for custom login pages\nhosted on any other domain.\nIf unset, the login UI is chosen by the instance default."
+        }
+      }
+    }
+  }
+}

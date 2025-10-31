@@ -1,0 +1,402 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Debug Service",
+    "description": "This API is intended to push specific debug payload through ZITADEL's storage system.",
+    "version": "3.0-preview",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "ZITADELDebugEvents"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/resources/v3alpha/debug",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "summary": "Create a set of debug events.",
+        "description": "Create a set of debug events which will be pushed to the eventstore and reduced to the projection.",
+        "operationId": "ZITADELDebugEvents_CreateDebugEvents",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v3alphaCreateDebugEventsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "events",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/v3alphaEvent"
+              }
+            }
+          },
+          {
+            "name": "instance.id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "instance.domain",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "aggregateId",
+            "description": "unique identifier for the aggregate we want to push events to.",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ZITADELDebugEvents"
+        ]
+      }
+    },
+    "/v3alpha/debug_events": {
+      "get": {
+        "operationId": "ZITADELDebugEvents_ListDebugEventsStates",
+        "responses": {
+          "200": {
+            "description": "Debug events states successfully retrieved",
+            "schema": {
+              "$ref": "#/definitions/v3alphaListDebugEventsStatesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "triggerBulk",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "ZITADELDebugEvents"
+        ]
+      }
+    },
+    "/v3alpha/debug_events/{id}": {
+      "get": {
+        "operationId": "ZITADELDebugEvents_GetDebugEventsStateById",
+        "responses": {
+          "200": {
+            "description": "Debug events state successfully retrieved",
+            "schema": {
+              "$ref": "#/definitions/v3alphaGetDebugEventsStateByIdResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "unique identifier of the aggregate.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "triggerBulk",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "ZITADELDebugEvents"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v3alphaAddedEvent": {
+      "type": "object",
+      "properties": {
+        "projectionSleep": {
+          "type": "string",
+          "example": "5s",
+          "description": "issues a pg_sleep command in the projection reducer, simulating a slow query."
+        },
+        "blob": {
+          "type": "string",
+          "description": "optional text that can be set as a state."
+        }
+      }
+    },
+    "v3alphaChangedEvent": {
+      "type": "object",
+      "properties": {
+        "projectionSleep": {
+          "type": "string",
+          "example": "5s",
+          "description": "issues a pg_sleep command in the projection reducer, simulating a slow query."
+        },
+        "blob": {
+          "type": "string",
+          "description": "optional text that can be set as a state."
+        }
+      }
+    },
+    "v3alphaCreateDebugEventsResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails"
+        }
+      }
+    },
+    "v3alphaDetails": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "description": "the timestamp of the first event applied to the object."
+        },
+        "changed": {
+          "type": "string",
+          "format": "date-time",
+          "description": "the timestamp of the last event applied to the object."
+        },
+        "owner": {
+          "$ref": "#/definitions/v3alphaOwner",
+          "example": "69629023906488334",
+          "description": "the parent object representing the returned objects context."
+        }
+      }
+    },
+    "v3alphaEvent": {
+      "type": "object",
+      "properties": {
+        "add": {
+          "$ref": "#/definitions/v3alphaAddedEvent"
+        },
+        "change": {
+          "$ref": "#/definitions/v3alphaChangedEvent"
+        },
+        "remove": {
+          "$ref": "#/definitions/v3alphaRemovedEvent"
+        }
+      }
+    },
+    "v3alphaGetDebugEventsStateByIdResponse": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/v3alphaState"
+        }
+      }
+    },
+    "v3alphaInstance": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        }
+      }
+    },
+    "v3alphaListDebugEventsStatesResponse": {
+      "type": "object",
+      "properties": {
+        "states": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v3alphaState"
+          }
+        }
+      }
+    },
+    "v3alphaOwner": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/v3alphaOwnerType"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "v3alphaOwnerType": {
+      "type": "string",
+      "enum": [
+        "OWNER_TYPE_UNSPECIFIED",
+        "OWNER_TYPE_SYSTEM",
+        "OWNER_TYPE_INSTANCE",
+        "OWNER_TYPE_ORG"
+      ],
+      "default": "OWNER_TYPE_UNSPECIFIED"
+    },
+    "v3alphaRemovedEvent": {
+      "type": "object",
+      "properties": {
+        "projectionSleep": {
+          "type": "string",
+          "example": "5s",
+          "description": "issues a pg_sleep command in the projection reducer, simulating a slow query."
+        }
+      }
+    },
+    "v3alphaState": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v3alphaDetails",
+          "description": "Details provide some base information (such as the last change date) of the schema."
+        },
+        "blob": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

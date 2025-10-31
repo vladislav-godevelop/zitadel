@@ -1,0 +1,537 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "OIDC Service",
+    "description": "Get OIDC Auth Request details and create callback URLs.",
+    "version": "2.0",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "OIDCService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/v2/oidc/auth_requests/{authRequestId}": {
+      "get": {
+        "summary": "Get Auth Request",
+        "description": "Get OIDC Auth Request details by ID, obtained from the redirect URL.\nReturns details that are parsed from the application's Auth Request.\n\nRequired permissions:\n  - `session.read`",
+        "operationId": "OIDCService_GetAuthRequest",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2GetAuthRequestResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authRequestId",
+            "description": "The ID of the Auth Request, as obtained from the redirect URL.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OIDCService"
+        ]
+      },
+      "post": {
+        "summary": "Create Callback",
+        "description": "Finalize an Auth Request and get the callback URL for success or failure.\nThe user must be redirected to the URL in order to inform the application about the success or failure.\nOn success, the URL contains details for the application to obtain the tokens.\nThis method can only be called once for an Auth request.\n\nRequired permissions:\n  - `session.link`",
+        "operationId": "OIDCService_CreateCallback",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2CreateCallbackResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authRequestId",
+            "description": "The ID of the Auth Request to finalize.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OIDCServiceCreateCallbackBody"
+            }
+          }
+        ],
+        "tags": [
+          "OIDCService"
+        ]
+      }
+    },
+    "/v2/oidc/device_authorization/{deviceAuthorizationId}": {
+      "post": {
+        "summary": "Authorize or Deny Device Authorization",
+        "description": "Authorize or deny the device authorization request based on the provided device authorization id.\n\nRequired permissions:\n  - `session.link`",
+        "operationId": "OIDCService_AuthorizeOrDenyDeviceAuthorization",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2AuthorizeOrDenyDeviceAuthorizationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "deviceAuthorizationId",
+            "description": "The device authorization id returned when submitting the user code.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OIDCServiceAuthorizeOrDenyDeviceAuthorizationBody"
+            }
+          }
+        ],
+        "tags": [
+          "OIDCService"
+        ]
+      }
+    },
+    "/v2/oidc/device_authorization/{userCode}": {
+      "get": {
+        "summary": "Get Device Authorization Request",
+        "description": "Get the device authorization based on the provided \"user code\".\nThis will return the device authorization request, which contains the device authorization id\nthat is required to authorize the request once the user signed in or to deny it.\n\nRequired permissions:\n  - `session.read`",
+        "operationId": "OIDCService_GetDeviceAuthorizationRequest",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2GetDeviceAuthorizationRequestResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userCode",
+            "description": "The user_code returned by the device authorization request and provided to the user by the device.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OIDCService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "OIDCServiceAuthorizeOrDenyDeviceAuthorizationBody": {
+      "type": "object",
+      "properties": {
+        "session": {
+          "$ref": "#/definitions/v2Session",
+          "description": "To authorize the device authorization request, the user's session must be provided."
+        },
+        "deny": {
+          "$ref": "#/definitions/v2Deny",
+          "description": "Deny the device authorization request."
+        }
+      }
+    },
+    "OIDCServiceCreateCallbackBody": {
+      "type": "object",
+      "properties": {
+        "session": {
+          "$ref": "#/definitions/v2Session",
+          "description": "The session of the authenticated user, to finalize the authorization request."
+        },
+        "error": {
+          "$ref": "#/definitions/v2AuthorizationError",
+          "title": "The error that occurred during the authorization flow, to inform the application.\nThis creates a callback URL with the error details set.\nSee: https://openid.net/specs/openid-connect-core-1_0.html#AuthError"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2AuthRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the authorization request."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the authorization request was created."
+        },
+        "clientId": {
+          "type": "string",
+          "description": "The OAuth2/OIDC client_id of the application that initiated the authorization request."
+        },
+        "scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The scopes by the application that the user must consent to."
+        },
+        "redirectUri": {
+          "type": "string",
+          "description": "The redirect_uri used in the authorization request. This must exactly match one of the redirect URIs registered for the client.\nThis uri is used to send the authorization code or tokens back to the application."
+        },
+        "prompt": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2Prompt"
+          },
+          "description": "Prompts that must be displayed to the user."
+        },
+        "uiLocales": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "End-User's preferred languages and scripts for the user interface, represented as a list of BCP47 [RFC5646]\nlanguage tag values, ordered by preference.\nFor instance, the value [fr-CA, fr, en] represents a preference for French as spoken in Canada,\nthen French (without a region designation), followed by English (without a region designation).\nAn error SHOULD NOT result if some or all of the requested locales are not supported."
+        },
+        "loginHint": {
+          "type": "string",
+          "description": "Login hint can be set by the application with a user identifier such as an email or phone number."
+        },
+        "maxAge": {
+          "type": "string",
+          "description": "Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated.\nIf the elapsed time is greater than this value, or the field is present with 0 duration, the user must be re-authenticated."
+        },
+        "hintUserId": {
+          "type": "string",
+          "description": "User ID taken from a ID Token Hint if it was present and valid."
+        }
+      },
+      "title": "AuthRequest represents an OpenID Connect Authorization Request as defined in\nhttps://openid.net/specs/openid-connect-core-1_0.html#AuthRequest",
+      "externalDocs": {
+        "description": "Find out more about OIDC Auth Request parameters",
+        "url": "https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest"
+      }
+    },
+    "v2AuthorizationError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/v2ErrorReason"
+        },
+        "errorDescription": {
+          "type": "string"
+        },
+        "errorUri": {
+          "type": "string"
+        }
+      }
+    },
+    "v2AuthorizeOrDenyDeviceAuthorizationResponse": {
+      "type": "object"
+    },
+    "v2CreateCallbackResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        },
+        "callbackUrl": {
+          "type": "string",
+          "example": "https://client.example.org/cb?code=SplxlOBeZQQYbYS6WxSbIA\u0026state=af0ifjsldkj",
+          "title": "The callback URL where the user should be redirected using an HTTP \"302 FOUND\" status.\nThis contains details for the application to obtain the tokens on success, or error details on failure.\nNote that this field must be treated as credentials, as the contained code can be used to obtain tokens on behalf of the user.\""
+        }
+      }
+    },
+    "v2Deny": {
+      "type": "object"
+    },
+    "v2Details": {
+      "type": "object",
+      "properties": {
+        "sequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2",
+          "description": "on read: the sequence of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "sequence represents the order of events. It's always counting"
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "on read: the timestamp of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "change_date is the timestamp when the object was changed"
+        },
+        "resourceOwner": {
+          "type": "string",
+          "example": "69629023906488334",
+          "title": "resource_owner is the organization or instance_id an object belongs to"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "title": "creation_date is the timestamp where the first operation on the object was made"
+        }
+      }
+    },
+    "v2DeviceAuthorizationRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the device authorization request to be used for authorizing or denying the request."
+        },
+        "clientId": {
+          "type": "string",
+          "description": "The client_id of the application that initiated the device authorization request."
+        },
+        "scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The scopes requested by the application."
+        },
+        "appName": {
+          "type": "string",
+          "description": "Name of the client application."
+        },
+        "projectName": {
+          "type": "string",
+          "description": "Name of the project the client application is part of."
+        }
+      }
+    },
+    "v2ErrorReason": {
+      "type": "string",
+      "enum": [
+        "ERROR_REASON_UNSPECIFIED",
+        "ERROR_REASON_INVALID_REQUEST",
+        "ERROR_REASON_UNAUTHORIZED_CLIENT",
+        "ERROR_REASON_ACCESS_DENIED",
+        "ERROR_REASON_UNSUPPORTED_RESPONSE_TYPE",
+        "ERROR_REASON_INVALID_SCOPE",
+        "ERROR_REASON_SERVER_ERROR",
+        "ERROR_REASON_TEMPORARY_UNAVAILABLE",
+        "ERROR_REASON_INTERACTION_REQUIRED",
+        "ERROR_REASON_LOGIN_REQUIRED",
+        "ERROR_REASON_ACCOUNT_SELECTION_REQUIRED",
+        "ERROR_REASON_CONSENT_REQUIRED",
+        "ERROR_REASON_INVALID_REQUEST_URI",
+        "ERROR_REASON_INVALID_REQUEST_OBJECT",
+        "ERROR_REASON_REQUEST_NOT_SUPPORTED",
+        "ERROR_REASON_REQUEST_URI_NOT_SUPPORTED",
+        "ERROR_REASON_REGISTRATION_NOT_SUPPORTED"
+      ],
+      "default": "ERROR_REASON_UNSPECIFIED",
+      "title": "- ERROR_REASON_INVALID_REQUEST: Error states from https://datatracker.ietf.org/doc/html/rfc6749#section-4.2.2.1\n - ERROR_REASON_INTERACTION_REQUIRED: Error states from https://openid.net/specs/openid-connect-core-1_0.html#AuthError"
+    },
+    "v2GetAuthRequestResponse": {
+      "type": "object",
+      "properties": {
+        "authRequest": {
+          "$ref": "#/definitions/v2AuthRequest"
+        }
+      }
+    },
+    "v2GetDeviceAuthorizationRequestResponse": {
+      "type": "object",
+      "properties": {
+        "deviceAuthorizationRequest": {
+          "$ref": "#/definitions/v2DeviceAuthorizationRequest"
+        }
+      }
+    },
+    "v2Prompt": {
+      "type": "string",
+      "enum": [
+        "PROMPT_UNSPECIFIED",
+        "PROMPT_NONE",
+        "PROMPT_LOGIN",
+        "PROMPT_CONSENT",
+        "PROMPT_SELECT_ACCOUNT",
+        "PROMPT_CREATE"
+      ],
+      "default": "PROMPT_UNSPECIFIED"
+    },
+    "v2Session": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string",
+          "example": "163840776835432705",
+          "description": "ID of the session, used to login the user. Connects the session to the Auth Request.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "sessionToken": {
+          "type": "string",
+          "description": "Token of the session used to login the user. This token verifies that the session is valid.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "sessionId",
+        "sessionToken"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

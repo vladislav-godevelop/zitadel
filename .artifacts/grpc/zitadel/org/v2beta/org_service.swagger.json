@@ -1,0 +1,1804 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Organization Service (Beta)",
+    "description": "This API is intended to manage organizations in a ZITADEL instance. This project is in beta state. It can AND will continue breaking until the services provide the same functionality as the current login.",
+    "version": "2.0-beta",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "OrganizationService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/v2beta/organizations": {
+      "post": {
+        "summary": "Create Organization",
+        "description": "Create a new organization with an administrative user. If no specific roles are sent for the users, they will be granted the role ORG_OWNER.\n\nRequired permission:\n - `org.create`\n\nDeprecated: Use [AddOrganization](/apis/resources/org_service_v2/organization-service-add-organization.api.mdx) instead to create an organization.",
+        "operationId": "OrganizationService_CreateOrganization",
+        "responses": {
+          "200": {
+            "description": "Organization created successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateOrganizationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "409": {
+            "description": "The organization to create already exists.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateOrganizationRequest"
+            }
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/organizations/search": {
+      "post": {
+        "summary": "List Organizations",
+        "description": "Returns a list of organizations that match the requesting filters. All filters are applied with an AND condition.\n\nRequired permission:\n - `iam.read`\n\nDeprecated: Use [ListOrganizations](/apis/resources/org_service_v2/organization-service-list-organizations.api.mdx) instead to list organizations.",
+        "operationId": "OrganizationService_ListOrganizations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaListOrganizationsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaListOrganizationsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/organizations/{id}": {
+      "delete": {
+        "summary": "Delete Organization",
+        "description": "Deletes the organization and all its resources (Users, Projects, Grants to and from the org). Users of this organization will not be able to log in.\n\nRequired permission:\n - `org.delete`",
+        "operationId": "OrganizationService_DeleteOrganization",
+        "responses": {
+          "200": {
+            "description": "Organization created successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteOrganizationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Organisation's not found",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Organization Id for the Organization to be deleted",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ]
+      },
+      "post": {
+        "summary": "Update Organization",
+        "description": "Change the name of the organization.\n\nRequired permission:\n - `org.write`",
+        "operationId": "OrganizationService_UpdateOrganization",
+        "responses": {
+          "200": {
+            "description": "Organization created successfully",
+            "schema": {
+              "$ref": "#/definitions/v2betaUpdateOrganizationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Organisation's not found",
+            "schema": {}
+          },
+          "409": {
+            "description": "Organisation's name already taken",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Organization Id for the Organization to be updated",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationServiceUpdateOrganizationBody"
+            }
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ]
+      }
+    },
+    "/v2beta/organizations/{id}/activate": {
+      "post": {
+        "summary": "Activate Organization",
+        "description": "Set the state of my organization to active. The state of the organization has to be deactivated to perform the request. Users of this organization will be able to log in again.\n\nRequired permission:\n - `org.write`",
+        "operationId": "OrganizationService_ActivateOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaActivateOrganizationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Organization Id for the Organization to be activated",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationServiceActivateOrganizationBody"
+            }
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ]
+      }
+    },
+    "/v2beta/organizations/{id}/deactivate": {
+      "post": {
+        "summary": "Deactivate Organization",
+        "description": "Sets the state of my organization to deactivated. Users of this organization will not be able to log in.\n\nRequired permission:\n - `org.write`",
+        "operationId": "OrganizationService_DeactivateOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeactivateOrganizationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "Organization Id for the Organization to be deactivated",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationServiceDeactivateOrganizationBody"
+            }
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ]
+      }
+    },
+    "/v2beta/organizations/{organizationId}/domains": {
+      "delete": {
+        "summary": "Delete Organization Domain",
+        "description": "Delete a new domain from an organization. The domains are used to identify to which organization a user belongs. If the uses use the domain for login, this will not be possible afterwards. They have to use another domain instead.\n\nRequired permission:\n - `org.write`",
+        "operationId": "OrganizationService_DeleteOrganizationDomain",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteOrganizationDomainResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "description": "Organization Id for the Organization which domain is to be deleted.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ]
+      },
+      "post": {
+        "summary": "Add Organization Domain",
+        "description": "Add a new domain to an organization. The domains are used to identify to which organization a user belongs.\n\nRequired permission:\n - `org.write`",
+        "operationId": "OrganizationService_AddOrganizationDomain",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaAddOrganizationDomainResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "409": {
+            "description": "Domain already exists",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "description": "Organization Id for the Organization for which the domain is to be added to.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationServiceAddOrganizationDomainBody"
+            }
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ]
+      }
+    },
+    "/v2beta/organizations/{organizationId}/domains/search": {
+      "post": {
+        "summary": "List Organization Domains",
+        "description": "Returns the list of registered domains of an organization. The domains are used to identify to which organization a user belongs. \n\nRequired permission:\n - `org.read`",
+        "operationId": "OrganizationService_ListOrganizationDomains",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaListOrganizationDomainsResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "description": "Organization Id for the Organization which domains are to be listed.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationServiceListOrganizationDomainsBody"
+            }
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ]
+      }
+    },
+    "/v2beta/organizations/{organizationId}/domains/validation/generate": {
+      "post": {
+        "summary": "Generate Organization Domain Validation",
+        "description": "Generate a new file to be able to verify your domain with DNS or HTTP challenge.\n\nRequired permission:\n - `org.write`",
+        "operationId": "OrganizationService_GenerateOrganizationDomainValidation",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaGenerateOrganizationDomainValidationResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Domain doesn't exist on organization",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "description": "Organization Id for the Organization which doman to be validated.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationServiceGenerateOrganizationDomainValidationBody"
+            }
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ]
+      }
+    },
+    "/v2beta/organizations/{organizationId}/domains/validation/verify": {
+      "post": {
+        "summary": "Verify Organization Domain",
+        "description": "Make sure you have added the required verification to your domain, depending on the method you have chosen (HTTP or DNS challenge). ZITADEL will check it and set the domain as verified if it was successful. A verify domain has to be unique.\n\nRequired permission:\n - `org.write`",
+        "operationId": "OrganizationService_VerifyOrganizationDomain",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaVerifyOrganizationDomainResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "description": "Organization Id for the Organization doman to be verified.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationServiceVerifyOrganizationDomainBody"
+            }
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ]
+      }
+    },
+    "/v2beta/organizations/{organizationId}/metadata": {
+      "delete": {
+        "summary": "Delete Organization Metadata",
+        "description": "Delete metadata objects from an organization with a specific key.\n\nRequired permission:\n - `org.write`",
+        "operationId": "OrganizationService_DeleteOrganizationMetadata",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteOrganizationMetadataResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "description": "Organization ID of Orgalization which metadata is to be deleted is stored on.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "keys",
+            "description": "The keys for the Organization metadata to be deleted.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ]
+      },
+      "post": {
+        "summary": "Set Organization Metadata",
+        "description": "Adds or updates a metadata value for the requested key. Make sure the value is base64 encoded.\n\nRequired permission:\n - `org.write`",
+        "operationId": "OrganizationService_SetOrganizationMetadata",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaSetOrganizationMetadataResponse"
+            }
+          },
+          "400": {
+            "description": "Organisation's not found",
+            "schema": {}
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "description": "Organization Id for the Organization doman to be verified.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationServiceSetOrganizationMetadataBody"
+            }
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ]
+      }
+    },
+    "/v2beta/organizations/{organizationId}/metadata/search": {
+      "post": {
+        "summary": "List Organization Metadata",
+        "description": "List metadata of an organization filtered by query.\n\nRequired permission:\n - `org.read`",
+        "operationId": "OrganizationService_ListOrganizationMetadata",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2betaListOrganizationMetadataResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "description": "Organization ID of Orgalization which metadata is to be listed.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationServiceListOrganizationMetadataBody"
+            }
+          }
+        ],
+        "tags": [
+          "OrganizationService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "CreateOrganizationRequestAdmin": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "human": {
+          "$ref": "#/definitions/v2betaAddHumanUserRequest"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "specify Organization Member Roles for the provided user (default is ORG_OWNER if roles are empty)"
+        }
+      },
+      "description": "The Admin for the newly created Organization."
+    },
+    "OrganizationServiceActivateOrganizationBody": {
+      "type": "object"
+    },
+    "OrganizationServiceAddOrganizationDomainBody": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "example": "testdomain.com",
+          "description": "The domain you want to add to the organization.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "domain"
+      ]
+    },
+    "OrganizationServiceDeactivateOrganizationBody": {
+      "type": "object"
+    },
+    "OrganizationServiceGenerateOrganizationDomainValidationBody": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "example": "testdomain.com",
+          "description": "The domain which to be deleted.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "type": {
+          "$ref": "#/definitions/v2betaDomainValidationType"
+        }
+      },
+      "required": [
+        "domain"
+      ]
+    },
+    "OrganizationServiceListOrganizationDomainsBody": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "List limitations and ordering."
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaDomainSearchFilter"
+          },
+          "description": "Define the criteria to query for."
+        }
+      }
+    },
+    "OrganizationServiceListOrganizationMetadataBody": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "List limitations and ordering."
+        },
+        "filter": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaMetadataQuery"
+          },
+          "description": "Define the criteria to query for."
+        }
+      }
+    },
+    "OrganizationServiceSetOrganizationMetadataBody": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "type": "array",
+          "example": [
+            {
+              "key": "test1",
+              "value": "VGhpcyBpcyBteSBmaXJzdCB2YWx1ZQ=="
+            },
+            {
+              "key": "test2",
+              "value": "VGhpcyBpcyBteSBzZWNvbmQgdmFsdWU="
+            }
+          ],
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zitadelorgv2betaMetadata"
+          },
+          "description": "The values have to be base64 encoded.",
+          "title": "Medata (Key/Value)"
+        }
+      }
+    },
+    "OrganizationServiceUpdateOrganizationBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Customer 1",
+          "title": "New Name for the Organization to be updated",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "OrganizationServiceVerifyOrganizationDomainBody": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "example": "testdomain.com",
+          "description": "Organization Id for the Organization doman to be verified.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2betaActivateOrganizationResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the activation of the organization."
+        }
+      }
+    },
+    "v2betaAddHumanUserRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "d654e6ba-70a3-48ef-a95d-37c8d8a7901a",
+          "description": "optionally set your own id unique for the user.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "username": {
+          "type": "string",
+          "example": "minnie-mouse",
+          "description": "optionally set a unique username, if none is provided the email will be used.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "organization": {
+          "$ref": "#/definitions/zitadelobjectv2betaOrganization"
+        },
+        "profile": {
+          "$ref": "#/definitions/v2betaSetHumanProfile"
+        },
+        "email": {
+          "$ref": "#/definitions/v2betaSetHumanEmail"
+        },
+        "phone": {
+          "$ref": "#/definitions/v2betaSetHumanPhone"
+        },
+        "metadata": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaSetMetadataEntry"
+          }
+        },
+        "password": {
+          "$ref": "#/definitions/v2betaPassword"
+        },
+        "hashedPassword": {
+          "$ref": "#/definitions/v2betaHashedPassword"
+        },
+        "idpLinks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaIDPLink"
+          }
+        },
+        "totpSecret": {
+          "type": "string",
+          "example": "TJOPWSDYILLHXFV4MLKNNJOWFG7VSDCK",
+          "description": "An Implementation of RFC 6238 is used, with HMAC-SHA-1 and time-step of 30 seconds.\nCurrently no other options are supported, and if anything different is used the validation will fail.",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "profile",
+        "email"
+      ]
+    },
+    "v2betaAddOrganizationDomainResponse": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the organization was created."
+        }
+      }
+    },
+    "v2betaAssignedAdmin": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "v2betaCreateOrganizationRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "ZITADEL",
+          "description": "name of the Organization to be created.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "Optionally set your own id unique for the organization.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "admins": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CreateOrganizationRequestAdmin"
+          },
+          "description": "Additional Admins for the Organization."
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "v2betaCreateOrganizationResponse": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the organization was created."
+        },
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "Organization ID of the newly created organization.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "organizationAdmins": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaOrganizationAdmin"
+          },
+          "title": "The admins created/assigned for the Organization"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "v2betaCreatedAdmin": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "emailCode": {
+          "type": "string"
+        },
+        "phoneCode": {
+          "type": "string"
+        }
+      }
+    },
+    "v2betaDeactivateOrganizationResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the deactivation of the organization."
+        }
+      }
+    },
+    "v2betaDeleteOrganizationDomainResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the deletion of the organization domain."
+        }
+      }
+    },
+    "v2betaDeleteOrganizationMetadataResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the deletiion of the organization metadata."
+        }
+      }
+    },
+    "v2betaDeleteOrganizationResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the deletion of the organization."
+        }
+      }
+    },
+    "v2betaDomain": {
+      "type": "object",
+      "properties": {
+        "organizationId": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "The Organization id."
+        },
+        "domainName": {
+          "type": "string",
+          "example": "zitadel.com",
+          "description": "The domain name."
+        },
+        "isVerified": {
+          "type": "boolean",
+          "description": "Defines if the domain is verified."
+        },
+        "isPrimary": {
+          "type": "boolean",
+          "description": "Defines if the domain is the primary domain."
+        },
+        "validationType": {
+          "$ref": "#/definitions/v2betaDomainValidationType",
+          "description": "Defines the protocol the domain was validated with."
+        }
+      },
+      "title": "from proto/zitadel/org.proto"
+    },
+    "v2betaDomainNameFilter": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "zitadel.cloud",
+          "description": "The domain."
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextQueryMethod",
+          "description": "Defines which text equality method is used."
+        }
+      },
+      "title": "from proto/zitadel/org.proto"
+    },
+    "v2betaDomainSearchFilter": {
+      "type": "object",
+      "properties": {
+        "domainNameFilter": {
+          "$ref": "#/definitions/v2betaDomainNameFilter"
+        }
+      },
+      "title": "from proto/zitadel/org.proto"
+    },
+    "v2betaDomainValidationType": {
+      "type": "string",
+      "enum": [
+        "DOMAIN_VALIDATION_TYPE_UNSPECIFIED",
+        "DOMAIN_VALIDATION_TYPE_HTTP",
+        "DOMAIN_VALIDATION_TYPE_DNS"
+      ],
+      "default": "DOMAIN_VALIDATION_TYPE_UNSPECIFIED",
+      "title": "from proto/zitadel/org.proto"
+    },
+    "v2betaGender": {
+      "type": "string",
+      "enum": [
+        "GENDER_UNSPECIFIED",
+        "GENDER_FEMALE",
+        "GENDER_MALE",
+        "GENDER_DIVERSE"
+      ],
+      "default": "GENDER_UNSPECIFIED"
+    },
+    "v2betaGenerateOrganizationDomainValidationResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "example": "ofSBHsSAVHAoTIE4Iv2gwhaYhTjcY5QX",
+          "description": "The token verify domain."
+        },
+        "url": {
+          "type": "string",
+          "example": "https://testdomain.com/.well-known/zitadel-challenge/ofSBHsSAVHAoTIE4Iv2gwhaYhTjcY5QX",
+          "description": "URL used to verify the domain."
+        }
+      }
+    },
+    "v2betaHashedPassword": {
+      "type": "object",
+      "properties": {
+        "hash": {
+          "type": "string",
+          "example": "$2a$12$lJ08fqVr8bFJilRVnDT9QeULI7YW.nT3iwUv6dyg0aCrfm3UY8XR2",
+          "description": "\"Encoded hash of a password in Modular Crypt Format: https://zitadel.com/docs/concepts/architecture/secrets#hashed-secrets\"",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "changeRequired": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "hash"
+      ]
+    },
+    "v2betaIDPLink": {
+      "type": "object",
+      "properties": {
+        "idpId": {
+          "type": "string",
+          "example": "d654e6ba-70a3-48ef-a95d-37c8d8a7901a",
+          "description": "ID of the identity provider",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "userId": {
+          "type": "string",
+          "example": "6516849804890468048461403518",
+          "description": "ID of the user of the identity provider",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "userName": {
+          "type": "string",
+          "example": "user@external.com",
+          "description": "username of the user of the identity provider",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      }
+    },
+    "v2betaListOrganizationDomainsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse",
+          "description": "Pagination of the Organizations domain results."
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaDomain"
+          },
+          "description": "The domains requested."
+        }
+      }
+    },
+    "v2betaListOrganizationMetadataResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse",
+          "description": "Pagination of the Organizations metadata results."
+        },
+        "metadata": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zitadelmetadatav2betaMetadata"
+          },
+          "description": "The Organization metadata requested."
+        }
+      }
+    },
+    "v2betaListOrganizationsRequest": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "List limitations and ordering."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaOrgFieldName",
+          "title": "the field the result is sorted"
+        },
+        "filter": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaOrganizationSearchFilter"
+          },
+          "title": "Define the criteria to query for.\nrepeated ProjectRoleQuery filters = 4;"
+        }
+      }
+    },
+    "v2betaListOrganizationsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse",
+          "title": "Pagination of the Organizations results"
+        },
+        "organizations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/zitadelorgv2betaOrganization"
+          },
+          "title": "The Organizations requested"
+        }
+      }
+    },
+    "v2betaMetadataKeyQuery": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "example": "key"
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextQueryMethod",
+          "description": "defines which text equality method is used"
+        }
+      }
+    },
+    "v2betaMetadataQuery": {
+      "type": "object",
+      "properties": {
+        "keyQuery": {
+          "$ref": "#/definitions/v2betaMetadataKeyQuery"
+        }
+      }
+    },
+    "v2betaOrgDomainFilter": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "example": "zitadel.cloud",
+          "description": "The domain."
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextQueryMethod",
+          "description": "Defines which text equality method is used."
+        }
+      }
+    },
+    "v2betaOrgFieldName": {
+      "type": "string",
+      "enum": [
+        "ORG_FIELD_NAME_UNSPECIFIED",
+        "ORG_FIELD_NAME_NAME",
+        "ORG_FIELD_NAME_CREATION_DATE"
+      ],
+      "default": "ORG_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2betaOrgIDFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "The Organization id."
+        }
+      }
+    },
+    "v2betaOrgNameFilter": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "ZITADEL",
+          "description": "Organization name."
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextQueryMethod",
+          "description": "Defines which text equality method is used."
+        }
+      }
+    },
+    "v2betaOrgState": {
+      "type": "string",
+      "enum": [
+        "ORG_STATE_UNSPECIFIED",
+        "ORG_STATE_ACTIVE",
+        "ORG_STATE_INACTIVE",
+        "ORG_STATE_REMOVED"
+      ],
+      "default": "ORG_STATE_UNSPECIFIED"
+    },
+    "v2betaOrgStateFilter": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/v2betaOrgState",
+          "description": "Current state of the organization."
+        }
+      }
+    },
+    "v2betaOrganizationAdmin": {
+      "type": "object",
+      "properties": {
+        "createdAdmin": {
+          "$ref": "#/definitions/v2betaCreatedAdmin"
+        },
+        "assignedAdmin": {
+          "$ref": "#/definitions/v2betaAssignedAdmin"
+        }
+      }
+    },
+    "v2betaOrganizationSearchFilter": {
+      "type": "object",
+      "properties": {
+        "nameFilter": {
+          "$ref": "#/definitions/v2betaOrgNameFilter"
+        },
+        "domainFilter": {
+          "$ref": "#/definitions/v2betaOrgDomainFilter"
+        },
+        "stateFilter": {
+          "$ref": "#/definitions/v2betaOrgStateFilter"
+        },
+        "idFilter": {
+          "$ref": "#/definitions/v2betaOrgIDFilter"
+        }
+      }
+    },
+    "v2betaPaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "v2betaPaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "v2betaPassword": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string",
+          "example": "Secr3tP4ssw0rd!",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "changeRequired": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "password"
+      ]
+    },
+    "v2betaReturnEmailVerificationCode": {
+      "type": "object"
+    },
+    "v2betaReturnPhoneVerificationCode": {
+      "type": "object"
+    },
+    "v2betaSendEmailVerificationCode": {
+      "type": "object",
+      "properties": {
+        "urlTemplate": {
+          "type": "string",
+          "example": "https://example.com/email/verify?userID={{.UserID}}\u0026code={{.Code}}\u0026orgID={{.OrgID}}",
+          "description": "\"Optionally set a url_template, which will be used in the verification mail sent by ZITADEL to guide the user to your verification page. If no template is set, the default ZITADEL url will be used.\"",
+          "maxLength": 200,
+          "minLength": 1
+        }
+      }
+    },
+    "v2betaSendPhoneVerificationCode": {
+      "type": "object"
+    },
+    "v2betaSetHumanEmail": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "mini@mouse.com",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "sendCode": {
+          "$ref": "#/definitions/v2betaSendEmailVerificationCode"
+        },
+        "returnCode": {
+          "$ref": "#/definitions/v2betaReturnEmailVerificationCode"
+        },
+        "isVerified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "email"
+      ]
+    },
+    "v2betaSetHumanPhone": {
+      "type": "object",
+      "properties": {
+        "phone": {
+          "type": "string",
+          "example": "+41791234567",
+          "maxLength": 200
+        },
+        "sendCode": {
+          "$ref": "#/definitions/v2betaSendPhoneVerificationCode"
+        },
+        "returnCode": {
+          "$ref": "#/definitions/v2betaReturnPhoneVerificationCode"
+        },
+        "isVerified": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v2betaSetHumanProfile": {
+      "type": "object",
+      "properties": {
+        "givenName": {
+          "type": "string",
+          "example": "Minnie",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "familyName": {
+          "type": "string",
+          "example": "Mouse",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "nickName": {
+          "type": "string",
+          "example": "Mini",
+          "maxLength": 200
+        },
+        "displayName": {
+          "type": "string",
+          "example": "Minnie Mouse",
+          "maxLength": 200
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "example": "en",
+          "maxLength": 10
+        },
+        "gender": {
+          "$ref": "#/definitions/v2betaGender",
+          "example": "GENDER_FEMALE"
+        }
+      },
+      "required": [
+        "givenName",
+        "familyName"
+      ]
+    },
+    "v2betaSetMetadataEntry": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "example": "my-key",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "value": {
+          "type": "string",
+          "format": "byte",
+          "example": "VGhpcyBpcyBteSB0ZXN0IHZhbHVl",
+          "description": "The value has to be base64 encoded.",
+          "maxLength": 500000,
+          "minLength": 1
+        }
+      },
+      "required": [
+        "key",
+        "value"
+      ]
+    },
+    "v2betaSetOrganizationMetadataResponse": {
+      "type": "object",
+      "properties": {
+        "setDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the update of the organization metadata."
+        }
+      }
+    },
+    "v2betaTextQueryMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_QUERY_METHOD_EQUALS",
+        "TEXT_QUERY_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_QUERY_METHOD_STARTS_WITH",
+        "TEXT_QUERY_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_QUERY_METHOD_CONTAINS",
+        "TEXT_QUERY_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_QUERY_METHOD_ENDS_WITH",
+        "TEXT_QUERY_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_QUERY_METHOD_EQUALS"
+    },
+    "v2betaUpdateOrganizationResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the update to the organization."
+        }
+      }
+    },
+    "v2betaVerifyOrganizationDomainResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the verification of the organization domain."
+        }
+      }
+    },
+    "zitadelmetadatav2betaMetadata": {
+      "type": "object",
+      "properties": {
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z"
+        },
+        "key": {
+          "type": "string",
+          "example": "key1",
+          "description": "metadata key"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte",
+          "example": "VGhpcyBpcyBteSBmaXJzdCB2YWx1ZQ==",
+          "description": "metadata value is base64 encoded, make sure to decode to get the value"
+        }
+      }
+    },
+    "zitadelobjectv2betaOrganization": {
+      "type": "object",
+      "properties": {
+        "orgId": {
+          "type": "string"
+        },
+        "orgDomain": {
+          "type": "string"
+        }
+      }
+    },
+    "zitadelorgv2betaMetadata": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Key in the metadata key/value pair."
+        },
+        "value": {
+          "type": "string",
+          "format": "byte",
+          "description": "Value in the metadata key/value pair."
+        }
+      }
+    },
+    "zitadelorgv2betaOrganization": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488334",
+          "description": "Unique identifier of the organization."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "The timestamp of the organization was created."
+        },
+        "changedDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "The timestamp of the verification of the organization domain."
+        },
+        "state": {
+          "$ref": "#/definitions/v2betaOrgState",
+          "description": "Current state of the organization, for example active, inactive and deleted."
+        },
+        "name": {
+          "type": "string",
+          "example": "ZITADEL",
+          "description": "Name of the organization."
+        },
+        "primaryDomain": {
+          "type": "string",
+          "example": "zitadel.cloud",
+          "description": "Primary domain used in the organization."
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

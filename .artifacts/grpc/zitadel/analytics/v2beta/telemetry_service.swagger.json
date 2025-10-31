@@ -1,0 +1,132 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "zitadel/analytics/v2beta/telemetry_service.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "TelemetryService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2betaCountParentType": {
+      "type": "string",
+      "enum": [
+        "COUNT_PARENT_TYPE_UNSPECIFIED",
+        "COUNT_PARENT_TYPE_INSTANCE",
+        "COUNT_PARENT_TYPE_ORGANIZATION"
+      ],
+      "default": "COUNT_PARENT_TYPE_UNSPECIFIED"
+    },
+    "v2betaInstanceInformation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the instance."
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The custom domains (incl. generated ones) of the instance."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The creation date of the instance."
+        }
+      }
+    },
+    "v2betaReportBaseInformationResponse": {
+      "type": "object",
+      "properties": {
+        "reportId": {
+          "type": "string",
+          "description": "The report ID is a unique identifier for the report.\nIt is used to identify the report to be able to link it to the resource counts or other reports.\nNote that the report ID is only valid for the same system ID."
+        }
+      }
+    },
+    "v2betaReportResourceCountsResponse": {
+      "type": "object",
+      "properties": {
+        "reportId": {
+          "type": "string",
+          "description": "The report ID is a unique identifier for the report.\nIt is used to identify the report in case of additional data / pagination.\nNote that the report ID is only valid for the same system ID."
+        }
+      }
+    },
+    "v2betaResourceCount": {
+      "type": "object",
+      "properties": {
+        "instanceId": {
+          "type": "string",
+          "description": "The ID of the instance for which the resource counts are reported."
+        },
+        "parentType": {
+          "$ref": "#/definitions/v2betaCountParentType",
+          "description": "The parent type of the resource counts (e.g. organization or instance).\nFor example, reporting the amount of users per organization would use\n`COUNT_PARENT_TYPE_ORGANIZATION` as parent type and the organization ID as parent ID."
+        },
+        "parentId": {
+          "type": "string",
+          "description": "The parent ID of the resource counts (e.g. organization or instance ID).\nFor example, reporting the amount of users per organization would use\n`COUNT_PARENT_TYPE_ORGANIZATION` as parent type and the organization ID as parent ID."
+        },
+        "resourceName": {
+          "type": "string",
+          "description": "The resource counts to report, e.g. amount of `users`, `organizations`, etc."
+        },
+        "tableName": {
+          "type": "string",
+          "description": "The name of the table in the database, which was used to calculate the counts.\nThis can be used to deduplicate counts in case of multiple reports.\nFor example, if the counts were calculated from the `users14` table,\nthe table name would be `users14`, where there could also be a `users15` table\nreported at the same time as the system is rolling out a new version."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the count was last updated."
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The actual amount of the resource."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1055 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Feature Service",
+    "description": "This API is intended to manage features for ZITADEL. Feature settings that are available on multiple \"levels\", such as instance and organization. The higher level instance acts as a default for the lower level. When a feature is set on multiple levels, the lower level takes precedence. Features can be experimental where ZITADEL will assume a sane default, such as disabled. When over time confidence in such a feature grows, ZITADEL can default to enabling the feature. As a final step we might choose to always enable a feature and remove the setting from this API, reserving the proto field number. Such removal is not considered a breaking change. Setting a removed field will effectively result in a no-op.",
+    "version": "2.0",
+    "contact": {
+      "name": "ZITADEL",
+      "url": "https://zitadel.com",
+      "email": "hi@zitadel.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://github.com/zitadel/zitadel/blob/main/LICENSING.md"
+    }
+  },
+  "tags": [
+    {
+      "name": "FeatureService"
+    }
+  ],
+  "host": "$CUSTOM-DOMAIN",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "produces": [
+    "application/json",
+    "application/grpc",
+    "application/grpc-web+proto"
+  ],
+  "paths": {
+    "/v2/features/instance": {
+      "get": {
+        "summary": "Get Instance Features",
+        "description": "Returns all configured features for an instance. Unset fields mean the feature is the current system default.\n\nRequired permissions:\n - none",
+        "operationId": "FeatureService_GetInstanceFeatures",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2GetInstanceFeaturesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource has no feature flag settings and inheritance from the parent is disabled.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "inheritance",
+            "description": "Inherit unset features from the resource owners. This option is recursive: if the flag is set, the resource's ancestors are consulted up to system defaults. If this option is disabled and the feature is not set on the instance, it will be omitted from the response or Not Found is returned when the instance has no features flags at all.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "FeatureService"
+        ]
+      },
+      "delete": {
+        "summary": "Reset Instance Features",
+        "description": "Deletes ALL configured features for an instance, reverting the behaviors to system defaults.\n\nRequired permissions:\n - iam.feature.delete",
+        "operationId": "FeatureService_ResetInstanceFeatures",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2ResetInstanceFeaturesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource has no feature flag settings and inheritance from the parent is disabled.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "FeatureService"
+        ]
+      },
+      "put": {
+        "summary": "Set Instance Features",
+        "description": "Configure and set features that apply to a complete instance. Only fields present in the request are set or unset.\n\nRequired permissions:\n - iam.feature.write",
+        "operationId": "FeatureService_SetInstanceFeatures",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2SetInstanceFeaturesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource has no feature flag settings and inheritance from the parent is disabled.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2SetInstanceFeaturesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FeatureService"
+        ]
+      }
+    },
+    "/v2/features/organization/{organizationId}": {
+      "get": {
+        "summary": "Get Organization Features",
+        "description": "Returns all configured features for an organization. Unset fields mean the feature is the current instance default.\n\nRequired permissions:\n - org.feature.read\n - no permission required for the organization the user belongs to",
+        "operationId": "FeatureService_GetOrganizationFeatures",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2GetOrganizationFeaturesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource has no feature flag settings and inheritance from the parent is disabled.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "inheritance",
+            "description": "Inherit unset features from the resource owners. This option is recursive: if the flag is set, the resource's ancestors are consulted up to system defaults. If this option is disabled and the feature is not set on the organization, it will be omitted from the response or Not Found is returned when the organization has no features flags at all.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "FeatureService"
+        ]
+      },
+      "delete": {
+        "summary": "Reset Organization Features",
+        "description": "Deletes ALL configured features for an organization, reverting the behaviors to instance defaults.\n\nRequired permissions:\n - org.feature.delete",
+        "operationId": "FeatureService_ResetOrganizationFeatures",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2ResetOrganizationFeaturesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource has no feature flag settings and inheritance from the parent is disabled.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FeatureService"
+        ]
+      },
+      "put": {
+        "summary": "Set Organization Features",
+        "description": "Configure and set features that apply to a complete instance. Only fields present in the request are set or unset.\n\nRequired permissions:\n - org.feature.write",
+        "operationId": "FeatureService_SetOrganizationFeatures",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2SetOrganizationFeaturesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource has no feature flag settings and inheritance from the parent is disabled.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FeatureServiceSetOrganizationFeaturesBody"
+            }
+          }
+        ],
+        "tags": [
+          "FeatureService"
+        ]
+      }
+    },
+    "/v2/features/system": {
+      "get": {
+        "summary": "Get System Features",
+        "description": "Returns all configured features for the system. Unset fields mean the feature is the current system default.\n\nRequired permissions:\n - none",
+        "operationId": "FeatureService_GetSystemFeatures",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2GetSystemFeaturesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource has no feature flag settings and inheritance from the parent is disabled.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "FeatureService"
+        ]
+      },
+      "delete": {
+        "summary": "Reset System Features",
+        "description": "Deletes ALL configured features for the system, reverting the behaviors to system defaults.\n\nRequired permissions:\n - system.feature.delete",
+        "operationId": "FeatureService_ResetSystemFeatures",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2ResetSystemFeaturesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource has no feature flag settings and inheritance from the parent is disabled.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "FeatureService"
+        ]
+      },
+      "put": {
+        "summary": "Set System Features",
+        "description": "Configure and set features that apply to the complete system. Only fields present in the request are set or unset.\n\nRequired permissions:\n - system.feature.write",
+        "operationId": "FeatureService_SetSystemFeatures",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2SetSystemFeaturesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource has no feature flag settings and inheritance from the parent is disabled.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2SetSystemFeaturesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FeatureService"
+        ]
+      }
+    },
+    "/v2/features/user/{userId}": {
+      "get": {
+        "summary": "Get User Features",
+        "description": "Returns all configured features for a user. Unset fields mean the feature is the current organization default.\n\nRequired permissions:\n - user.feature.read\n - no permission required for the own user",
+        "operationId": "FeatureService_GetUserFeatures",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2GetUserFeaturesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource has no feature flag settings and inheritance from the parent is disabled.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "inheritance",
+            "description": "Inherit unset features from the resource owners. This option is recursive: if the flag is set, the resource's ancestors are consulted up to system defaults. If this option is disabled and the feature is not set on the user, it will be ommitted from the response or Not Found is returned when the user has no features flags at all.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "FeatureService"
+        ]
+      },
+      "delete": {
+        "summary": "Reset User Features",
+        "description": "Deletes ALL configured features for a user, reverting the behaviors to organization defaults.\n\nRequired permissions:\n - user.feature.delete",
+        "operationId": "FeatureService_ResetUserFeatures",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2ResetUserFeaturesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource has no feature flag settings and inheritance from the parent is disabled.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FeatureService"
+        ]
+      },
+      "put": {
+        "summary": "Set User Features",
+        "description": "Configure and set features that apply to an user. Only fields present in the request are set or unset.\n\nRequired permissions:\n - user.feature.write",
+        "operationId": "FeatureService_SetUserFeatures",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2SetUserFeaturesResponse"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource has no feature flag settings and inheritance from the parent is disabled.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FeatureServiceSetUserFeaturesBody"
+            }
+          }
+        ],
+        "tags": [
+          "FeatureService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "FeatureServiceSetOrganizationFeaturesBody": {
+      "type": "object"
+    },
+    "FeatureServiceSetUserFeaturesBody": {
+      "type": "object"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2Details": {
+      "type": "object",
+      "properties": {
+        "sequence": {
+          "type": "string",
+          "format": "uint64",
+          "example": "2",
+          "description": "on read: the sequence of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "sequence represents the order of events. It's always counting"
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "on read: the timestamp of the last event reduced by the projection\n\non manipulation: the timestamp of the event(s) added by the manipulation",
+          "title": "change_date is the timestamp when the object was changed"
+        },
+        "resourceOwner": {
+          "type": "string",
+          "example": "69629023906488334",
+          "title": "resource_owner is the organization or instance_id an object belongs to"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "title": "creation_date is the timestamp where the first operation on the object was made"
+        }
+      }
+    },
+    "v2FeatureFlag": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "example": false,
+          "description": "Whether a feature is enabled."
+        },
+        "source": {
+          "$ref": "#/definitions/v2Source",
+          "description": "The source where the setting of the feature was defined. The source may be the resource itself or a resource owner through inheritance."
+        }
+      },
+      "description": "FeatureFlag is a simple boolean Feature setting, without further payload."
+    },
+    "v2GetInstanceFeaturesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        },
+        "loginDefaultOrg": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "The login UI will use the settings of the default org (and not from the instance) if no organization context is set"
+        },
+        "userSchema": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "User Schemas allow to manage data schemas of user. If the flag is enabled, you'll be able to use the new API and its features. Note that it is still in an early stage."
+        },
+        "oidcTokenExchange": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "Enable the experimental `urn:ietf:params:oauth:grant-type:token-exchange` grant type for the OIDC token endpoint. Token exchange can be used to request tokens with a lesser scope or impersonate other users. See the security policy to allow impersonation on an instance."
+        },
+        "improvedPerformance": {
+          "$ref": "#/definitions/v2ImprovedPerformanceFeatureFlag",
+          "example": [
+            1
+          ],
+          "description": "Improves performance of specified execution paths."
+        },
+        "debugOidcParentError": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "Return parent errors to OIDC clients for debugging purposes. Parent errors may contain sensitive data or unwanted details about the system status of zitadel. Only enable if really needed."
+        },
+        "oidcSingleV1SessionTermination": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "If the flag is enabled, you'll be able to terminate a single session from the login UI by providing an id_token with a `sid` claim as id_token_hint on the end_session endpoint. Note that currently all sessions from the same user agent (browser) are terminated in the login UI. Sessions managed through the Session API already allow the termination of single sessions."
+        },
+        "enableBackChannelLogout": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "If the flag is enabled, you'll be able to use the OIDC Back-Channel Logout to be notified in your application about terminated user sessions."
+        },
+        "loginV2": {
+          "$ref": "#/definitions/v2LoginV2FeatureFlag",
+          "example": true,
+          "description": "If the flag is set, all users will be redirected to the login V2 regardless of the application's preference."
+        },
+        "permissionCheckV2": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "description": "Enable a newer, more performant, permission check used for v2 and v3 resource based APIs."
+        },
+        "consoleUseV2UserApi": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "If this is enabled the console web client will use the new User v2 API for certain calls"
+        },
+        "enableRelationalTables": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "If this is enabled Zitadel will use the relational tables instead of the projections as the main source to store the data. Regardless of the flag state, both the relational table and the projections are kept up to date. Currently the flag has no effect."
+        }
+      }
+    },
+    "v2GetOrganizationFeaturesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        }
+      }
+    },
+    "v2GetSystemFeaturesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        },
+        "loginDefaultOrg": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "The login UI will use the settings of the default org (and not from the instance) if no organization context is set"
+        },
+        "userSchema": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "User Schemas allow to manage data schemas of user. If the flag is enabled, you'll be able to use the new API and its features. Note that it is still in an early stage."
+        },
+        "oidcTokenExchange": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "Enable the experimental `urn:ietf:params:oauth:grant-type:token-exchange` grant type for the OIDC token endpoint. Token exchange can be used to request tokens with a lesser scope or impersonate other users. See the security policy to allow impersonation on an instance."
+        },
+        "improvedPerformance": {
+          "$ref": "#/definitions/v2ImprovedPerformanceFeatureFlag",
+          "example": [
+            1
+          ],
+          "description": "Improves performance of specified execution paths."
+        },
+        "oidcSingleV1SessionTermination": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "If the flag is enabled, you'll be able to terminate a single session from the login UI by providing an id_token with a `sid` claim as id_token_hint on the end_session endpoint. Note that currently all sessions from the same user agent (browser) are terminated in the login UI. Sessions managed through the Session API already allow the termination of single sessions."
+        },
+        "enableBackChannelLogout": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "If the flag is enabled, you'll be able to use the OIDC Back-Channel Logout to be notified in your application about terminated user sessions."
+        },
+        "loginV2": {
+          "$ref": "#/definitions/v2LoginV2FeatureFlag",
+          "example": true,
+          "description": "If the flag is set, all users will be redirected to the login V2 regardless of the application's preference."
+        },
+        "permissionCheckV2": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "description": "Enable a newer, more performant, permission check used for v2 and v3 resource based APIs."
+        },
+        "enableRelationalTables": {
+          "$ref": "#/definitions/v2FeatureFlag",
+          "example": true,
+          "description": "If this is enabled Zitadel will use the relational tables instead of the projections as the main source to store the data. Regardless of the flag state, both the relational table and the projections are kept up to date. Currently the flag has no effect."
+        }
+      }
+    },
+    "v2GetUserFeaturesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        }
+      }
+    },
+    "v2ImprovedPerformance": {
+      "type": "string",
+      "enum": [
+        "IMPROVED_PERFORMANCE_UNSPECIFIED",
+        "IMPROVED_PERFORMANCE_PROJECT_GRANT",
+        "IMPROVED_PERFORMANCE_PROJECT",
+        "IMPROVED_PERFORMANCE_USER_GRANT",
+        "IMPROVED_PERFORMANCE_ORG_DOMAIN_VERIFIED"
+      ],
+      "default": "IMPROVED_PERFORMANCE_UNSPECIFIED",
+      "description": " - IMPROVED_PERFORMANCE_PROJECT_GRANT: Improves performance on write side by using\noptimized processes to query data to determine\ncorrectness of data.\n - IMPROVED_PERFORMANCE_ORG_DOMAIN_VERIFIED: Improve performance on write side when\nusers are checked against verified domains\nfrom other organizations."
+    },
+    "v2ImprovedPerformanceFeatureFlag": {
+      "type": "object",
+      "properties": {
+        "executionPaths": {
+          "type": "array",
+          "example": [
+            1
+          ],
+          "items": {
+            "$ref": "#/definitions/v2ImprovedPerformance"
+          },
+          "description": "Which of the performance improvements is enabled"
+        },
+        "source": {
+          "$ref": "#/definitions/v2Source",
+          "description": "The source where the setting of the feature was defined. The source may be the resource itself or a resource owner through inheritance."
+        }
+      }
+    },
+    "v2LoginV2": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean",
+          "description": "Require that all users must use the new login UI. If enabled, all users will be redirected to the login V2 regardless of the application's preference."
+        },
+        "baseUri": {
+          "type": "string",
+          "description": "Optionally specify a base uri of the login UI. If unspecified the default URI will be used."
+        }
+      }
+    },
+    "v2LoginV2FeatureFlag": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "baseUri": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/v2Source",
+          "description": "The source where the setting of the feature was defined. The source may be the resource itself or a resource owner through inheritance."
+        }
+      }
+    },
+    "v2ResetInstanceFeaturesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        }
+      }
+    },
+    "v2ResetOrganizationFeaturesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        }
+      }
+    },
+    "v2ResetSystemFeaturesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        }
+      }
+    },
+    "v2ResetUserFeaturesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        }
+      }
+    },
+    "v2SetInstanceFeaturesRequest": {
+      "type": "object",
+      "properties": {
+        "loginDefaultOrg": {
+          "type": "boolean",
+          "example": true,
+          "description": "The login UI will use the settings of the default org (and not from the instance) if no organization context is set"
+        },
+        "userSchema": {
+          "type": "boolean",
+          "example": true,
+          "description": "User Schemas allow to manage data schemas of user. If the flag is enabled, you'll be able to use the new API and its features. Note that it is still in an early stage."
+        },
+        "oidcTokenExchange": {
+          "type": "boolean",
+          "example": true,
+          "description": "Enable the experimental `urn:ietf:params:oauth:grant-type:token-exchange` grant type for the OIDC token endpoint. Token exchange can be used to request tokens with a lesser scope or impersonate other users. See the security policy to allow impersonation on an instance."
+        },
+        "improvedPerformance": {
+          "type": "array",
+          "example": [
+            1
+          ],
+          "items": {
+            "$ref": "#/definitions/v2ImprovedPerformance"
+          },
+          "description": "Improves performance of specified execution paths."
+        },
+        "debugOidcParentError": {
+          "type": "boolean",
+          "example": true,
+          "description": "Return parent errors to OIDC clients for debugging purposes. Parent errors may contain sensitive data or unwanted details about the system status of zitadel. Only enable if really needed."
+        },
+        "oidcSingleV1SessionTermination": {
+          "type": "boolean",
+          "example": true,
+          "description": "If the flag is enabled, you'll be able to terminate a single session from the login UI by providing an id_token with a `sid` claim as id_token_hint on the end_session endpoint. Note that currently all sessions from the same user agent (browser) are terminated in the login UI. Sessions managed through the Session API already allow the termination of single sessions."
+        },
+        "enableBackChannelLogout": {
+          "type": "boolean",
+          "example": true,
+          "description": "If the flag is enabled, you'll be able to use the OIDC Back-Channel Logout to be notified in your application about terminated user sessions."
+        },
+        "loginV2": {
+          "$ref": "#/definitions/v2LoginV2",
+          "description": "Specify the login UI for all users and applications regardless of their preference."
+        },
+        "permissionCheckV2": {
+          "type": "boolean",
+          "example": true,
+          "description": "Enable a newer, more performant, permission check used for v2 and v3 resource based APIs."
+        },
+        "consoleUseV2UserApi": {
+          "type": "boolean",
+          "example": true,
+          "description": "If this is enabled the console web client will use the new User v2 API for certain calls"
+        },
+        "enableRelationalTables": {
+          "type": "boolean",
+          "example": true,
+          "description": "If this is enabled Zitadel will use the relational tables instead of the projections as the main source to store the data. Regardless of the flag state, both the relational table and the projections are kept up to date. Currently the flag has no effect."
+        }
+      }
+    },
+    "v2SetInstanceFeaturesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        }
+      }
+    },
+    "v2SetOrganizationFeaturesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        }
+      }
+    },
+    "v2SetSystemFeaturesRequest": {
+      "type": "object",
+      "properties": {
+        "loginDefaultOrg": {
+          "type": "boolean",
+          "example": true,
+          "description": "The login UI will use the settings of the default org (and not from the instance) if no organization context is set"
+        },
+        "userSchema": {
+          "type": "boolean",
+          "example": true,
+          "description": "User Schemas allow to manage data schemas of user. If the flag is enabled, you'll be able to use the new API and its features. Note that it is still in an early stage."
+        },
+        "oidcTokenExchange": {
+          "type": "boolean",
+          "example": true,
+          "description": "Enable the experimental `urn:ietf:params:oauth:grant-type:token-exchange` grant type for the OIDC token endpoint. Token exchange can be used to request tokens with a lesser scope or impersonate other users. See the security policy to allow impersonation on an instance."
+        },
+        "improvedPerformance": {
+          "type": "array",
+          "example": [
+            1
+          ],
+          "items": {
+            "$ref": "#/definitions/v2ImprovedPerformance"
+          },
+          "description": "Improves performance of specified execution paths."
+        },
+        "oidcSingleV1SessionTermination": {
+          "type": "boolean",
+          "example": true,
+          "description": "If the flag is enabled, you'll be able to terminate a single session from the login UI by providing an id_token with a `sid` claim as id_token_hint on the end_session endpoint. Note that currently all sessions from the same user agent (browser) are terminated in the login UI. Sessions managed through the Session API already allow the termination of single sessions."
+        },
+        "enableBackChannelLogout": {
+          "type": "boolean",
+          "example": true,
+          "description": "If the flag is enabled, you'll be able to use the OIDC Back-Channel Logout to be notified in your application about terminated user sessions."
+        },
+        "loginV2": {
+          "$ref": "#/definitions/v2LoginV2",
+          "description": "Specify the login UI for all users and applications regardless of their preference."
+        },
+        "permissionCheckV2": {
+          "type": "boolean",
+          "example": true,
+          "description": "Enable a newer, more performant, permission check used for v2 and v3 resource based APIs."
+        },
+        "enableRelationalTables": {
+          "type": "boolean",
+          "example": true,
+          "description": "If this is enabled Zitadel will use the relational tables instead of the projections as the main source to store the data. Regardless of the flag state, both the relational table and the projections are kept up to date. Currently the flag has no effect."
+        }
+      }
+    },
+    "v2SetSystemFeaturesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        }
+      }
+    },
+    "v2SetUserFeaturesResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details"
+        }
+      }
+    },
+    "v2Source": {
+      "type": "string",
+      "enum": [
+        "SOURCE_UNSPECIFIED",
+        "SOURCE_SYSTEM",
+        "SOURCE_INSTANCE",
+        "SOURCE_ORGANIZATION",
+        "SOURCE_PROJECT",
+        "SOURCE_APP",
+        "SOURCE_USER"
+      ],
+      "default": "SOURCE_UNSPECIFIED",
+      "title": "- SOURCE_PROJECT: reserved for future use\n - SOURCE_APP: reserved for future use"
+    }
+  },
+  "securityDefinitions": {
+    "OAuth2": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "$CUSTOM-DOMAIN/oauth/v2/authorize",
+      "tokenUrl": "$CUSTOM-DOMAIN/oauth/v2/token",
+      "scopes": {
+        "openid": "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud": "urn:zitadel:iam:org:project:id:zitadel:aud"
+      }
+    }
+  },
+  "security": [
+    {
+      "OAuth2": [
+        "openid",
+        "urn:zitadel:iam:org:project:id:zitadel:aud"
+      ]
+    }
+  ],
+  "externalDocs": {
+    "description": "Detailed information about ZITADEL",
+    "url": "https://zitadel.com/docs"
+  }
+}

@@ -1,0 +1,779 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "zitadel/authorization/v2beta/authorization_service.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AuthorizationService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v2beta/authorizations": {
+      "post": {
+        "summary": "Create Authorization",
+        "description": "Deprecated: please move to the corresponding endpoint under authorization service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nCreateAuthorization creates a new authorization for a user in an owned or granted project.\n\nRequired permissions:\n  - \"user.grant.write\"",
+        "operationId": "AuthorizationService_CreateAuthorization",
+        "responses": {
+          "200": {
+            "description": "The newly created authorization",
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateAuthorizationResponse"
+            }
+          },
+          "400": {
+            "description": "invalid create request",
+            "schema": {}
+          },
+          "409": {
+            "description": "The authorization already exists.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaCreateAuthorizationRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AuthorizationService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/authorizations/search": {
+      "post": {
+        "summary": "List Authorizations",
+        "description": "Deprecated: please move to the corresponding endpoint under authorization service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nListAuthorizations returns all authorizations matching the request and necessary permissions.\n\nRequired permissions:\n  - \"user.grant.read\"\n  - no permissions required for listing own authorizations",
+        "operationId": "AuthorizationService_ListAuthorizations",
+        "responses": {
+          "200": {
+            "description": "A list of all authorizations matching the query",
+            "schema": {
+              "$ref": "#/definitions/v2betaListAuthorizationsResponse"
+            }
+          },
+          "400": {
+            "description": "invalid list query",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2betaListAuthorizationsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AuthorizationService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/authorizations/{id}": {
+      "delete": {
+        "summary": "Delete Authorization",
+        "description": "Deprecated: please move to the corresponding endpoint under authorization service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nDeleteAuthorization deletes the authorization.\n\nIn case the authorization is not found, the request will return a successful response as\nthe desired state is already achieved.\nYou can check the deletion date in the response to verify if the authorization was deleted by the request.\n\nRequired permissions:\n  - \"user.grant.delete\"",
+        "operationId": "AuthorizationService_DeleteAuthorization",
+        "responses": {
+          "200": {
+            "description": "The authorization was deleted successfully.",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeleteAuthorizationResponse"
+            }
+          },
+          "404": {
+            "description": "Authorization not found.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID is the unique identifier of the authorization that should be deleted.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AuthorizationService"
+        ],
+        "deprecated": true
+      },
+      "patch": {
+        "summary": "Update Authorization",
+        "description": "Deprecated: please move to the corresponding endpoint under authorization service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nUpdateAuthorization updates the authorization.\n\nNote that any role keys previously granted to the user and not present in the request will be revoked.\n\nRequired permissions:\n  - \"user.grant.write\"",
+        "operationId": "AuthorizationService_UpdateAuthorization",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/v2betaUpdateAuthorizationResponse"
+            }
+          },
+          "404": {
+            "description": "Authorization or one of the roles do not exist.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID is the unique identifier of the authorization.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthorizationServiceUpdateAuthorizationBody"
+            }
+          }
+        ],
+        "tags": [
+          "AuthorizationService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/authorizations/{id}/activate": {
+      "post": {
+        "summary": "Activate Authorization",
+        "description": "Deprecated: please move to the corresponding endpoint under authorization service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nActivateAuthorization activates an existing but inactive authorization.\n\nIn case the authorization is already active, the request will return a successful response as\nthe desired state is already achieved.\nYou can check the change date in the response to verify if the authorization was activated by the request.\n\nRequired permissions:\n  - \"user.grant.write\"",
+        "operationId": "AuthorizationService_ActivateAuthorization",
+        "responses": {
+          "200": {
+            "description": "The authorization was activated successfully.",
+            "schema": {
+              "$ref": "#/definitions/v2betaActivateAuthorizationResponse"
+            }
+          },
+          "404": {
+            "description": "Authorization not found.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID is the unique identifier of the authorization that should be activated.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthorizationServiceActivateAuthorizationBody"
+            }
+          }
+        ],
+        "tags": [
+          "AuthorizationService"
+        ],
+        "deprecated": true
+      }
+    },
+    "/v2beta/authorizations/{id}/deactivate": {
+      "post": {
+        "summary": "Deactivate Authorization",
+        "description": "Deprecated: please move to the corresponding endpoint under authorization service v2. This endpoint will be removed with the next major version of ZITADEL.\n\nDeactivateAuthorization deactivates an existing and active authorization.\n\nIn case the authorization is already inactive, the request will return a successful response as\nthe desired state is already achieved.\nYou can check the change date in the response to verify if the authorization was deactivated by the request.\n\nRequired permissions:\n  - \"user.grant.write\"",
+        "operationId": "AuthorizationService_DeactivateAuthorization",
+        "responses": {
+          "200": {
+            "description": "The authorization was deactivated successfully.",
+            "schema": {
+              "$ref": "#/definitions/v2betaDeactivateAuthorizationResponse"
+            }
+          },
+          "404": {
+            "description": "Authorization not found.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID is the unique identifier of the authorization that should be deactivated.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthorizationServiceDeactivateAuthorizationBody"
+            }
+          }
+        ],
+        "tags": [
+          "AuthorizationService"
+        ],
+        "deprecated": true
+      }
+    }
+  },
+  "definitions": {
+    "AuthorizationServiceActivateAuthorizationBody": {
+      "type": "object"
+    },
+    "AuthorizationServiceDeactivateAuthorizationBody": {
+      "type": "object"
+    },
+    "AuthorizationServiceUpdateAuthorizationBody": {
+      "type": "object",
+      "properties": {
+        "roleKeys": {
+          "type": "array",
+          "example": [
+            "user",
+            "admin"
+          ],
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "description": "RoleKeys are the keys of the roles the user should be granted.\nNote that any role keys previously granted to the user and not present in the list will be revoked."
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2betaActivateAuthorizationResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "ChangeDate is the last timestamp when the authorization was changed / activated."
+        }
+      }
+    },
+    "v2betaAuthorization": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "ID is the unique identifier of the authorization."
+        },
+        "projectId": {
+          "type": "string",
+          "description": "ID is the unique identifier of the project the user was granted the authorization for."
+        },
+        "projectName": {
+          "type": "string",
+          "description": "Name is the name of the project the user was granted the authorization for."
+        },
+        "projectOrganizationId": {
+          "type": "string",
+          "description": "OrganizationID is the ID of the organization the project belongs to."
+        },
+        "projectGrantId": {
+          "type": "string",
+          "description": "ID of the granted project, only provided if it is a granted project."
+        },
+        "grantedOrganizationId": {
+          "type": "string",
+          "description": "ID of the organization the project is granted to, only provided if it is a granted project."
+        },
+        "organizationId": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "The unique identifier of the organization the authorization belongs to."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "CreationDate is the timestamp when the authorization was created."
+        },
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "ChangeDate is the timestamp when the authorization was last updated.\nIn case the authorization was not updated, this field is equal to the creation date."
+        },
+        "state": {
+          "$ref": "#/definitions/v2betaState",
+          "description": "State is the current state of the authorization."
+        },
+        "user": {
+          "$ref": "#/definitions/v2betaUser"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Roles contains the roles the user was granted for the project."
+        }
+      }
+    },
+    "v2betaAuthorizationFieldName": {
+      "type": "string",
+      "enum": [
+        "AUTHORIZATION_FIELD_NAME_UNSPECIFIED",
+        "AUTHORIZATION_FIELD_NAME_CREATED_DATE",
+        "AUTHORIZATION_FIELD_NAME_CHANGED_DATE",
+        "AUTHORIZATION_FIELD_NAME_ID",
+        "AUTHORIZATION_FIELD_NAME_USER_ID",
+        "AUTHORIZATION_FIELD_NAME_PROJECT_ID",
+        "AUTHORIZATION_FIELD_NAME_ORGANIZATION_ID",
+        "AUTHORIZATION_FIELD_NAME_USER_ORGANIZATION_ID"
+      ],
+      "default": "AUTHORIZATION_FIELD_NAME_UNSPECIFIED"
+    },
+    "v2betaAuthorizationsSearchFilter": {
+      "type": "object",
+      "properties": {
+        "authorizationIds": {
+          "$ref": "#/definitions/v2betaInIDsFilter",
+          "description": "Search for authorizations by their IDs."
+        },
+        "organizationId": {
+          "$ref": "#/definitions/v2betaIDFilter",
+          "description": "Search for an organizations authorizations by its ID."
+        },
+        "state": {
+          "$ref": "#/definitions/v2betaStateQuery",
+          "description": "Search for authorizations by their state."
+        },
+        "userId": {
+          "$ref": "#/definitions/v2betaIDFilter",
+          "description": "Search for authorizations by the ID of the user who was granted the authorization."
+        },
+        "userOrganizationId": {
+          "$ref": "#/definitions/v2betaIDFilter",
+          "description": "Search for authorizations by the ID of the organisation the user is part of."
+        },
+        "userPreferredLoginName": {
+          "$ref": "#/definitions/v2betaUserPreferredLoginNameQuery",
+          "description": "Search for authorizations by the preferred login name of the granted user."
+        },
+        "userDisplayName": {
+          "$ref": "#/definitions/v2betaUserDisplayNameQuery",
+          "description": "Search for authorizations by the public display name of the granted user."
+        },
+        "projectId": {
+          "$ref": "#/definitions/v2betaIDFilter",
+          "description": "Search for authorizations by the ID of the project the user was granted the authorization for.\nThis will also include authorizations granted for project grants of the same project."
+        },
+        "projectName": {
+          "$ref": "#/definitions/v2betaProjectNameQuery",
+          "description": "Search for authorizations by the name of the project the user was granted the authorization for.\nThis will also include authorizations granted for project grants of the same project."
+        },
+        "roleKey": {
+          "$ref": "#/definitions/v2betaRoleKeyQuery",
+          "description": "Search for authorizations by the key of the role the user was granted."
+        },
+        "projectGrantId": {
+          "$ref": "#/definitions/v2betaIDFilter",
+          "description": "Search for authorizations by the ID of the project grant the user was granted the authorization for.\nThis will also include authorizations granted for project grants of the same project."
+        },
+        "inUserIds": {
+          "$ref": "#/definitions/v2betaInIDsFilter",
+          "description": "Search for authorizations by the IDs of the users who were granted the authorizations."
+        }
+      }
+    },
+    "v2betaCreateAuthorizationRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "163840776835432345",
+          "description": "UserID is the ID of the user who should be granted the authorization.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "projectId": {
+          "type": "string",
+          "example": "163840776835432345",
+          "description": "Project ID is the ID of the project the user should be authorized for.",
+          "maxLength": 200,
+          "minLength": 1
+        },
+        "organizationId": {
+          "type": "string",
+          "example": "163840776835432345",
+          "description": "OrganizationID is the ID of the organization on which the authorization should be created.\nThe organization must either own the project or have a grant for the project.\nIf omitted, the authorization is created on the projects organization.",
+          "maxLength": 200
+        },
+        "roleKeys": {
+          "type": "array",
+          "example": [
+            "user",
+            "admin"
+          ],
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "description": "RoleKeys are the keys of the roles the user should be granted."
+        }
+      }
+    },
+    "v2betaCreateAuthorizationResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629012906488334",
+          "description": "ID is the unique identifier of the newly created authorization."
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2025-01-23T10:34:18.051Z",
+          "description": "CreationDate is the timestamp when the authorization was created."
+        }
+      }
+    },
+    "v2betaDeactivateAuthorizationResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "ChangeDate is the last timestamp when the authorization was changed / deactivated."
+        }
+      }
+    },
+    "v2betaDeleteAuthorizationResponse": {
+      "type": "object",
+      "properties": {
+        "deletionDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "DeletionDate is the timestamp when the authorization was deleted."
+        }
+      }
+    },
+    "v2betaIDFilter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "69629023906488337",
+          "description": "Only return resources that belong to this id.",
+          "maxLength": 200
+        }
+      }
+    },
+    "v2betaInIDsFilter": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "example": [
+            "69629023906488334",
+            "69622366012355662"
+          ],
+          "items": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1
+          },
+          "description": "Defines the ids to query for."
+        }
+      }
+    },
+    "v2betaListAuthorizationsRequest": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationRequest",
+          "description": "Paginate through the results using a limit, offset and sorting."
+        },
+        "sortingColumn": {
+          "$ref": "#/definitions/v2betaAuthorizationFieldName",
+          "default": "\"AUTHORIZATION_FIELD_NAME_CREATED_DATE\"",
+          "description": "The field the result is sorted by. The default is the creation date. Beware that if you change this, your result pagination might be inconsistent."
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaAuthorizationsSearchFilter"
+          },
+          "description": "Define the criteria to query for."
+        }
+      }
+    },
+    "v2betaListAuthorizationsResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/v2betaPaginationResponse",
+          "description": "Details contains the pagination information."
+        },
+        "authorizations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2betaAuthorization"
+          }
+        }
+      }
+    },
+    "v2betaPaginationRequest": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "string",
+          "format": "uint64",
+          "description": "Starting point for retrieval, in combination of offset used to query a set list of objects."
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "description": "limit is the maximum amount of objects returned. The default is set to 100\nwith a maximum of 1000 in the runtime configuration.\nIf the limit exceeds the maximum configured ZITADEL will throw an error.\nIf no limit is present the default is taken."
+        },
+        "asc": {
+          "type": "boolean",
+          "description": "Asc is the sorting order. If true the list is sorted ascending, if false\nthe list is sorted descending. The default is descending."
+        }
+      }
+    },
+    "v2betaPaginationResponse": {
+      "type": "object",
+      "properties": {
+        "totalResult": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Absolute number of objects matching the query, regardless of applied limit."
+        },
+        "appliedLimit": {
+          "type": "string",
+          "format": "uint64",
+          "example": "100",
+          "description": "Applied limit from query, defines maximum amount of objects per request, to compare if all objects are returned."
+        }
+      }
+    },
+    "v2betaProjectNameQuery": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Specify the name of the project the user was granted the authorization for to search for.\nNote that this will also include authorizations granted for project grants of the same project."
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextFilterMethod",
+          "description": "Specify the method to search for the project name. Default is EQUAL.\nFor example, to search for all authorizations granted on a project with\na name containing a specific string, use CONTAINS or CONTAINS_IGNORE_CASE."
+        }
+      }
+    },
+    "v2betaRoleKeyQuery": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "Specify the key of the role the user was granted to search for."
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextFilterMethod",
+          "description": "Specify the method to search for the role key. Default is EQUAL.\nFor example, to search for all authorizations starting with a specific role key,\nuse STARTS_WITH or STARTS_WITH_IGNORE_CASE."
+        }
+      }
+    },
+    "v2betaState": {
+      "type": "string",
+      "enum": [
+        "STATE_UNSPECIFIED",
+        "STATE_ACTIVE",
+        "STATE_INACTIVE"
+      ],
+      "default": "STATE_UNSPECIFIED",
+      "description": " - STATE_ACTIVE: An active authorization grants the user access with the roles specified on the project.\n - STATE_INACTIVE: An inactive authorization temporarily deactivates the granted access and roles.\nZITADEL will not include the specific authorization in any authorization information like an access token.\nBut the information can still be accessed using the API."
+    },
+    "v2betaStateQuery": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/v2betaState",
+          "description": "Specify the state of the authorization to search for."
+        }
+      }
+    },
+    "v2betaTextFilterMethod": {
+      "type": "string",
+      "enum": [
+        "TEXT_FILTER_METHOD_EQUALS",
+        "TEXT_FILTER_METHOD_EQUALS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_STARTS_WITH",
+        "TEXT_FILTER_METHOD_STARTS_WITH_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_CONTAINS",
+        "TEXT_FILTER_METHOD_CONTAINS_IGNORE_CASE",
+        "TEXT_FILTER_METHOD_ENDS_WITH",
+        "TEXT_FILTER_METHOD_ENDS_WITH_IGNORE_CASE"
+      ],
+      "default": "TEXT_FILTER_METHOD_EQUALS"
+    },
+    "v2betaUpdateAuthorizationResponse": {
+      "type": "object",
+      "properties": {
+        "changeDate": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2024-12-18T07:50:47.492Z",
+          "description": "ChangeDate is the timestamp when the authorization was last updated."
+        }
+      }
+    },
+    "v2betaUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID represents the ID of the user who was granted the authorization."
+        },
+        "preferredLoginName": {
+          "type": "string",
+          "description": "PreferredLoginName represents the preferred login name of the granted user."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "DisplayName represents the public display name of the granted user."
+        },
+        "avatarUrl": {
+          "type": "string",
+          "description": "AvatarURL is the URL to the user's public avatar image."
+        },
+        "organizationId": {
+          "type": "string",
+          "description": "The organization the user belong to.\nThis does not have to correspond with the authorizations organization."
+        }
+      }
+    },
+    "v2betaUserDisplayNameQuery": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "description": "Specify the public display name of the granted user to search for."
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextFilterMethod",
+          "description": "Specify the method to search for the display name. Default is EQUAL.\nFor example, to search for all authorizations granted to a user with\na display name containing a specific string, use CONTAINS or CONTAINS_IGNORE_CASE."
+        }
+      }
+    },
+    "v2betaUserPreferredLoginNameQuery": {
+      "type": "object",
+      "properties": {
+        "loginName": {
+          "type": "string",
+          "description": "Specify the preferred login name of the granted user to search for."
+        },
+        "method": {
+          "$ref": "#/definitions/v2betaTextFilterMethod",
+          "description": "Specify the method to search for the preferred login name. Default is EQUAL.\nFor example, to search for all authorizations granted to a user with\na preferred login name containing a specific string, use CONTAINS or CONTAINS_IGNORE_CASE."
+        }
+      }
+    }
+  }
+}
