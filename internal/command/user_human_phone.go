@@ -9,6 +9,7 @@ import (
 	"github.com/zitadel/zitadel/internal/crypto"
 	"github.com/zitadel/zitadel/internal/domain"
 	"github.com/zitadel/zitadel/internal/eventstore"
+	"github.com/zitadel/zitadel/internal/notification/channels/sms"
 	"github.com/zitadel/zitadel/internal/notification/channels/twilio"
 	"github.com/zitadel/zitadel/internal/notification/senders"
 	"github.com/zitadel/zitadel/internal/repository/user"
@@ -48,6 +49,15 @@ func (c *Commands) ChangeHumanPhone(ctx context.Context, phone *domain.Phone, re
 			return nil, err
 		}
 		events = append(events, user.NewHumanPhoneCodeAddedEvent(ctx, userAgg, phoneCode.CryptedCode(), phoneCode.CodeExpiry(), generatorID))
+
+		// MOCK SMS: Отправить код через mock сервис
+		if phone.PhoneNumber != "" && phoneCode.Plain != "" {
+			mockSMS := sms.GetMockSMSService()
+			if err := mockSMS.StoreCode(ctx, string(phone.PhoneNumber), phoneCode.Plain, sms.CodeTypeRegistration); err != nil {
+				logging.WithError(err).Warn("Failed to store code in mock SMS service")
+				// Не прерываем выполнение, т.к. код уже сохранен в базе
+			}
+		}
 	}
 
 	pushedEvents, err := c.eventstore.Push(ctx, events...)
@@ -174,6 +184,16 @@ func (c *Commands) CreateHumanPhoneVerificationCode(ctx context.Context, userID,
 	if err = c.pushAppendAndReduce(ctx, existingPhone, user.NewHumanPhoneCodeAddedEvent(ctx, userAgg, phoneCode.CryptedCode(), phoneCode.CodeExpiry(), generatorID)); err != nil {
 		return nil, err
 	}
+
+	// MOCK SMS: Отправить код через mock сервис
+	if existingPhone.Phone != "" && phoneCode.Plain != "" {
+		mockSMS := sms.GetMockSMSService()
+		if err := mockSMS.StoreCode(ctx, string(existingPhone.Phone), phoneCode.Plain, sms.CodeTypeVerification); err != nil {
+			logging.WithError(err).Warn("Failed to store code in mock SMS service")
+			// Не прерываем выполнение, т.к. код уже сохранен в базе
+		}
+	}
+
 	return writeModelToObjectDetails(&existingPhone.WriteModel), nil
 }
 

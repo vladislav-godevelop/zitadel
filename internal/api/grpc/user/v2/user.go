@@ -34,10 +34,54 @@ func (s *Server) AddHumanUser(ctx context.Context, req *connect.Request[user.Add
 }
 
 func AddUserRequestToAddHuman(req *user.AddHumanUserRequest) (*command.AddHuman, error) {
+	// PHONE-BASED REGISTRATION: Если указан телефон, автозаполняем все обязательные поля
+	phone := req.GetPhone().GetPhone()
+	hasPhone := phone != ""
+	hasEmail := req.GetEmail() != nil && req.GetEmail().GetEmail() != ""
+	hasProfile := req.GetProfile() != nil && req.GetProfile().GetGivenName() != ""
+
+	// 1. Автозаполнение email: создаем псевдо-email из телефона если email не указан
+	var emailCmd command.Email
+	var err error
+	if hasEmail {
+		emailCmd, err = addUserRequestEmailToCommand(req.GetEmail())
+		if err != nil {
+			return nil, err
+		}
+	} else if hasPhone {
+		// Генерируем email из телефона: +79001234567 -> 79001234567@phone.local
+		phoneDigits := ""
+		for _, r := range phone {
+			if r >= '0' && r <= '9' {
+				phoneDigits += string(r)
+			}
+		}
+		pseudoEmail := phoneDigits + "@phone.local"
+		emailCmd = command.Email{
+			Address:             domain.EmailAddress(pseudoEmail),
+			Verified:            false,
+			NoEmailVerification: true, // Не отправляем email верификацию
+		}
+	}
+
+	// 2. Автозаполнение имени и фамилии: используем телефон если не указано
+	firstName := req.GetProfile().GetGivenName()
+	lastName := req.GetProfile().GetFamilyName()
+	if !hasProfile && hasPhone {
+		firstName = phone
+		lastName = phone
+	}
+
+	// 3. Автозаполнение username: используем телефон если не указано
 	username := req.GetUsername()
 	if username == "" {
-		username = req.GetEmail().GetEmail()
+		if hasPhone {
+			username = phone
+		} else if hasEmail {
+			username = req.GetEmail().GetEmail()
+		}
 	}
+
 	passwordChangeRequired := req.GetPassword().GetChangeRequired() || req.GetHashedPassword().GetChangeRequired()
 	metadata := make([]*command.AddMetadataEntry, len(req.Metadata))
 	for i, metadataEntry := range req.Metadata {
@@ -54,20 +98,17 @@ func AddUserRequestToAddHuman(req *user.AddHumanUserRequest) (*command.AddHuman,
 			DisplayName:   link.GetUserName(),
 		}
 	}
-	email, err := addUserRequestEmailToCommand(req.GetEmail())
-	if err != nil {
-		return nil, err
-	}
+
 	return &command.AddHuman{
 		ID:          req.GetUserId(),
 		Username:    username,
-		FirstName:   req.GetProfile().GetGivenName(),
-		LastName:    req.GetProfile().GetFamilyName(),
+		FirstName:   firstName,
+		LastName:    lastName,
 		NickName:    req.GetProfile().GetNickName(),
 		DisplayName: req.GetProfile().GetDisplayName(),
-		Email:       email,
+		Email:       emailCmd,
 		Phone: command.Phone{
-			Number:     domain.PhoneNumber(req.GetPhone().GetPhone()),
+			Number:     domain.PhoneNumber(phone),
 			Verified:   req.GetPhone().GetIsVerified(),
 			ReturnCode: req.GetPhone().GetReturnCode() != nil,
 		},

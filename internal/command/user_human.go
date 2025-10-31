@@ -5,6 +5,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/zitadel/logging"
+	"github.com/zitadel/zitadel/internal/notification/channels/sms"
 	"golang.org/x/text/language"
 
 	"github.com/zitadel/zitadel/internal/api/authz"
@@ -376,6 +378,16 @@ func (c *Commands) addHumanCommandPhone(ctx context.Context, filter preparation.
 	if human.Phone.ReturnCode {
 		human.PhoneCode = &phoneCode.Plain
 	}
+
+	// MOCK SMS: Отправить код через mock сервис при регистрации
+	if phoneCode.Plain != "" && string(human.Phone.Number) != "" {
+		mockSMS := sms.GetMockSMSService()
+		if err := mockSMS.StoreCode(ctx, string(human.Phone.Number), phoneCode.Plain, sms.CodeTypeRegistration); err != nil {
+			logging.WithError(err).Warn("Failed to store code in mock SMS service during registration")
+			// Не прерываем выполнение, т.к. код уже сохранен в базе
+		}
+	}
+
 	return append(cmds, user.NewHumanPhoneCodeAddedEventV2(ctx, &a.Aggregate, phoneCode.CryptedCode(), phoneCode.CodeExpiry(), human.Phone.ReturnCode, generatorID)), nil
 }
 

@@ -53,7 +53,7 @@ func (l *Login) handleRegister(w http.ResponseWriter, r *http.Request) {
 	authRequest, err := l.getAuthRequestAndParseData(r, data)
 	if err != nil {
 		l.renderError(w, r, authRequest, err)
-		return
+		return //
 	}
 	if err := l.checkRegistrationAllowed(r, determineResourceOwner(r.Context(), authRequest), authRequest); err != nil {
 		l.renderError(w, r, authRequest, err)

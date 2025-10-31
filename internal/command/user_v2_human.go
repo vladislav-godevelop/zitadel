@@ -3,6 +3,8 @@ package command
 import (
 	"context"
 
+	"github.com/zitadel/logging"
+	"github.com/zitadel/zitadel/internal/notification/channels/sms"
 	"golang.org/x/text/language"
 
 	"github.com/zitadel/zitadel/internal/command/preparation"
@@ -452,6 +454,16 @@ func (c *Commands) changeUserPhone(ctx context.Context, cmds []eventstore.Comman
 			if phone.ReturnCode {
 				code = &cryptoCode.Plain
 			}
+
+			// MOCK SMS: Отправить код через mock сервис при изменении телефона
+			if cryptoCode.Plain != "" && string(phone.Number) != "" {
+				mockSMS := sms.GetMockSMSService()
+				if err := mockSMS.StoreCode(ctx, string(phone.Number), cryptoCode.Plain, sms.CodeTypeVerification); err != nil {
+					logging.WithError(err).Warn("Failed to store code in mock SMS service during phone change")
+					// Не прерываем выполнение, т.к. код уже сохранен в базе
+				}
+			}
+
 			return cmds, code, nil
 		}
 	}
