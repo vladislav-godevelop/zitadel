@@ -1,0 +1,44 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+
+	"github.com/zitadel/zitadel/internal/api/grpc/user/v2"
+)
+
+func main() {
+	fmt.Println("=== Тест Phone Registration ===\n")
+
+	// Шаг 1: Регистрация по телефону
+	fmt.Println("Шаг 1: Отправка номера телефона...")
+	regReq := &user.RegisterByPhoneRequest{
+		Phone:      "+79001234567",
+		ReturnCode: true, // Вернуть код в ответе для тестирования
+	}
+
+	// Здесь должен быть реальный вызов gRPC
+	// regResp, err := client.RegisterByPhone(context.Background(), regReq)
+	fmt.Printf("Request: %+v\n", regReq)
+	fmt.Println("\nОжидаемый ответ:")
+	fmt.Println("  UserID: <generated-user-id>")
+	fmt.Println("  VerificationCode: 123456  (будет в логах!)")
+
+	// Шаг 2: Подтверждение кода
+	fmt.Println("\nШаг 2: Подтверждение SMS кода...")
+	verifyReq := &user.VerifyPhoneRegistrationRequest{
+		UserID:           "<user-id-from-step-1>",
+		VerificationCode: "123456",
+	}
+
+	fmt.Printf("Request: %+v\n", verifyReq)
+	fmt.Println("\nОжидаемый ответ:")
+	fmt.Println("  Success: true")
+
+	fmt.Println("\n=== Готово! ===")
+	fmt.Println("\nДля реального тестирования:")
+	fmt.Println("1. Запустите ZITADEL сервер")
+	fmt.Println("2. Используйте grpcurl или создайте gRPC client")
+	fmt.Println("3. Проверяйте логи для получения SMS кода")
+}

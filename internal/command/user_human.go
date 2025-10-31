@@ -33,17 +33,17 @@ type AddHuman struct {
 	// ID is optional, if empty it will be generated
 	ID string
 	// Username is required
-	Username string
+	Username string // Будет заполняться дефолтным значением
 	// FirstName is required
-	FirstName string
+	FirstName string // Будет заполняться дефолтным значением
 	// LastName is required
-	LastName string
+	LastName string // Будет заполняться дефолтным значением
 	// NickName is required
 	NickName string
 	// DisplayName is required
 	DisplayName string
 	// Email is required
-	Email Email
+	Email Email // Сделать необязательным
 	// PreferredLanguage is required
 	PreferredLanguage language.Tag
 	// Gender is required
@@ -83,6 +83,9 @@ type AddHuman struct {
 
 	// PhoneCode is set by the command
 	PhoneCode *string
+
+	// PhoneOnlyRegistration indicates this is a phone-only registration (no email/password)
+	PhoneOnlyRegistration bool
 }
 
 type AddLink struct {
@@ -92,6 +95,43 @@ type AddLink struct {
 }
 
 func (h *AddHuman) Validate(hasher *crypto.Hasher) (err error) {
+	// Специальная валидация для phone-only регистрации
+	if h.PhoneOnlyRegistration {
+		// Проверяем только телефон
+		if h.Phone.Number == "" {
+			return zerrors.ThrowInvalidArgument(nil, "USER-Ph0n3", "Errors.User.Phone.Empty")
+		}
+		if h.Phone.Number, err = h.Phone.Number.Normalize(); err != nil {
+			return err
+		}
+
+		// Автогенерация обязательных полей
+		if h.Username == "" {
+			h.Username = string(h.Phone.Number)
+		}
+		if h.FirstName == "" {
+			h.FirstName = "User"
+		}
+		if h.LastName == "" {
+			h.LastName = string(h.Phone.Number)
+		}
+		h.ensureDisplayName()
+
+		// Email делаем фиктивным и verified
+		if h.Email.Address == "" {
+			h.Email.Address = domain.EmailAddress(string(h.Phone.Number) + "@phone.local")
+		}
+		h.Email.Verified = true
+		h.Email.NoEmailVerification = true
+
+		// Пароль НЕ требуется
+		h.Passwordless = true
+		h.Password = ""
+
+		return nil
+	}
+
+	// Стандартная валидация для обычной регистрации
 	if err := h.Email.Validate(); err != nil {
 		return err
 	}
