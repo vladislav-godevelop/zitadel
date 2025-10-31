@@ -1,6 +1,8 @@
 "use client";
 
-import { Logo } from "@/components/logo";
+import Image from "next/image";
+import logo from "@/assets/images/finmart.svg";
+
 import { BrandingSettings } from "@zitadel/proto/zitadel/settings/v2/branding_settings_pb";
 import React, { ReactNode, Children } from "react";
 import { ThemeWrapper } from "./theme-wrapper";
@@ -35,7 +37,6 @@ export function DynamicTheme({
     }
     return children;
   }, [children, isSideBySide]);
-
   return (
     <ThemeWrapper branding={branding}>
       {isSideBySide
@@ -56,14 +57,7 @@ export function DynamicTheme({
                     <div className="flex w-1/2 flex-col justify-center p-4 lg:p-8 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20">
                       <div className="max-w-[440px] mx-auto space-y-8">
                         {/* Logo and branding */}
-                        {branding && (
-                          <Logo
-                            lightSrc={branding.lightTheme?.logoUrl}
-                            darkSrc={branding.darkTheme?.logoUrl}
-                            height={150}
-                            width={150}
-                          />
-                        )}
+                        <Image src={logo} alt="Finmart" width={150} height={150} />
 
                         {/* First child content (title, description) - only if we have left/right structure */}
                         {hasLeftRightStructure && (
@@ -99,21 +93,14 @@ export function DynamicTheme({
               <div className="relative mx-auto w-full max-w-[440px] py-4 px-4">
                 <Card>
                   <div className="mx-auto flex flex-col items-center space-y-8">
-                    <div className="relative flex flex-row items-center justify-center -mb-4">
-                      {branding && (
-                        <Logo
-                          lightSrc={branding.lightTheme?.logoUrl}
-                          darkSrc={branding.darkTheme?.logoUrl}
-                          height={150}
-                          width={150}
-                        />
-                      )}
+                    <div className="relative flex flex-row w-full">
+                      <Image src={logo} alt="Finmart" width={90} height={70} />
                     </div>
 
                     {hasMultipleChildren ? (
                       <>
                         {/* Title and description - center aligned */}
-                        <div className="w-full text-center flex flex-col items-center mb-4">{titleContent}</div>
+                        <div className="w-full text-center flex flex-col items-center mb-4 !mt-10">{titleContent}</div>
 
                         {/* Form content - left aligned */}
                         <div className="w-full">{formContent}</div>
@@ -122,8 +109,6 @@ export function DynamicTheme({
                       // Single child - use original behavior
                       <div className="w-full">{actualChildren}</div>
                     )}
-
-                    <div className="flex flex-row justify-between"></div>
                   </div>
                 </Card>
               </div>

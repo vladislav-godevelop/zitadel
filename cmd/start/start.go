@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	_ "embed"
+	"encoding/json"
 	"fmt"
 	"math"
 	"net/http"
@@ -716,9 +717,138 @@ func startAPIs(
 	if err := apis.RegisterService(ctx, saml_v2.CreateServer(commands, queries, samlProvider, config.ExternalSecure)); err != nil {
 		return nil, err
 	}
+
+	// Phone registration REST endpoints
+	registerPhoneRegistrationEndpoints(apis, commands, queries, keys.User)
+
 	// handle grpc at last to be able to handle the root, because grpc and gateway require a lot of different prefixes
 	apis.RouteGRPC()
 	return apis, nil
+}
+
+// registerPhoneRegistrationEndpoints registers HTTP REST endpoints for phone-only registration
+func registerPhoneRegistrationEndpoints(apis *api.API, commands *command.Commands, queries *query.Queries, userCodeAlg crypto.EncryptionAlgorithm) {
+	// POST /v2/users/register/phone - Step 1: Register by phone number
+	apis.HandleFunc("/v2/users/register/phone", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("only POST method allowed"), http.StatusMethodNotAllowed)
+			return
+		}
+
+		var req struct {
+			Phone          string `json:"phone"`
+			ReturnCode     bool   `json:"return_code"`
+			OrganizationID string `json:"organization_id,omitempty"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("invalid JSON: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		if req.Phone == "" {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("phone number is required"), http.StatusBadRequest)
+			return
+		}
+
+		ctx := r.Context()
+		logging.WithFields("phone", req.Phone, "orgID", req.OrganizationID).Info("RegisterByPhone: starting registration")
+
+		human := &command.AddHuman{
+			Phone: command.Phone{
+				Number:     domain.PhoneNumber(req.Phone),
+				Verified:   false,
+				ReturnCode: req.ReturnCode,
+			},
+			PhoneOnlyRegistration: true,
+			Register:              true,
+		}
+
+		err := commands.AddUserHuman(ctx, req.OrganizationID, human, false, userCodeAlg)
+		if err != nil {
+			logging.WithFields("phone", req.Phone, "error", err).Error("RegisterByPhone: failed to create user")
+			http_util.MarshalJSON(w, nil, err, http.StatusInternalServerError)
+			return
+		}
+
+		response := map[string]interface{}{
+			"user_id": human.ID,
+		}
+
+		if req.ReturnCode && human.PhoneCode != nil {
+			response["verification_code"] = *human.PhoneCode
+			logging.WithFields("userID", human.ID, "phone", req.Phone, "verificationCode", *human.PhoneCode).
+				Info("RegisterByPhone: ✅ SMS CODE (для тестирования)")
+		}
+
+		if human.Details != nil {
+			response["details"] = map[string]interface{}{
+				"sequence":       human.Details.Sequence,
+				"resourceOwner":  human.Details.ResourceOwner,
+				"eventDate":      human.Details.EventDate,
+			}
+		}
+
+		logging.WithFields("userID", human.ID, "phone", req.Phone).Info("RegisterByPhone: ✅ user created successfully")
+		http_util.MarshalJSON(w, response, nil, http.StatusOK)
+	})
+
+	// POST /v2/users/register/phone/verify - Step 2: Verify SMS code
+	apis.HandleFunc("/v2/users/register/phone/verify", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("only POST method allowed"), http.StatusMethodNotAllowed)
+			return
+		}
+
+		var req struct {
+			UserID           string `json:"user_id"`
+			VerificationCode string `json:"verification_code"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("invalid JSON: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		if req.UserID == "" {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("user_id is required"), http.StatusBadRequest)
+			return
+		}
+		if req.VerificationCode == "" {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("verification_code is required"), http.StatusBadRequest)
+			return
+		}
+
+		ctx := r.Context()
+		logging.WithFields("userID", req.UserID, "code", req.VerificationCode).Info("VerifyPhoneRegistration: verifying code")
+
+		phoneCodeGenerator, err := queries.InitEncryptionGenerator(ctx, domain.SecretGeneratorTypeVerifyPhoneCode, userCodeAlg)
+		if err != nil {
+			logging.WithFields("userID", req.UserID, "error", err).Error("VerifyPhoneRegistration: failed to init generator")
+			http_util.MarshalJSON(w, nil, err, http.StatusInternalServerError)
+			return
+		}
+
+		details, err := commands.VerifyHumanPhone(ctx, req.UserID, req.VerificationCode, "", phoneCodeGenerator)
+		if err != nil {
+			logging.WithFields("userID", req.UserID, "error", err).Error("VerifyPhoneRegistration: ❌ verification failed")
+			http_util.MarshalJSON(w, nil, fmt.Errorf("invalid or expired verification code"), http.StatusBadRequest)
+			return
+		}
+
+		logging.WithFields("userID", req.UserID).Info("VerifyPhoneRegistration: ✅ phone verified successfully")
+
+		response := map[string]interface{}{
+			"success": true,
+		}
+		if details != nil {
+			response["details"] = map[string]interface{}{
+				"sequence":      details.Sequence,
+				"resourceOwner": details.ResourceOwner,
+				"eventDate":     details.EventDate,
+			}
+		}
+
+		http_util.MarshalJSON(w, response, nil, http.StatusOK)
+	})
 }
 
 func listen(ctx context.Context, router *mux.Router, port uint16, tlsConfig *tls.Config, shutdown <-chan os.Signal) error {

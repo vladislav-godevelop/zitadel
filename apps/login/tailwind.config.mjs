@@ -59,7 +59,7 @@ export default {
         state: {
           success: {
             light: {
-              background: "#cbf4c9",
+              background: "#f5f5f5",
               color: "#0e6245",
             },
             dark: {

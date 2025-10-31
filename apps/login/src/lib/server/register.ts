@@ -14,10 +14,7 @@ import crypto from "crypto";
 import { completeFlowOrGetUrl } from "../client";
 
 type RegisterUserCommand = {
-  email: string;
-  firstName: string;
-  lastName: string;
-  password?: string;
+  phone: string;
   organization: string;
   requestId?: string;
 };
@@ -28,114 +25,89 @@ export type RegisterUserResponse = {
   factors: Factors | undefined;
 };
 export async function registerUser(command: RegisterUserCommand) {
-  const t = await getTranslations("register");
-  const _headers = await headers();
-  const { serviceUrl } = getServiceUrlFromHeaders(_headers);
-
-  const addResponse = await addHumanUser({
-    serviceUrl,
-    email: command.email,
-    firstName: command.firstName,
-    lastName: command.lastName,
-    password: command.password ? command.password : undefined,
-    organization: command.organization,
-  });
-
-  if (!addResponse) {
-    return { error: t("errors.couldNotCreateUser") };
-  }
-
-  const loginSettings = await getLoginSettings({
-    serviceUrl,
-    organization: command.organization,
-  });
-
-  let checkPayload: any = {
-    user: { search: { case: "userId", value: addResponse.userId } },
-  };
-
-  if (command.password) {
-    checkPayload = {
-      ...checkPayload,
-      password: { password: command.password },
-    } as ChecksJson;
-  }
-
-  const checks = create(ChecksSchema, checkPayload);
-
-  const session = await createSessionAndUpdateCookie({
-    checks,
-    requestId: command.requestId,
-    lifetime: command.password ? loginSettings?.passwordCheckLifetime : undefined,
-  });
-
-  if (!session || !session.factors?.user) {
-    return { error: t("errors.couldNotCreateSession") };
-  }
-
-  if (!command.password) {
-    const params = new URLSearchParams({
-      loginName: session.factors.user.loginName,
-      organization: session.factors.user.organizationId,
-    });
-
-    if (command.requestId) {
-      params.append("requestId", command.requestId);
-    }
-
-    // Set verification cookie for users registering with passkey (no password)
-    // This allows them to proceed with passkey registration without additional verification
-    const cookiesList = await cookies();
-    const userAgentId = await getOrSetFingerprintId();
-
-    const verificationCheck = crypto.createHash("sha256").update(`${session.factors.user.id}:${userAgentId}`).digest("hex");
-
-    await cookiesList.set({
-      name: "verificationCheck",
-      value: verificationCheck,
-      httpOnly: true,
-      path: "/",
-      maxAge: 300, // 5 minutes
-    });
-
-    return { redirect: "/passkey/set?" + params };
-  } else {
-    const userResponse = await getUserByID({
-      serviceUrl,
-      userId: session?.factors?.user?.id,
-    });
-
-    if (!userResponse.user) {
-      return { error: t("errors.userNotFound") };
-    }
-
-    const humanUser = userResponse.user.type.case === "human" ? userResponse.user.type.value : undefined;
-
-    const emailVerificationCheck = checkEmailVerification(
-      session,
-      humanUser,
-      session.factors.user.organizationId,
-      command.requestId,
-    );
-
-    if (emailVerificationCheck?.redirect) {
-      return emailVerificationCheck;
-    }
-
-    return completeFlowOrGetUrl(
-      command.requestId && session.id
-        ? {
-            sessionId: session.id,
-            requestId: command.requestId,
-            organization: session.factors.user.organizationId,
-          }
-        : {
-            loginName: session.factors.user.loginName,
-            organization: session.factors.user.organizationId,
-          },
-      loginSettings?.defaultRedirectUri,
-    );
-  }
+  // const t = await getTranslations("register");
+  // const _headers = await headers();
+  // const { serviceUrl } = getServiceUrlFromHeaders(_headers);
+  // const addResponse = await addHumanUser({
+  //   serviceUrl,
+  //   email: command.email,
+  //   firstName: command.firstName,
+  //   lastName: command.lastName,
+  //   password: command.password ? command.password : undefined,
+  //   organization: command.organization,
+  // });
+  // if (!addResponse) {
+  //   return { error: t("errors.couldNotCreateUser") };
+  // }
+  // const loginSettings = await getLoginSettings({
+  //   serviceUrl,
+  //   organization: command.organization,
+  // });
+  // let checkPayload: any = {
+  //   user: { search: { case: "userId", value: addResponse.userId } },
+  // };
+  // const checks = create(ChecksSchema, checkPayload);
+  // const session = await createSessionAndUpdateCookie({
+  //   checks,
+  //   requestId: command.requestId,
+  //   lifetime: command.password ? loginSettings?.passwordCheckLifetime : undefined,
+  // });
+  // if (!session || !session.factors?.user) {
+  //   return { error: t("errors.couldNotCreateSession") };
+  // }
+  // if (!command.password) {
+  //   const params = new URLSearchParams({
+  //     loginName: session.factors.user.loginName,
+  //     organization: session.factors.user.organizationId,
+  //   });
+  //   if (command.requestId) {
+  //     params.append("requestId", command.requestId);
+  //   }
+  //   // Set verification cookie for users registering with passkey (no password)
+  //   // This allows them to proceed with passkey registration without additional verification
+  //   const cookiesList = await cookies();
+  //   const userAgentId = await getOrSetFingerprintId();
+  //   const verificationCheck = crypto.createHash("sha256").update(`${session.factors.user.id}:${userAgentId}`).digest("hex");
+  //   await cookiesList.set({
+  //     name: "verificationCheck",
+  //     value: verificationCheck,
+  //     httpOnly: true,
+  //     path: "/",
+  //     maxAge: 300, // 5 minutes
+  //   });
+  //   return { redirect: "/passkey/set?" + params };
+  // } else {
+  //   const userResponse = await getUserByID({
+  //     serviceUrl,
+  //     userId: session?.factors?.user?.id,
+  //   });
+  //   if (!userResponse.user) {
+  //     return { error: t("errors.userNotFound") };
+  //   }
+  //   const humanUser = userResponse.user.type.case === "human" ? userResponse.user.type.value : undefined;
+  //   const emailVerificationCheck = checkEmailVerification(
+  //     session,
+  //     humanUser,
+  //     session.factors.user.organizationId,
+  //     command.requestId,
+  //   );
+  //   if (emailVerificationCheck?.redirect) {
+  //     return emailVerificationCheck;
+  //   }
+  //   return completeFlowOrGetUrl(
+  //     command.requestId && session.id
+  //       ? {
+  //           sessionId: session.id,
+  //           requestId: command.requestId,
+  //           organization: session.factors.user.organizationId,
+  //         }
+  //       : {
+  //           loginName: session.factors.user.loginName,
+  //           organization: session.factors.user.organizationId,
+  //         },
+  //     loginSettings?.defaultRedirectUri,
+  //   );
+  // }
 }
 
 type RegisterUserAndLinkToIDPommand = {

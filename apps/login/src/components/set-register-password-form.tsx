@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  lowerCaseValidator,
-  numberValidator,
-  symbolValidator,
-  upperCaseValidator,
-} from "@/helpers/validators";
-import { registerUser } from "@/lib/server/register";
+import { lowerCaseValidator, numberValidator, symbolValidator, upperCaseValidator } from "@/helpers/validators";
 import { PasswordComplexitySettings } from "@zitadel/proto/zitadel/settings/v2/password_settings_pb";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -62,30 +56,30 @@ export function SetRegisterPasswordForm({
 
   async function submitRegister(values: Inputs) {
     setLoading(true);
-    const response = await registerUser({
-      email: email,
-      firstName: firstname,
-      lastName: lastname,
-      organization: organization,
-      requestId: requestId,
-      password: values.password,
-    })
-      .catch(() => {
-        setError(t("errors.couldNotRegisterUser"));
-        return;
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    // const response = await registerUser({
+    //   email: email,
+    //   firstName: firstname,
+    //   lastName: lastname,
+    //   organization: organization,
+    //   requestId: requestId,
+    //   password: values.password,
+    // })
+    //   .catch(() => {
+    //     setError(t("errors.couldNotRegisterUser"));
+    //     return;
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
 
-    if (response && "error" in response && response.error) {
-      setError(response.error);
-      return;
-    }
+    // if (response && "error" in response && response.error) {
+    //   setError(response.error);
+    //   return;
+    // }
 
-    if (response && "redirect" in response && response.redirect) {
-      return router.push(response.redirect);
-    }
+    // if (response && "redirect" in response && response.redirect) {
+    //   return router.push(response.redirect);
+    // }
   }
 
   const { errors } = formState;
@@ -93,9 +87,7 @@ export function SetRegisterPasswordForm({
   const watchPassword = watch("password", "");
   const watchConfirmPassword = watch("confirmPassword", "");
 
-  const hasMinLength =
-    passwordComplexitySettings &&
-    watchPassword?.length >= passwordComplexitySettings.minLength;
+  const hasMinLength = passwordComplexitySettings && watchPassword?.length >= passwordComplexitySettings.minLength;
   const hasSymbol = symbolValidator(watchPassword);
   const hasNumber = numberValidator(watchPassword);
   const hasUppercase = upperCaseValidator(watchPassword);
@@ -155,17 +147,11 @@ export function SetRegisterPasswordForm({
         <Button
           type="submit"
           variant={ButtonVariants.Primary}
-          disabled={
-            loading ||
-            !policyIsValid ||
-            !formState.isValid ||
-            watchPassword !== watchConfirmPassword
-          }
+          disabled={loading || !policyIsValid || !formState.isValid || watchPassword !== watchConfirmPassword}
           onClick={handleSubmit(submitRegister)}
           data-testid="submit-button"
         >
-          {loading && <Spinner className="mr-2 h-5 w-5" />}{" "}
-          <Translated i18nKey="password.submit" namespace="register" />
+          {loading && <Spinner className="mr-2 h-5 w-5" />} <Translated i18nKey="password.submit" namespace="register" />
         </Button>
       </div>
     </form>

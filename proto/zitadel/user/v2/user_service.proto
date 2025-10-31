@@ -23,6 +23,7 @@ import "zitadel/user/v2/pat.proto";
 import "zitadel/user/v2/query.proto";
 import "zitadel/filter/v2/filter.proto";
 import "zitadel/metadata/v2/metadata.proto";
+import "zitadel/user/v2/phone_registration.proto";
 
 option go_package = "github.com/zitadel/zitadel/pkg/grpc/user/v2;user";
 
@@ -1938,6 +1939,75 @@ service UserService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "200";
+      };
+    };
+  }
+
+  // Register user by phone number only (Step 1: Send phone, receive SMS code)
+  //
+  // Initiates phone-only registration by creating a user with only a phone number.
+  // An SMS verification code will be sent to the provided phone number.
+  // Use VerifyPhoneRegistration to complete the registration.
+  rpc RegisterByPhone(RegisterByPhoneRequest) returns (RegisterByPhoneResponse) {
+    option (google.api.http) = {
+      post: "/v2/users/register/phone"
+      body: "*"
+    };
+
+    option (zitadel.protoc_gen_zitadel.v2.options) = {
+      auth_option: {
+        permission: "authenticated"
+      }
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Register user by phone number";
+      description: "Creates a new user with only a phone number and sends an SMS verification code. No email or password required.";
+      responses: {
+        key: "200";
+        value: {
+          description: "User created successfully, SMS code sent";
+        };
+      };
+      responses: {
+        key: "409";
+        value: {
+          description: "Phone number already in use";
+        };
+      };
+    };
+  }
+
+  // Verify phone registration code (Step 2: Submit SMS code to complete registration)
+  //
+  // Verifies the SMS code received by the user and completes the phone-only registration.
+  // After successful verification, the user can log in.
+  rpc VerifyPhoneRegistration(VerifyPhoneRegistrationRequest) returns (VerifyPhoneRegistrationResponse) {
+    option (google.api.http) = {
+      post: "/v2/users/register/phone/verify"
+      body: "*"
+    };
+
+    option (zitadel.protoc_gen_zitadel.v2.options) = {
+      auth_option: {
+        permission: "authenticated"
+      }
+    };
+
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Verify phone registration code";
+      description: "Verifies the SMS code and completes the phone-only registration process.";
+      responses: {
+        key: "200";
+        value: {
+          description: "Phone verified successfully, registration complete";
+        };
+      };
+      responses: {
+        key: "400";
+        value: {
+          description: "Invalid or expired verification code";
+        };
       };
     };
   }

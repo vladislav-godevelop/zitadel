@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package zitadel.user.v2;
+
+option go_package = "github.com/zitadel/zitadel/pkg/grpc/user/v2;user";
+
+import "google/api/field_behavior.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+import "zitadel/object/v2/object.proto";
+
+// Step 1: Register by phone - send phone number
+message RegisterByPhoneRequest {
+  // Phone number in international format (E164)
+  string phone = 1 [
+    (validate.rules).string = {min_len: 1, max_len: 50},
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "Phone number in international format, e.g. +79001234567";
+      example: "\"+79001234567\"";
+    }
+  ];
+
+  // Optional: return verification code in response (for testing/development)
+  bool return_code = 2 [
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      description: "If true, returns the SMS verification code in the response (for testing only)";
+    }
+  ];
+
+  // Optional: organization ID (if not specified, uses default organization)
+  optional string organization_id = 3;
+}
+
+message RegisterByPhoneResponse {
+  // Created user ID
+  string user_id = 1;
+
+  // Creation details
+  zitadel.object.v2.Details details = 2;
+
+  // Verification code (only returned if return_code=true)
+  optional string verification_code = 3;
+}
+
+// Step 2: Verify phone code and complete registration
+message VerifyPhoneRegistrationRequest {
+  // User ID from RegisterByPhone response
+  string user_id = 1 [(validate.rules).string.min_len = 1];
+
+  // SMS verification code received by the user
+  string verification_code = 2 [(validate.rules).string.min_len = 1];
+}
+
+message VerifyPhoneRegistrationResponse {
+  // Verification details
+  zitadel.object.v2.Details details = 1;
+}

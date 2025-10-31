@@ -1,7 +1,7 @@
 import { DynamicTheme } from "@/components/dynamic-theme";
+import { NewLoginForm } from "@/components/new-login-form";
 import { SignInWithIdp } from "@/components/sign-in-with-idp";
 import { Translated } from "@/components/translated";
-import { UsernameForm } from "@/components/username-form";
 import { getServiceUrlFromHeaders } from "@/lib/service-url";
 import { getActiveIdentityProviders, getBrandingSettings, getDefaultOrg, getLoginSettings } from "@/lib/zitadel";
 import { Organization } from "@zitadel/proto/zitadel/org/v2/org_pb";
@@ -70,15 +70,7 @@ export default async function Page(props: { searchParams: Promise<Record<string 
       </div>
 
       <div className="w-full">
-        <UsernameForm
-          loginName={loginName}
-          requestId={requestId}
-          organization={organization} // stick to "organization" as we still want to do user discovery based on the searchParams not the default organization, later the organization is determined by the found user
-          loginSettings={contextLoginSettings}
-          suffix={suffix}
-          submit={submit}
-          allowRegister={!!loginSettings?.allowRegister}
-        ></UsernameForm>
+        <NewLoginForm organization={organization} loginSettings={contextLoginSettings} requestId={requestId} />
 
         {loginSettings?.allowExternalIdp && !!identityProviders?.length && (
           <div className="w-full pb-4 pt-6">
@@ -87,7 +79,7 @@ export default async function Page(props: { searchParams: Promise<Record<string 
               requestId={requestId}
               organization={organization}
               postErrorRedirectUrl="/loginname"
-            ></SignInWithIdp>
+            />
           </div>
         )}
       </div>

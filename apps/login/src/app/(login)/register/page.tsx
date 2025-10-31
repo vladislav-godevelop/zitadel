@@ -1,6 +1,6 @@
 import { Alert } from "@/components/alert";
 import { DynamicTheme } from "@/components/dynamic-theme";
-import { RegisterForm } from "@/components/register-form";
+import { NewRegisterForm } from "@/components/new-register-form";
 import { SignInWithIdp } from "@/components/sign-in-with-idp";
 import { Translated } from "@/components/translated";
 import { getServiceUrlFromHeaders } from "@/lib/service-url";
@@ -13,7 +13,6 @@ import {
   getPasswordComplexitySettings,
 } from "@/lib/zitadel";
 import { Organization } from "@zitadel/proto/zitadel/org/v2/org_pb";
-import { PasskeysType } from "@zitadel/proto/zitadel/settings/v2/login_settings_pb";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { headers } from "next/headers";
@@ -27,7 +26,6 @@ export default async function Page(props: { searchParams: Promise<Record<string 
   const searchParams = await props.searchParams;
 
   let { firstname, lastname, email, organization, requestId } = searchParams;
-
   const _headers = await headers();
   const { serviceUrl } = getServiceUrlFromHeaders(_headers);
 
@@ -90,7 +88,7 @@ export default async function Page(props: { searchParams: Promise<Record<string 
         <h1>
           <Translated i18nKey="title" namespace="register" />
         </h1>
-        <p className="ztdl-p">
+        <p className="ztdl-p !mt-1">
           <Translated i18nKey="description" namespace="register" />
         </p>
       </div>
@@ -102,21 +100,13 @@ export default async function Page(props: { searchParams: Promise<Record<string 
           </Alert>
         )}
 
-        {legal &&
-          passwordComplexitySettings &&
-          organization &&
-          (loginSettings.allowUsernamePassword || loginSettings.passkeysType == PasskeysType.ALLOWED) && (
-            <RegisterForm
-              idpCount={!loginSettings?.allowExternalIdp ? 0 : identityProviders.length}
-              legal={legal}
-              organization={organization}
-              firstname={firstname}
-              lastname={lastname}
-              email={email}
-              requestId={requestId}
-              loginSettings={loginSettings}
-            ></RegisterForm>
-          )}
+        <NewRegisterForm
+          legal={legal}
+          organization={organization}
+          loginSettings={loginSettings}
+          identityProviders={identityProviders}
+          requestId={requestId}
+        />
 
         {loginSettings?.allowExternalIdp && !!identityProviders.length && (
           <>
