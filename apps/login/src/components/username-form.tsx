@@ -1,47 +1,34 @@
 "use client";
 
-import { sendLoginname } from "@/lib/server/loginname";
 import { LoginSettings } from "@zitadel/proto/zitadel/settings/v2/login_settings_pb";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Alert } from "./alert";
-import { BackButton } from "./back-button";
-import { Button, ButtonVariants } from "./button";
-import { TextInput } from "./input";
-import { Spinner } from "./spinner";
 import { Translated } from "./translated";
 import { useTranslations } from "next-intl";
+import { PhoneInput } from "./phone-input";
+import { ButtonsAuth } from "./buttons-auth";
 
-type Inputs = {
-  loginName: string;
+export type Inputs = {
+  phone: string;
 };
 
 type Props = {
-  loginName: string | undefined;
+  setStep: Dispatch<SetStateAction<number>>;
   requestId: string | undefined;
-  loginSettings: LoginSettings | undefined;
   organization?: string;
-  suffix?: string;
-  submit: boolean;
   allowRegister: boolean;
 };
 
-export function UsernameForm({
-  loginName,
-  requestId,
-  organization,
-  suffix,
-  loginSettings,
-  submit,
-  allowRegister,
-}: Props) {
+export function UsernameForm({ setStep, requestId, organization, allowRegister }: Props) {
   const { register, handleSubmit, formState } = useForm<Inputs>({
     mode: "onBlur",
     defaultValues: {
-      loginName: loginName ? loginName : "",
+      phone: "",
     },
   });
+  const { errors } = formState;
 
   const t = useTranslations("loginname");
 
@@ -50,65 +37,39 @@ export function UsernameForm({
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  async function submitLoginName(values: Inputs, organization?: string) {
-    setLoading(true);
+  async function submitLoginName(values: Inputs) {
+    // setLoading(true);
+    setStep(2);
+    // const res = await sendLoginname({
+    //   loginName: values.loginName,
+    //   organization,
+    //   requestId,
+    //   suffix,
+    // })
+    //   .catch(() => {
+    //     setError(t("errors.internalError"));
+    //     return;
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
 
-    const res = await sendLoginname({
-      loginName: values.loginName,
-      organization,
-      requestId,
-      suffix,
-    })
-      .catch(() => {
-        setError(t("errors.internalError"));
-        return;
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    // if (res && "redirect" in res && res.redirect) {
+    //   return router.push(res.redirect);
+    // }
 
-    if (res && "redirect" in res && res.redirect) {
-      return router.push(res.redirect);
-    }
-
-    if (res && "error" in res && res.error) {
-      setError(res.error);
-      return;
-    }
-
-    return res;
-  }
-
-  useEffect(() => {
-    if (submit && loginName) {
-      // When we navigate to this page, we always want to be redirected if submit is true and the parameters are valid.
-      submitLoginName({ loginName }, organization);
-    }
-  }, []);
-
-  let inputLabel = t("labels.loginname");
-  if (
-    loginSettings?.disableLoginWithEmail &&
-    loginSettings?.disableLoginWithPhone
-  ) {
-    inputLabel = t("labels.username");
-  } else if (loginSettings?.disableLoginWithEmail) {
-    inputLabel = t("labels.usernameOrPhoneNumber");
-  } else if (loginSettings?.disableLoginWithPhone) {
-    inputLabel = t("labels.usernameOrEmail");
+    // if (res && "error" in res && res.error) {
+    //   setError(res.error);
+    //   return;
+    // }
   }
 
   return (
     <form className="w-full">
       <div className="">
-        <TextInput
-          type="text"
-          autoComplete="username"
-          {...register("loginName", { required: t("required.loginName") })}
-          label={inputLabel}
-          data-testid="username-text-input"
-          suffix={suffix}
-        />
+        <div className="col-span-2">
+          <PhoneInput register={register} errors={errors} />
+        </div>
         {allowRegister && (
           <button
             className="text-sm transition-all hover:text-primary-light-500 dark:hover:text-primary-dark-500"
@@ -137,21 +98,7 @@ export function UsernameForm({
           <Alert>{error}</Alert>
         </div>
       )}
-      <div className="mt-4 flex w-full flex-row items-center">
-        <BackButton data-testid="back-button" />
-        <span className="flex-grow"></span>
-        <Button
-          data-testid="submit-button"
-          type="submit"
-          className="self-end"
-          variant={ButtonVariants.Primary}
-          disabled={loading || !formState.isValid}
-          onClick={handleSubmit((e) => submitLoginName(e, organization))}
-        >
-          {loading && <Spinner className="mr-2 h-5 w-5" />}
-          <Translated i18nKey="submit" namespace="loginname" />
-        </Button>
-      </div>
+      <ButtonsAuth loading={loading} formState={formState} handleSubmit={handleSubmit(submitLoginName)} />
     </form>
   );
 }
