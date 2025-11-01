@@ -1,34 +1,40 @@
 "use client";
 
+import { sendLoginname } from "@/lib/server/loginname";
 import { LoginSettings } from "@zitadel/proto/zitadel/settings/v2/login_settings_pb";
 import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Alert } from "./alert";
+import { BackButton } from "./back-button";
+import { Button, ButtonVariants } from "./button";
+import { TextInput } from "./input";
+import { Spinner } from "./spinner";
 import { Translated } from "./translated";
 import { useTranslations } from "next-intl";
-import { PhoneInput } from "./phone-input";
 import { ButtonsAuth } from "./buttons-auth";
 
-export type Inputs = {
-  phone: string;
+type Inputs = {
+  loginName: string;
 };
 
 type Props = {
-  setStep: Dispatch<SetStateAction<number>>;
+  loginName: string | undefined;
   requestId: string | undefined;
+  loginSettings: LoginSettings | undefined;
   organization?: string;
+  suffix?: string;
+  submit: boolean;
   allowRegister: boolean;
 };
 
-export function UsernameForm({ setStep, requestId, organization, allowRegister }: Props) {
+export function UsernameForm({ loginName, requestId, organization, suffix, loginSettings, submit, allowRegister }: Props) {
   const { register, handleSubmit, formState } = useForm<Inputs>({
     mode: "onBlur",
     defaultValues: {
-      phone: "",
+      loginName: loginName ? loginName : "",
     },
   });
-  const { errors } = formState;
 
   const t = useTranslations("loginname");
 
@@ -37,59 +43,122 @@ export function UsernameForm({ setStep, requestId, organization, allowRegister }
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  async function submitLoginName(values: Inputs) {
-    // setLoading(true);
-    setStep(2);
-    // const res = await sendLoginname({
-    //   loginName: values.loginName,
-    //   organization,
-    //   requestId,
-    //   suffix,
-    // })
-    //   .catch(() => {
-    //     setError(t("errors.internalError"));
-    //     return;
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+  async function submitLoginName(values: Inputs, organization?: string) {
+    setLoading(true);
 
-    // if (res && "redirect" in res && res.redirect) {
-    //   return router.push(res.redirect);
-    // }
+    const res = await sendLoginname({
+      loginName: values.loginName,
+      organization,
+      requestId,
+      suffix,
+    })
+      .catch(() => {
+        setError(t("errors.internalError"));
+        return;
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 
-    // if (res && "error" in res && res.error) {
-    //   setError(res.error);
-    //   return;
-    // }
+    if (res && "redirect" in res && res.redirect) {
+      return router.push(res.redirect);
+    }
+
+    if (res && "error" in res && res.error) {
+      setError(res.error);
+      return;
+    }
+
+    return res;
+  }
+
+  useEffect(() => {
+    if (submit && loginName) {
+      // When we navigate to this page, we always want to be redirected if submit is true and the parameters are valid.
+      submitLoginName({ loginName }, organization);
+    }
+  }, []);
+
+  let inputLabel = t("labels.loginname");
+  if (loginSettings?.disableLoginWithEmail && loginSettings?.disableLoginWithPhone) {
+    inputLabel = t("labels.username");
+  } else if (loginSettings?.disableLoginWithEmail) {
+    inputLabel = t("labels.usernameOrPhoneNumber");
+  } else if (loginSettings?.disableLoginWithPhone) {
+    inputLabel = t("labels.usernameOrEmail");
   }
 
   return (
     <form className="w-full">
       <div className="">
-        <div className="col-span-2">
-          <PhoneInput register={register} errors={errors} />
-        </div>
+        <TextInput
+          type="text"
+          autoComplete="username"
+          {...register("loginName", { required: t("required.loginName") })}
+          label={inputLabel}
+          data-testid="username-text-input"
+          suffix={suffix}
+        />
         {allowRegister && (
-          <button
-            className="text-sm transition-all hover:text-primary-light-500 dark:hover:text-primary-dark-500"
-            onClick={() => {
-              const registerParams = new URLSearchParams();
-              if (organization) {
-                registerParams.append("organization", organization);
-              }
-              if (requestId) {
-                registerParams.append("requestId", requestId);
-              }
+          <>
+            <button
+              className="text-sm transition-all hover:text-primary-light-500 dark:hover:text-primary-dark-500"
+              onClick={() => {
+                const registerParams = new URLSearchParams();
+                if (organization) {
+                  registerParams.append("organization", organization);
+                }
+                if (requestId) {
+                  registerParams.append("requestId", requestId);
+                }
 
-              router.push("/register?" + registerParams);
-            }}
-            type="button"
-            disabled={loading}
-            data-testid="register-button"
-          >
-            <Translated i18nKey="register" namespace="loginname" />
-          </button>
+                router.push("/register?" + registerParams);
+              }}
+              type="button"
+              disabled={loading}
+              data-testid="register-button"
+            >
+              <Translated i18nKey="register" namespace="loginname" />
+            </button>
+            <button
+              className="text-sm transition-all hover:text-primary-light-500 dark:hover:text-primary-dark-500"
+              onClick={() => {
+                const registerParams = new URLSearchParams();
+                if (organization) {
+                  registerParams.append("organization", organization);
+                }
+                if (requestId) {
+                  registerParams.append("requestId", requestId);
+                }
+
+                router.push("/register-phone?" + registerParams);
+              }}
+              type="button"
+              disabled={loading}
+              data-testid="register-button"
+            >
+              <Translated i18nKey="register-phone" namespace="loginname" />
+            </button>
+            <button
+              className="text-sm transition-all hover:text-primary-light-500 dark:hover:text-primary-dark-500"
+              onClick={() => {
+                const registerParams = new URLSearchParams();
+                if (organization) {
+                  registerParams.append("organization", organization);
+                }
+                if (requestId) {
+                  registerParams.append("requestId", requestId);
+                }
+
+                router.push("/login-phone?" + registerParams);
+              }}
+              type="button"
+              disabled={loading}
+              data-testid="register-button"
+            >
+              <Translated i18nKey="login-phone" namespace="loginname" />
+            </button>
+          </>
         )}
       </div>
 
@@ -98,7 +167,11 @@ export function UsernameForm({ setStep, requestId, organization, allowRegister }
           <Alert>{error}</Alert>
         </div>
       )}
-      <ButtonsAuth loading={loading} formState={formState} handleSubmit={handleSubmit(submitLoginName)} />
+      <ButtonsAuth
+        loading={loading}
+        formState={formState}
+        handleSubmit={handleSubmit((e) => submitLoginName(e, organization))}
+      />
     </form>
   );
 }

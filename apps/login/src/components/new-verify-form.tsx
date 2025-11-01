@@ -8,8 +8,9 @@ import { useForm } from "react-hook-form";
 import { TextInput } from "./input";
 import { Translated } from "./translated";
 import { ButtonsAuth } from "./buttons-auth";
+import { verifyPhoneCode } from "@/lib/registerPhone";
 
-type Inputs = {
+export type InputsCode = {
   code: string;
 };
 
@@ -17,12 +18,11 @@ type Props = {
   organization?: string;
   requestId?: string;
   setStep: Dispatch<SetStateAction<number>>;
+  fcn: (value: InputsCode) => Promise<boolean | void>;
 };
 
-export function NewVerifyForm({ setStep, organization, requestId }: Props) {
-  const router = useRouter();
-
-  const { register, handleSubmit, formState } = useForm<Inputs>({
+export function NewVerifyForm({ setStep, organization, requestId, fcn }: Props) {
+  const { register, handleSubmit, formState } = useForm<InputsCode>({
     mode: "onBlur",
     defaultValues: {
       code: "",
@@ -55,32 +55,6 @@ export function NewVerifyForm({ setStep, organization, requestId }: Props) {
     // }
     // return response;
   }
-
-  const fcn = useCallback(async function submitCodeAndContinue(value: Inputs): Promise<boolean | void> {
-    // setLoading(true);
-    // const response = await sendVerification({
-    //   code: value.code,
-    //   userId,
-    //   isInvite: isInvite,
-    //   loginName: loginName,
-    //   organization: organization,
-    //   requestId: requestId,
-    // })
-    //   .catch(() => {
-    //     setError(t("errors.couldNotVerifyUser"));
-    //     return;
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
-    // if (response && "error" in response && response?.error) {
-    //   setError(response.error);
-    //   return;
-    // }
-    // if (response && "redirect" in response && response?.redirect) {
-    //   return router.push(response?.redirect);
-    // }
-  }, []);
 
   return (
     <>

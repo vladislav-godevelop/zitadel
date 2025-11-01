@@ -1,8 +1,11 @@
 "use client";
 
 import { RegisterForm } from "./register-form";
-import { useState } from "react";
-import { NewVerifyForm } from "./new-verify-form";
+import { useCallback, useState } from "react";
+import { InputsCode, NewVerifyForm } from "./new-verify-form";
+import { RegisterPhoneForm } from "./register-phone-form";
+import { verifyPhoneCode } from "@/lib/registerPhone";
+import { useRouter } from "next/navigation";
 
 type TProps = {
   organization?: string;
@@ -14,11 +17,36 @@ type TProps = {
 
 export const NewRegisterForm = ({ legal, organization, loginSettings, identityProviders, requestId }: TProps) => {
   const [step, setStep] = useState(1);
+  const router = useRouter();
+  const registerParams = new URLSearchParams();
+
+  const [userId, setUserId] = useState<string | null>(null);
+  const fcn = useCallback(
+    async function submitCodeAndContinue(value: InputsCode): Promise<boolean | void> {
+      try {
+        if (!userId) return;
+        const success = await verifyPhoneCode(userId, value.code);
+
+        if (success) {
+          router.push("/login-phone?" + registerParams);
+          return true;
+        }
+
+        return false;
+      } catch (error) {
+        console.error("Registration process failed:", error);
+        throw error;
+      }
+    },
+    [userId],
+  );
+
   return (
     <>
       {step === 1 && legal && organization && (
-        <RegisterForm
+        <RegisterPhoneForm
           setStep={setStep}
+          setUserId={setUserId}
           idpCount={!loginSettings?.allowExternalIdp ? 0 : identityProviders.length}
           legal={legal}
           organization={organization}
@@ -26,7 +54,7 @@ export const NewRegisterForm = ({ legal, organization, loginSettings, identityPr
           loginSettings={loginSettings}
         />
       )}
-      {step === 2 && <NewVerifyForm setStep={setStep} organization={organization} requestId={requestId} />}
+      {step === 2 && <NewVerifyForm fcn={fcn} setStep={setStep} organization={organization} requestId={requestId} />}
     </>
   );
 };

@@ -71,15 +71,7 @@ export default async function Page(props: { searchParams: Promise<Record<string 
       </div>
 
       <div className="w-full">
-        <UsernameForm
-          loginName={loginName}
-          requestId={requestId}
-          organization={organization} // stick to "organization" as we still want to do user discovery based on the searchParams not the default organization, later the organization is determined by the found user
-          loginSettings={contextLoginSettings}
-          suffix={suffix}
-          submit={submit}
-          allowRegister={!!loginSettings?.allowRegister}
-        ></UsernameForm>
+        <NewLoginForm organization={organization} loginSettings={contextLoginSettings} requestId={requestId} />
 
         {loginSettings?.allowExternalIdp && !!identityProviders?.length && (
           <div className="w-full pb-4 pt-6">

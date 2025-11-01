@@ -13,6 +13,7 @@ import { TextInput } from "./input";
 import { PasswordComplexity } from "./password-complexity";
 import { Spinner } from "./spinner";
 import { Translated } from "./translated";
+import { registerUser } from "@/lib/server/register";
 
 type Inputs =
   | {
@@ -56,30 +57,30 @@ export function SetRegisterPasswordForm({
 
   async function submitRegister(values: Inputs) {
     setLoading(true);
-    // const response = await registerUser({
-    //   email: email,
-    //   firstName: firstname,
-    //   lastName: lastname,
-    //   organization: organization,
-    //   requestId: requestId,
-    //   password: values.password,
-    // })
-    //   .catch(() => {
-    //     setError(t("errors.couldNotRegisterUser"));
-    //     return;
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+    const response = await registerUser({
+      email: email,
+      firstName: firstname,
+      lastName: lastname,
+      organization: organization,
+      requestId: requestId,
+      password: values.password,
+    })
+      .catch(() => {
+        setError(t("errors.couldNotRegisterUser"));
+        return;
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 
-    // if (response && "error" in response && response.error) {
-    //   setError(response.error);
-    //   return;
-    // }
+    if (response && "error" in response && response.error) {
+      setError(response.error);
+      return;
+    }
 
-    // if (response && "redirect" in response && response.redirect) {
-    //   return router.push(response.redirect);
-    // }
+    if (response && "redirect" in response && response.redirect) {
+      return router.push(response.redirect);
+    }
   }
 
   const { errors } = formState;
@@ -142,10 +143,11 @@ export function SetRegisterPasswordForm({
 
       {error && <Alert>{error}</Alert>}
 
-      <div className="mt-8 flex w-full flex-row items-center justify-between">
-        <BackButton data-testid="back-button" />
+      <div className="mt-8 flex w-full flex-row items-center justify-between gap-4">
+        <BackButton data-testid="back-button" className="w-full justify-center flex" />
         <Button
           type="submit"
+          className="w-full justify-center"
           variant={ButtonVariants.Primary}
           disabled={loading || !policyIsValid || !formState.isValid || watchPassword !== watchConfirmPassword}
           onClick={handleSubmit(submitRegister)}
