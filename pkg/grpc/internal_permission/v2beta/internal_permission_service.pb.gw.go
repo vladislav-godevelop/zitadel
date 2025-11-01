@@ -10,6 +10,7 @@ package internal_permission
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 
@@ -24,193 +25,166 @@ import (
 )
 
 // Suppress "imported and not used" errors
-var _ codes.Code
-var _ io.Reader
-var _ status.Status
-var _ = runtime.String
-var _ = utilities.NewDoubleArray
-var _ = metadata.Join
+var (
+	_ codes.Code
+	_ io.Reader
+	_ status.Status
+	_ = errors.New
+	_ = runtime.String
+	_ = utilities.NewDoubleArray
+	_ = metadata.Join
+)
 
 func request_InternalPermissionService_ListAdministrators_0(ctx context.Context, marshaler runtime.Marshaler, client InternalPermissionServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListAdministratorsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ListAdministratorsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.ListAdministrators(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_InternalPermissionService_ListAdministrators_0(ctx context.Context, marshaler runtime.Marshaler, server InternalPermissionServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListAdministratorsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ListAdministratorsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.ListAdministrators(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_InternalPermissionService_CreateAdministrator_0(ctx context.Context, marshaler runtime.Marshaler, client InternalPermissionServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateAdministratorRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq CreateAdministratorRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.CreateAdministrator(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_InternalPermissionService_CreateAdministrator_0(ctx context.Context, marshaler runtime.Marshaler, server InternalPermissionServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateAdministratorRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq CreateAdministratorRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.CreateAdministrator(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_InternalPermissionService_UpdateAdministrator_0(ctx context.Context, marshaler runtime.Marshaler, client InternalPermissionServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UpdateAdministratorRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq UpdateAdministratorRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["user_id"]
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["user_id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
 	}
-
 	protoReq.UserId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
 	}
-
 	msg, err := client.UpdateAdministrator(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_InternalPermissionService_UpdateAdministrator_0(ctx context.Context, marshaler runtime.Marshaler, server InternalPermissionServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UpdateAdministratorRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq UpdateAdministratorRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["user_id"]
+	val, ok := pathParams["user_id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
 	}
-
 	protoReq.UserId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
 	}
-
 	msg, err := server.UpdateAdministrator(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_InternalPermissionService_DeleteAdministrator_0 = &utilities.DoubleArray{Encoding: map[string]int{"user_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
-)
+var filter_InternalPermissionService_DeleteAdministrator_0 = &utilities.DoubleArray{Encoding: map[string]int{"user_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_InternalPermissionService_DeleteAdministrator_0(ctx context.Context, marshaler runtime.Marshaler, client InternalPermissionServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteAdministratorRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq DeleteAdministratorRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["user_id"]
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["user_id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
 	}
-
 	protoReq.UserId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_InternalPermissionService_DeleteAdministrator_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.DeleteAdministrator(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_InternalPermissionService_DeleteAdministrator_0(ctx context.Context, marshaler runtime.Marshaler, server InternalPermissionServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteAdministratorRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq DeleteAdministratorRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["user_id"]
+	val, ok := pathParams["user_id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
 	}
-
 	protoReq.UserId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_InternalPermissionService_DeleteAdministrator_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.DeleteAdministrator(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 // RegisterInternalPermissionServiceHandlerServer registers the http handlers for service InternalPermissionService to "mux".
@@ -219,16 +193,13 @@ func local_request_InternalPermissionService_DeleteAdministrator_0(ctx context.C
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterInternalPermissionServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterInternalPermissionServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server InternalPermissionServiceServer) error {
-
-	mux.Handle("POST", pattern_InternalPermissionService_ListAdministrators_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_InternalPermissionService_ListAdministrators_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/ListAdministrators", runtime.WithHTTPPathPattern("/v2beta/administrators/search"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/ListAdministrators", runtime.WithHTTPPathPattern("/v2beta/administrators/search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -240,20 +211,15 @@ func RegisterInternalPermissionServiceHandlerServer(ctx context.Context, mux *ru
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_InternalPermissionService_ListAdministrators_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_InternalPermissionService_CreateAdministrator_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_InternalPermissionService_CreateAdministrator_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/CreateAdministrator", runtime.WithHTTPPathPattern("/v2beta/administrators"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/CreateAdministrator", runtime.WithHTTPPathPattern("/v2beta/administrators"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -265,20 +231,15 @@ func RegisterInternalPermissionServiceHandlerServer(ctx context.Context, mux *ru
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_InternalPermissionService_CreateAdministrator_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_InternalPermissionService_UpdateAdministrator_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_InternalPermissionService_UpdateAdministrator_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/UpdateAdministrator", runtime.WithHTTPPathPattern("/v2beta/administrators/{user_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/UpdateAdministrator", runtime.WithHTTPPathPattern("/v2beta/administrators/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -290,20 +251,15 @@ func RegisterInternalPermissionServiceHandlerServer(ctx context.Context, mux *ru
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_InternalPermissionService_UpdateAdministrator_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("DELETE", pattern_InternalPermissionService_DeleteAdministrator_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_InternalPermissionService_DeleteAdministrator_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/DeleteAdministrator", runtime.WithHTTPPathPattern("/v2beta/administrators/{user_id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/DeleteAdministrator", runtime.WithHTTPPathPattern("/v2beta/administrators/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -315,9 +271,7 @@ func RegisterInternalPermissionServiceHandlerServer(ctx context.Context, mux *ru
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_InternalPermissionService_DeleteAdministrator_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
 
 	return nil
@@ -344,7 +298,6 @@ func RegisterInternalPermissionServiceHandlerFromEndpoint(ctx context.Context, m
 			}
 		}()
 	}()
-
 	return RegisterInternalPermissionServiceHandler(ctx, mux, conn)
 }
 
@@ -360,14 +313,11 @@ func RegisterInternalPermissionServiceHandler(ctx context.Context, mux *runtime.
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "InternalPermissionServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterInternalPermissionServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client InternalPermissionServiceClient) error {
-
-	mux.Handle("POST", pattern_InternalPermissionService_ListAdministrators_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_InternalPermissionService_ListAdministrators_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/ListAdministrators", runtime.WithHTTPPathPattern("/v2beta/administrators/search"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/ListAdministrators", runtime.WithHTTPPathPattern("/v2beta/administrators/search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -378,18 +328,13 @@ func RegisterInternalPermissionServiceHandlerClient(ctx context.Context, mux *ru
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_InternalPermissionService_ListAdministrators_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_InternalPermissionService_CreateAdministrator_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_InternalPermissionService_CreateAdministrator_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/CreateAdministrator", runtime.WithHTTPPathPattern("/v2beta/administrators"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/CreateAdministrator", runtime.WithHTTPPathPattern("/v2beta/administrators"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -400,18 +345,13 @@ func RegisterInternalPermissionServiceHandlerClient(ctx context.Context, mux *ru
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_InternalPermissionService_CreateAdministrator_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_InternalPermissionService_UpdateAdministrator_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_InternalPermissionService_UpdateAdministrator_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/UpdateAdministrator", runtime.WithHTTPPathPattern("/v2beta/administrators/{user_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/UpdateAdministrator", runtime.WithHTTPPathPattern("/v2beta/administrators/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -422,18 +362,13 @@ func RegisterInternalPermissionServiceHandlerClient(ctx context.Context, mux *ru
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_InternalPermissionService_UpdateAdministrator_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("DELETE", pattern_InternalPermissionService_DeleteAdministrator_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_InternalPermissionService_DeleteAdministrator_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/DeleteAdministrator", runtime.WithHTTPPathPattern("/v2beta/administrators/{user_id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.internal_permission.v2beta.InternalPermissionService/DeleteAdministrator", runtime.WithHTTPPathPattern("/v2beta/administrators/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -444,30 +379,21 @@ func RegisterInternalPermissionServiceHandlerClient(ctx context.Context, mux *ru
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_InternalPermissionService_DeleteAdministrator_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
 	return nil
 }
 
 var (
-	pattern_InternalPermissionService_ListAdministrators_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2beta", "administrators", "search"}, ""))
-
+	pattern_InternalPermissionService_ListAdministrators_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2beta", "administrators", "search"}, ""))
 	pattern_InternalPermissionService_CreateAdministrator_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2beta", "administrators"}, ""))
-
 	pattern_InternalPermissionService_UpdateAdministrator_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2beta", "administrators", "user_id"}, ""))
-
 	pattern_InternalPermissionService_DeleteAdministrator_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2beta", "administrators", "user_id"}, ""))
 )
 
 var (
-	forward_InternalPermissionService_ListAdministrators_0 = runtime.ForwardResponseMessage
-
+	forward_InternalPermissionService_ListAdministrators_0  = runtime.ForwardResponseMessage
 	forward_InternalPermissionService_CreateAdministrator_0 = runtime.ForwardResponseMessage
-
 	forward_InternalPermissionService_UpdateAdministrator_0 = runtime.ForwardResponseMessage
-
 	forward_InternalPermissionService_DeleteAdministrator_0 = runtime.ForwardResponseMessage
 )

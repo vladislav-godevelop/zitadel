@@ -82,7 +82,7 @@ type DeleteInstanceRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteInstanceRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -213,7 +213,7 @@ type DeleteInstanceResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteInstanceResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -317,7 +317,7 @@ type GetInstanceRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetInstanceRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -448,7 +448,7 @@ type GetInstanceResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetInstanceResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -563,7 +563,7 @@ type UpdateInstanceRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateInstanceRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -694,7 +694,7 @@ type UpdateInstanceResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateInstanceResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -870,7 +870,7 @@ type ListInstancesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListInstancesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1035,7 +1035,7 @@ type ListInstancesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListInstancesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1159,7 +1159,7 @@ type AddCustomDomainRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AddCustomDomainRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1290,7 +1290,7 @@ type AddCustomDomainResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AddCustomDomainResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1414,7 +1414,7 @@ type RemoveCustomDomainRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RemoveCustomDomainRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1545,7 +1545,7 @@ type RemoveCustomDomainResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RemoveCustomDomainResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1714,7 +1714,7 @@ type ListCustomDomainsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListCustomDomainsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1879,7 +1879,7 @@ type ListCustomDomainsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListCustomDomainsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1994,7 +1994,7 @@ type AddTrustedDomainRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AddTrustedDomainRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2125,7 +2125,7 @@ type AddTrustedDomainResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AddTrustedDomainResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2240,7 +2240,7 @@ type RemoveTrustedDomainRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RemoveTrustedDomainRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2371,7 +2371,7 @@ type RemoveTrustedDomainResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RemoveTrustedDomainResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2541,7 +2541,7 @@ type ListTrustedDomainsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListTrustedDomainsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2706,7 +2706,7 @@ type ListTrustedDomainsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListTrustedDomainsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

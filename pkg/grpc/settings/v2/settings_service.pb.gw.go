@@ -10,6 +10,7 @@ package settings
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 
@@ -24,501 +25,506 @@ import (
 )
 
 // Suppress "imported and not used" errors
-var _ codes.Code
-var _ io.Reader
-var _ status.Status
-var _ = runtime.String
-var _ = utilities.NewDoubleArray
-var _ = metadata.Join
+var (
+	_ codes.Code
+	_ io.Reader
+	_ status.Status
+	_ = errors.New
+	_ = runtime.String
+	_ = utilities.NewDoubleArray
+	_ = metadata.Join
+)
 
 func request_SettingsService_GetGeneralSettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetGeneralSettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetGeneralSettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.GetGeneralSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_GetGeneralSettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetGeneralSettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetGeneralSettingsRequest
+		metadata runtime.ServerMetadata
+	)
 	msg, err := server.GetGeneralSettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_SettingsService_GetLoginSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
+var filter_SettingsService_GetLoginSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_SettingsService_GetLoginSettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetLoginSettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetLoginSettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetLoginSettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.GetLoginSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_GetLoginSettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetLoginSettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetLoginSettingsRequest
+		metadata runtime.ServerMetadata
+	)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetLoginSettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.GetLoginSettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_SettingsService_GetActiveIdentityProviders_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
+var filter_SettingsService_GetActiveIdentityProviders_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_SettingsService_GetActiveIdentityProviders_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetActiveIdentityProvidersRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetActiveIdentityProvidersRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetActiveIdentityProviders_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.GetActiveIdentityProviders(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_GetActiveIdentityProviders_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetActiveIdentityProvidersRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetActiveIdentityProvidersRequest
+		metadata runtime.ServerMetadata
+	)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetActiveIdentityProviders_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.GetActiveIdentityProviders(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_SettingsService_GetPasswordComplexitySettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
+var filter_SettingsService_GetPasswordComplexitySettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_SettingsService_GetPasswordComplexitySettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetPasswordComplexitySettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetPasswordComplexitySettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetPasswordComplexitySettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.GetPasswordComplexitySettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_GetPasswordComplexitySettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetPasswordComplexitySettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetPasswordComplexitySettingsRequest
+		metadata runtime.ServerMetadata
+	)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetPasswordComplexitySettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.GetPasswordComplexitySettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_SettingsService_GetPasswordExpirySettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
+var filter_SettingsService_GetPasswordExpirySettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_SettingsService_GetPasswordExpirySettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetPasswordExpirySettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetPasswordExpirySettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetPasswordExpirySettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.GetPasswordExpirySettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_GetPasswordExpirySettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetPasswordExpirySettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetPasswordExpirySettingsRequest
+		metadata runtime.ServerMetadata
+	)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetPasswordExpirySettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.GetPasswordExpirySettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_SettingsService_GetBrandingSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
+var filter_SettingsService_GetBrandingSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_SettingsService_GetBrandingSettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetBrandingSettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetBrandingSettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetBrandingSettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.GetBrandingSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_GetBrandingSettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetBrandingSettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetBrandingSettingsRequest
+		metadata runtime.ServerMetadata
+	)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetBrandingSettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.GetBrandingSettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_SettingsService_GetDomainSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
+var filter_SettingsService_GetDomainSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_SettingsService_GetDomainSettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetDomainSettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetDomainSettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetDomainSettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.GetDomainSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_GetDomainSettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetDomainSettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetDomainSettingsRequest
+		metadata runtime.ServerMetadata
+	)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetDomainSettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.GetDomainSettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_SettingsService_GetLegalAndSupportSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
+var filter_SettingsService_GetLegalAndSupportSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_SettingsService_GetLegalAndSupportSettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetLegalAndSupportSettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetLegalAndSupportSettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetLegalAndSupportSettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.GetLegalAndSupportSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_GetLegalAndSupportSettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetLegalAndSupportSettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetLegalAndSupportSettingsRequest
+		metadata runtime.ServerMetadata
+	)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetLegalAndSupportSettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.GetLegalAndSupportSettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_SettingsService_GetLockoutSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
+var filter_SettingsService_GetLockoutSettings_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_SettingsService_GetLockoutSettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetLockoutSettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetLockoutSettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetLockoutSettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.GetLockoutSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_GetLockoutSettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetLockoutSettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetLockoutSettingsRequest
+		metadata runtime.ServerMetadata
+	)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetLockoutSettings_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.GetLockoutSettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_SettingsService_GetSecuritySettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetSecuritySettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetSecuritySettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.GetSecuritySettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_GetSecuritySettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetSecuritySettingsRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetSecuritySettingsRequest
+		metadata runtime.ServerMetadata
+	)
 	msg, err := server.GetSecuritySettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_SettingsService_SetSecuritySettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SetSecuritySettingsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq SetSecuritySettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.SetSecuritySettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_SetSecuritySettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SetSecuritySettingsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq SetSecuritySettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.SetSecuritySettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_SettingsService_SetOrganizationSettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SetOrganizationSettingsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq SetOrganizationSettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.SetOrganizationSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_SetOrganizationSettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SetOrganizationSettingsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq SetOrganizationSettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.SetOrganizationSettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_SettingsService_DeleteOrganizationSettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteOrganizationSettingsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq DeleteOrganizationSettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.DeleteOrganizationSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_DeleteOrganizationSettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteOrganizationSettingsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq DeleteOrganizationSettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.DeleteOrganizationSettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_SettingsService_ListOrganizationSettings_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListOrganizationSettingsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ListOrganizationSettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.ListOrganizationSettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_ListOrganizationSettings_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListOrganizationSettingsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq ListOrganizationSettingsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.ListOrganizationSettings(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_SettingsService_GetHostedLoginTranslation_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
+var filter_SettingsService_GetHostedLoginTranslation_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_SettingsService_GetHostedLoginTranslation_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetHostedLoginTranslationRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetHostedLoginTranslationRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetHostedLoginTranslation_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.GetHostedLoginTranslation(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_GetHostedLoginTranslation_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetHostedLoginTranslationRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq GetHostedLoginTranslationRequest
+		metadata runtime.ServerMetadata
+	)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_SettingsService_GetHostedLoginTranslation_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.GetHostedLoginTranslation(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_SettingsService_SetHostedLoginTranslation_0(ctx context.Context, marshaler runtime.Marshaler, client SettingsServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SetHostedLoginTranslationRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq SetHostedLoginTranslationRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.SetHostedLoginTranslation(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_SettingsService_SetHostedLoginTranslation_0(ctx context.Context, marshaler runtime.Marshaler, server SettingsServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SetHostedLoginTranslationRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+	var (
+		protoReq SetHostedLoginTranslationRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.SetHostedLoginTranslation(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 // RegisterSettingsServiceHandlerServer registers the http handlers for service SettingsService to "mux".
@@ -527,16 +533,13 @@ func local_request_SettingsService_SetHostedLoginTranslation_0(ctx context.Conte
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterSettingsServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server SettingsServiceServer) error {
-
-	mux.Handle("GET", pattern_SettingsService_GetGeneralSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetGeneralSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetGeneralSettings", runtime.WithHTTPPathPattern("/v2/settings"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetGeneralSettings", runtime.WithHTTPPathPattern("/v2/settings"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -548,20 +551,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetGeneralSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetLoginSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetLoginSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetLoginSettings", runtime.WithHTTPPathPattern("/v2/settings/login"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetLoginSettings", runtime.WithHTTPPathPattern("/v2/settings/login"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -573,20 +571,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetLoginSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetActiveIdentityProviders_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetActiveIdentityProviders_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetActiveIdentityProviders", runtime.WithHTTPPathPattern("/v2/settings/login/idps"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetActiveIdentityProviders", runtime.WithHTTPPathPattern("/v2/settings/login/idps"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -598,20 +591,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetActiveIdentityProviders_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetPasswordComplexitySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetPasswordComplexitySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetPasswordComplexitySettings", runtime.WithHTTPPathPattern("/v2/settings/password/complexity"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetPasswordComplexitySettings", runtime.WithHTTPPathPattern("/v2/settings/password/complexity"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -623,20 +611,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetPasswordComplexitySettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetPasswordExpirySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetPasswordExpirySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetPasswordExpirySettings", runtime.WithHTTPPathPattern("/v2/settings/password/expiry"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetPasswordExpirySettings", runtime.WithHTTPPathPattern("/v2/settings/password/expiry"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -648,20 +631,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetPasswordExpirySettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetBrandingSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetBrandingSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetBrandingSettings", runtime.WithHTTPPathPattern("/v2/settings/branding"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetBrandingSettings", runtime.WithHTTPPathPattern("/v2/settings/branding"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -673,20 +651,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetBrandingSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetDomainSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetDomainSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetDomainSettings", runtime.WithHTTPPathPattern("/v2/settings/domain"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetDomainSettings", runtime.WithHTTPPathPattern("/v2/settings/domain"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -698,20 +671,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetDomainSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetLegalAndSupportSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetLegalAndSupportSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetLegalAndSupportSettings", runtime.WithHTTPPathPattern("/v2/settings/legal_support"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetLegalAndSupportSettings", runtime.WithHTTPPathPattern("/v2/settings/legal_support"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -723,20 +691,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetLegalAndSupportSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetLockoutSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetLockoutSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetLockoutSettings", runtime.WithHTTPPathPattern("/v2/settings/lockout"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetLockoutSettings", runtime.WithHTTPPathPattern("/v2/settings/lockout"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -748,20 +711,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetLockoutSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetSecuritySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetSecuritySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetSecuritySettings", runtime.WithHTTPPathPattern("/v2/settings/security"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetSecuritySettings", runtime.WithHTTPPathPattern("/v2/settings/security"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -773,20 +731,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetSecuritySettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("PUT", pattern_SettingsService_SetSecuritySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPut, pattern_SettingsService_SetSecuritySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/SetSecuritySettings", runtime.WithHTTPPathPattern("/v2/policies/security"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/SetSecuritySettings", runtime.WithHTTPPathPattern("/v2/policies/security"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -798,20 +751,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_SetSecuritySettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_SettingsService_SetOrganizationSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_SettingsService_SetOrganizationSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/SetOrganizationSettings", runtime.WithHTTPPathPattern("/v2/settings/organization"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/SetOrganizationSettings", runtime.WithHTTPPathPattern("/v2/settings/organization"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -823,20 +771,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_SetOrganizationSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("DELETE", pattern_SettingsService_DeleteOrganizationSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_SettingsService_DeleteOrganizationSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/DeleteOrganizationSettings", runtime.WithHTTPPathPattern("/v2/settings/organization"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/DeleteOrganizationSettings", runtime.WithHTTPPathPattern("/v2/settings/organization"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -848,20 +791,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_DeleteOrganizationSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_SettingsService_ListOrganizationSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_SettingsService_ListOrganizationSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/ListOrganizationSettings", runtime.WithHTTPPathPattern("/v2/settings/organization/search"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/ListOrganizationSettings", runtime.WithHTTPPathPattern("/v2/settings/organization/search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -873,20 +811,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_ListOrganizationSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetHostedLoginTranslation_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetHostedLoginTranslation_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetHostedLoginTranslation", runtime.WithHTTPPathPattern("/v2/settings/hosted_login_translation"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetHostedLoginTranslation", runtime.WithHTTPPathPattern("/v2/settings/hosted_login_translation"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -898,20 +831,15 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetHostedLoginTranslation_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("PUT", pattern_SettingsService_SetHostedLoginTranslation_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPut, pattern_SettingsService_SetHostedLoginTranslation_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/SetHostedLoginTranslation", runtime.WithHTTPPathPattern("/v2/settings/hosted_login_translation"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/SetHostedLoginTranslation", runtime.WithHTTPPathPattern("/v2/settings/hosted_login_translation"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -923,9 +851,7 @@ func RegisterSettingsServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_SetHostedLoginTranslation_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
 
 	return nil
@@ -952,7 +878,6 @@ func RegisterSettingsServiceHandlerFromEndpoint(ctx context.Context, mux *runtim
 			}
 		}()
 	}()
-
 	return RegisterSettingsServiceHandler(ctx, mux, conn)
 }
 
@@ -968,14 +893,11 @@ func RegisterSettingsServiceHandler(ctx context.Context, mux *runtime.ServeMux, 
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "SettingsServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client SettingsServiceClient) error {
-
-	mux.Handle("GET", pattern_SettingsService_GetGeneralSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetGeneralSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetGeneralSettings", runtime.WithHTTPPathPattern("/v2/settings"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetGeneralSettings", runtime.WithHTTPPathPattern("/v2/settings"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -986,18 +908,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetGeneralSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetLoginSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetLoginSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetLoginSettings", runtime.WithHTTPPathPattern("/v2/settings/login"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetLoginSettings", runtime.WithHTTPPathPattern("/v2/settings/login"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1008,18 +925,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetLoginSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetActiveIdentityProviders_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetActiveIdentityProviders_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetActiveIdentityProviders", runtime.WithHTTPPathPattern("/v2/settings/login/idps"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetActiveIdentityProviders", runtime.WithHTTPPathPattern("/v2/settings/login/idps"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1030,18 +942,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetActiveIdentityProviders_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetPasswordComplexitySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetPasswordComplexitySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetPasswordComplexitySettings", runtime.WithHTTPPathPattern("/v2/settings/password/complexity"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetPasswordComplexitySettings", runtime.WithHTTPPathPattern("/v2/settings/password/complexity"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1052,18 +959,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetPasswordComplexitySettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetPasswordExpirySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetPasswordExpirySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetPasswordExpirySettings", runtime.WithHTTPPathPattern("/v2/settings/password/expiry"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetPasswordExpirySettings", runtime.WithHTTPPathPattern("/v2/settings/password/expiry"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1074,18 +976,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetPasswordExpirySettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetBrandingSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetBrandingSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetBrandingSettings", runtime.WithHTTPPathPattern("/v2/settings/branding"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetBrandingSettings", runtime.WithHTTPPathPattern("/v2/settings/branding"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1096,18 +993,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetBrandingSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetDomainSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetDomainSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetDomainSettings", runtime.WithHTTPPathPattern("/v2/settings/domain"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetDomainSettings", runtime.WithHTTPPathPattern("/v2/settings/domain"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1118,18 +1010,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetDomainSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetLegalAndSupportSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetLegalAndSupportSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetLegalAndSupportSettings", runtime.WithHTTPPathPattern("/v2/settings/legal_support"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetLegalAndSupportSettings", runtime.WithHTTPPathPattern("/v2/settings/legal_support"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1140,18 +1027,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetLegalAndSupportSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetLockoutSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetLockoutSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetLockoutSettings", runtime.WithHTTPPathPattern("/v2/settings/lockout"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetLockoutSettings", runtime.WithHTTPPathPattern("/v2/settings/lockout"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1162,18 +1044,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetLockoutSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetSecuritySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetSecuritySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetSecuritySettings", runtime.WithHTTPPathPattern("/v2/settings/security"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetSecuritySettings", runtime.WithHTTPPathPattern("/v2/settings/security"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1184,18 +1061,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetSecuritySettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("PUT", pattern_SettingsService_SetSecuritySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPut, pattern_SettingsService_SetSecuritySettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/SetSecuritySettings", runtime.WithHTTPPathPattern("/v2/policies/security"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/SetSecuritySettings", runtime.WithHTTPPathPattern("/v2/policies/security"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1206,18 +1078,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_SetSecuritySettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_SettingsService_SetOrganizationSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_SettingsService_SetOrganizationSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/SetOrganizationSettings", runtime.WithHTTPPathPattern("/v2/settings/organization"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/SetOrganizationSettings", runtime.WithHTTPPathPattern("/v2/settings/organization"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1228,18 +1095,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_SetOrganizationSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("DELETE", pattern_SettingsService_DeleteOrganizationSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_SettingsService_DeleteOrganizationSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/DeleteOrganizationSettings", runtime.WithHTTPPathPattern("/v2/settings/organization"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/DeleteOrganizationSettings", runtime.WithHTTPPathPattern("/v2/settings/organization"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1250,18 +1112,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_DeleteOrganizationSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_SettingsService_ListOrganizationSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_SettingsService_ListOrganizationSettings_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/ListOrganizationSettings", runtime.WithHTTPPathPattern("/v2/settings/organization/search"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/ListOrganizationSettings", runtime.WithHTTPPathPattern("/v2/settings/organization/search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1272,18 +1129,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_ListOrganizationSettings_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_SettingsService_GetHostedLoginTranslation_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_SettingsService_GetHostedLoginTranslation_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetHostedLoginTranslation", runtime.WithHTTPPathPattern("/v2/settings/hosted_login_translation"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/GetHostedLoginTranslation", runtime.WithHTTPPathPattern("/v2/settings/hosted_login_translation"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1294,18 +1146,13 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_GetHostedLoginTranslation_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("PUT", pattern_SettingsService_SetHostedLoginTranslation_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPut, pattern_SettingsService_SetHostedLoginTranslation_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/SetHostedLoginTranslation", runtime.WithHTTPPathPattern("/v2/settings/hosted_login_translation"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.settings.v2.SettingsService/SetHostedLoginTranslation", runtime.WithHTTPPathPattern("/v2/settings/hosted_login_translation"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1316,78 +1163,45 @@ func RegisterSettingsServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_SettingsService_SetHostedLoginTranslation_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
 	return nil
 }
 
 var (
-	pattern_SettingsService_GetGeneralSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "settings"}, ""))
-
-	pattern_SettingsService_GetLoginSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "login"}, ""))
-
-	pattern_SettingsService_GetActiveIdentityProviders_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "settings", "login", "idps"}, ""))
-
+	pattern_SettingsService_GetGeneralSettings_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "settings"}, ""))
+	pattern_SettingsService_GetLoginSettings_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "login"}, ""))
+	pattern_SettingsService_GetActiveIdentityProviders_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "settings", "login", "idps"}, ""))
 	pattern_SettingsService_GetPasswordComplexitySettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "settings", "password", "complexity"}, ""))
-
-	pattern_SettingsService_GetPasswordExpirySettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "settings", "password", "expiry"}, ""))
-
-	pattern_SettingsService_GetBrandingSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "branding"}, ""))
-
-	pattern_SettingsService_GetDomainSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "domain"}, ""))
-
-	pattern_SettingsService_GetLegalAndSupportSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "legal_support"}, ""))
-
-	pattern_SettingsService_GetLockoutSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "lockout"}, ""))
-
-	pattern_SettingsService_GetSecuritySettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "security"}, ""))
-
-	pattern_SettingsService_SetSecuritySettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "policies", "security"}, ""))
-
-	pattern_SettingsService_SetOrganizationSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "organization"}, ""))
-
-	pattern_SettingsService_DeleteOrganizationSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "organization"}, ""))
-
-	pattern_SettingsService_ListOrganizationSettings_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "settings", "organization", "search"}, ""))
-
-	pattern_SettingsService_GetHostedLoginTranslation_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "hosted_login_translation"}, ""))
-
-	pattern_SettingsService_SetHostedLoginTranslation_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "hosted_login_translation"}, ""))
+	pattern_SettingsService_GetPasswordExpirySettings_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "settings", "password", "expiry"}, ""))
+	pattern_SettingsService_GetBrandingSettings_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "branding"}, ""))
+	pattern_SettingsService_GetDomainSettings_0             = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "domain"}, ""))
+	pattern_SettingsService_GetLegalAndSupportSettings_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "legal_support"}, ""))
+	pattern_SettingsService_GetLockoutSettings_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "lockout"}, ""))
+	pattern_SettingsService_GetSecuritySettings_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "security"}, ""))
+	pattern_SettingsService_SetSecuritySettings_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "policies", "security"}, ""))
+	pattern_SettingsService_SetOrganizationSettings_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "organization"}, ""))
+	pattern_SettingsService_DeleteOrganizationSettings_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "organization"}, ""))
+	pattern_SettingsService_ListOrganizationSettings_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v2", "settings", "organization", "search"}, ""))
+	pattern_SettingsService_GetHostedLoginTranslation_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "hosted_login_translation"}, ""))
+	pattern_SettingsService_SetHostedLoginTranslation_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v2", "settings", "hosted_login_translation"}, ""))
 )
 
 var (
-	forward_SettingsService_GetGeneralSettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_GetLoginSettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_GetActiveIdentityProviders_0 = runtime.ForwardResponseMessage
-
+	forward_SettingsService_GetGeneralSettings_0            = runtime.ForwardResponseMessage
+	forward_SettingsService_GetLoginSettings_0              = runtime.ForwardResponseMessage
+	forward_SettingsService_GetActiveIdentityProviders_0    = runtime.ForwardResponseMessage
 	forward_SettingsService_GetPasswordComplexitySettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_GetPasswordExpirySettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_GetBrandingSettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_GetDomainSettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_GetLegalAndSupportSettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_GetLockoutSettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_GetSecuritySettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_SetSecuritySettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_SetOrganizationSettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_DeleteOrganizationSettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_ListOrganizationSettings_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_GetHostedLoginTranslation_0 = runtime.ForwardResponseMessage
-
-	forward_SettingsService_SetHostedLoginTranslation_0 = runtime.ForwardResponseMessage
+	forward_SettingsService_GetPasswordExpirySettings_0     = runtime.ForwardResponseMessage
+	forward_SettingsService_GetBrandingSettings_0           = runtime.ForwardResponseMessage
+	forward_SettingsService_GetDomainSettings_0             = runtime.ForwardResponseMessage
+	forward_SettingsService_GetLegalAndSupportSettings_0    = runtime.ForwardResponseMessage
+	forward_SettingsService_GetLockoutSettings_0            = runtime.ForwardResponseMessage
+	forward_SettingsService_GetSecuritySettings_0           = runtime.ForwardResponseMessage
+	forward_SettingsService_SetSecuritySettings_0           = runtime.ForwardResponseMessage
+	forward_SettingsService_SetOrganizationSettings_0       = runtime.ForwardResponseMessage
+	forward_SettingsService_DeleteOrganizationSettings_0    = runtime.ForwardResponseMessage
+	forward_SettingsService_ListOrganizationSettings_0      = runtime.ForwardResponseMessage
+	forward_SettingsService_GetHostedLoginTranslation_0     = runtime.ForwardResponseMessage
+	forward_SettingsService_SetHostedLoginTranslation_0     = runtime.ForwardResponseMessage
 )

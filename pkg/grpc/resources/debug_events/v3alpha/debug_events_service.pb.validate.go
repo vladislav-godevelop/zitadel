@@ -140,7 +140,7 @@ type CreateDebugEventsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateDebugEventsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -271,7 +271,7 @@ type CreateDebugEventsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateDebugEventsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -386,7 +386,7 @@ type GetDebugEventsStateByIdRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetDebugEventsStateByIdRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -518,7 +518,7 @@ type GetDebugEventsStateByIdResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetDebugEventsStateByIdResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -623,7 +623,7 @@ type ListDebugEventsStatesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListDebugEventsStatesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -760,7 +760,7 @@ type ListDebugEventsStatesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListDebugEventsStatesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

@@ -49,14 +49,14 @@ func AddUserRequestToAddHuman(req *user.AddHumanUserRequest) (*command.AddHuman,
 			return nil, err
 		}
 	} else if hasPhone {
-		// Генерируем email из телефона: +79001234567 -> 79001234567@phone.local
+		// Генерируем email из телефона: +79001234567 -> 79001234567@local.test
 		phoneDigits := ""
 		for _, r := range phone {
 			if r >= '0' && r <= '9' {
 				phoneDigits += string(r)
 			}
 		}
-		pseudoEmail := phoneDigits + "@phone.local"
+		pseudoEmail := phoneDigits + "@local.test"
 		emailCmd = command.Email{
 			Address:             domain.EmailAddress(pseudoEmail),
 			Verified:            false,

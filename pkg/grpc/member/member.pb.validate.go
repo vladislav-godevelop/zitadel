@@ -124,7 +124,7 @@ type MemberMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MemberMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -407,7 +407,7 @@ type SearchQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SearchQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -529,7 +529,7 @@ type FirstNameQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m FirstNameQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -651,7 +651,7 @@ type LastNameQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LastNameQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -772,7 +772,7 @@ type EmailQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m EmailQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -882,7 +882,7 @@ type UserIDQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UserIDQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

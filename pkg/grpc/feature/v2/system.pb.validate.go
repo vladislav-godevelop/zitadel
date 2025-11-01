@@ -174,7 +174,7 @@ type SetSystemFeaturesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetSystemFeaturesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -309,7 +309,7 @@ type SetSystemFeaturesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetSystemFeaturesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -411,7 +411,7 @@ type ResetSystemFeaturesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ResetSystemFeaturesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -542,7 +542,7 @@ type ResetSystemFeaturesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ResetSystemFeaturesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -645,7 +645,7 @@ type GetSystemFeaturesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetSystemFeaturesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1037,7 +1037,7 @@ type GetSystemFeaturesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetSystemFeaturesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

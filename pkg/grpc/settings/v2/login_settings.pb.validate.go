@@ -244,7 +244,7 @@ type LoginSettingsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LoginSettingsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -379,7 +379,7 @@ type IdentityProviderMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IdentityProviderMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

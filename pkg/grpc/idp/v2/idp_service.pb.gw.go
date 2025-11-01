@@ -10,6 +10,7 @@ package idp
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 
@@ -24,63 +25,53 @@ import (
 )
 
 // Suppress "imported and not used" errors
-var _ codes.Code
-var _ io.Reader
-var _ status.Status
-var _ = runtime.String
-var _ = utilities.NewDoubleArray
-var _ = metadata.Join
+var (
+	_ codes.Code
+	_ io.Reader
+	_ status.Status
+	_ = errors.New
+	_ = runtime.String
+	_ = utilities.NewDoubleArray
+	_ = metadata.Join
+)
 
 func request_IdentityProviderService_GetIDPByID_0(ctx context.Context, marshaler runtime.Marshaler, client IdentityProviderServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetIDPByIDRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq GetIDPByIDRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	msg, err := client.GetIDPByID(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_IdentityProviderService_GetIDPByID_0(ctx context.Context, marshaler runtime.Marshaler, server IdentityProviderServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetIDPByIDRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq GetIDPByIDRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	msg, err := server.GetIDPByID(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 // RegisterIdentityProviderServiceHandlerServer registers the http handlers for service IdentityProviderService to "mux".
@@ -89,16 +80,13 @@ func local_request_IdentityProviderService_GetIDPByID_0(ctx context.Context, mar
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterIdentityProviderServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterIdentityProviderServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server IdentityProviderServiceServer) error {
-
-	mux.Handle("GET", pattern_IdentityProviderService_GetIDPByID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_IdentityProviderService_GetIDPByID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.idp.v2.IdentityProviderService/GetIDPByID", runtime.WithHTTPPathPattern("/v2/idps/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.idp.v2.IdentityProviderService/GetIDPByID", runtime.WithHTTPPathPattern("/v2/idps/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -110,9 +98,7 @@ func RegisterIdentityProviderServiceHandlerServer(ctx context.Context, mux *runt
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_IdentityProviderService_GetIDPByID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
 
 	return nil
@@ -139,7 +125,6 @@ func RegisterIdentityProviderServiceHandlerFromEndpoint(ctx context.Context, mux
 			}
 		}()
 	}()
-
 	return RegisterIdentityProviderServiceHandler(ctx, mux, conn)
 }
 
@@ -155,14 +140,11 @@ func RegisterIdentityProviderServiceHandler(ctx context.Context, mux *runtime.Se
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "IdentityProviderServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterIdentityProviderServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client IdentityProviderServiceClient) error {
-
-	mux.Handle("GET", pattern_IdentityProviderService_GetIDPByID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_IdentityProviderService_GetIDPByID_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.idp.v2.IdentityProviderService/GetIDPByID", runtime.WithHTTPPathPattern("/v2/idps/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.idp.v2.IdentityProviderService/GetIDPByID", runtime.WithHTTPPathPattern("/v2/idps/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -173,11 +155,8 @@ func RegisterIdentityProviderServiceHandlerClient(ctx context.Context, mux *runt
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_IdentityProviderService_GetIDPByID_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
 	return nil
 }
 

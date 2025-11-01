@@ -10,6 +10,7 @@ package webkey
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 
@@ -24,81 +25,74 @@ import (
 )
 
 // Suppress "imported and not used" errors
-var _ codes.Code
-var _ io.Reader
-var _ status.Status
-var _ = runtime.String
-var _ = utilities.NewDoubleArray
-var _ = metadata.Join
+var (
+	_ codes.Code
+	_ io.Reader
+	_ status.Status
+	_ = errors.New
+	_ = runtime.String
+	_ = utilities.NewDoubleArray
+	_ = metadata.Join
+)
 
 func request_WebKeyService_DeleteWebKey_0(ctx context.Context, marshaler runtime.Marshaler, client WebKeyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteWebKeyRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq DeleteWebKeyRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	msg, err := client.DeleteWebKey(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_WebKeyService_DeleteWebKey_0(ctx context.Context, marshaler runtime.Marshaler, server WebKeyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteWebKeyRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq DeleteWebKeyRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	msg, err := server.DeleteWebKey(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_WebKeyService_ListWebKeys_0(ctx context.Context, marshaler runtime.Marshaler, client WebKeyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListWebKeysRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq ListWebKeysRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	msg, err := client.ListWebKeys(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_WebKeyService_ListWebKeys_0(ctx context.Context, marshaler runtime.Marshaler, server WebKeyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListWebKeysRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq ListWebKeysRequest
+		metadata runtime.ServerMetadata
+	)
 	msg, err := server.ListWebKeys(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 // RegisterWebKeyServiceHandlerServer registers the http handlers for service WebKeyService to "mux".
@@ -107,16 +101,13 @@ func local_request_WebKeyService_ListWebKeys_0(ctx context.Context, marshaler ru
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterWebKeyServiceHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterWebKeyServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server WebKeyServiceServer) error {
-
-	mux.Handle("DELETE", pattern_WebKeyService_DeleteWebKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_WebKeyService_DeleteWebKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.webkey.v2.WebKeyService/DeleteWebKey", runtime.WithHTTPPathPattern("/v2/web_keys/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.webkey.v2.WebKeyService/DeleteWebKey", runtime.WithHTTPPathPattern("/v2/web_keys/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -128,20 +119,15 @@ func RegisterWebKeyServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_WebKeyService_DeleteWebKey_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_WebKeyService_ListWebKeys_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_WebKeyService_ListWebKeys_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.webkey.v2.WebKeyService/ListWebKeys", runtime.WithHTTPPathPattern("/v2/web_keys"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.webkey.v2.WebKeyService/ListWebKeys", runtime.WithHTTPPathPattern("/v2/web_keys"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -153,9 +139,7 @@ func RegisterWebKeyServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_WebKeyService_ListWebKeys_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
 
 	return nil
@@ -182,7 +166,6 @@ func RegisterWebKeyServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.
 			}
 		}()
 	}()
-
 	return RegisterWebKeyServiceHandler(ctx, mux, conn)
 }
 
@@ -198,14 +181,11 @@ func RegisterWebKeyServiceHandler(ctx context.Context, mux *runtime.ServeMux, co
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "WebKeyServiceClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterWebKeyServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client WebKeyServiceClient) error {
-
-	mux.Handle("DELETE", pattern_WebKeyService_DeleteWebKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_WebKeyService_DeleteWebKey_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.webkey.v2.WebKeyService/DeleteWebKey", runtime.WithHTTPPathPattern("/v2/web_keys/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.webkey.v2.WebKeyService/DeleteWebKey", runtime.WithHTTPPathPattern("/v2/web_keys/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -216,18 +196,13 @@ func RegisterWebKeyServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_WebKeyService_DeleteWebKey_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_WebKeyService_ListWebKeys_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_WebKeyService_ListWebKeys_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.webkey.v2.WebKeyService/ListWebKeys", runtime.WithHTTPPathPattern("/v2/web_keys"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.webkey.v2.WebKeyService/ListWebKeys", runtime.WithHTTPPathPattern("/v2/web_keys"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -238,22 +213,17 @@ func RegisterWebKeyServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_WebKeyService_ListWebKeys_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
 	return nil
 }
 
 var (
 	pattern_WebKeyService_DeleteWebKey_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v2", "web_keys", "id"}, ""))
-
-	pattern_WebKeyService_ListWebKeys_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "web_keys"}, ""))
+	pattern_WebKeyService_ListWebKeys_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v2", "web_keys"}, ""))
 )
 
 var (
 	forward_WebKeyService_DeleteWebKey_0 = runtime.ForwardResponseMessage
-
-	forward_WebKeyService_ListWebKeys_0 = runtime.ForwardResponseMessage
+	forward_WebKeyService_ListWebKeys_0  = runtime.ForwardResponseMessage
 )

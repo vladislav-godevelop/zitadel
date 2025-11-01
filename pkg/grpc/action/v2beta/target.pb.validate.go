@@ -292,7 +292,7 @@ type TargetMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TargetMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -393,7 +393,7 @@ type RESTWebhookMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RESTWebhookMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -494,7 +494,7 @@ type RESTCallMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RESTCallMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -593,7 +593,7 @@ type RESTAsyncMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RESTAsyncMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

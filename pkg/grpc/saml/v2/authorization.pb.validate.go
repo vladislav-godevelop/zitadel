@@ -109,7 +109,7 @@ type SAMLRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SAMLRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -215,7 +215,7 @@ type AuthorizationErrorMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AuthorizationErrorMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

@@ -83,7 +83,7 @@ type PasswordMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PasswordMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -196,7 +196,7 @@ type HashedPasswordMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m HashedPasswordMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -313,7 +313,7 @@ type SendPasswordResetLinkMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SendPasswordResetLinkMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -415,7 +415,7 @@ type ReturnPasswordResetCodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReturnPasswordResetCodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -653,7 +653,7 @@ type SetPasswordMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetPasswordMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

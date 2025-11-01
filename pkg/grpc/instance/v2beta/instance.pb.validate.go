@@ -174,7 +174,7 @@ type InstanceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InstanceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -309,7 +309,7 @@ type DomainMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DomainMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -507,7 +507,7 @@ type QueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m QueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -606,7 +606,7 @@ type IdsQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IdsQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -732,7 +732,7 @@ type DomainsQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DomainsQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -974,7 +974,7 @@ type DomainSearchQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DomainSearchQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1097,7 +1097,7 @@ type DomainQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DomainQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1199,7 +1199,7 @@ type DomainGeneratedQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DomainGeneratedQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1303,7 +1303,7 @@ type DomainPrimaryQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DomainPrimaryQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1438,7 +1438,7 @@ type TrustedDomainMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TrustedDomainMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1596,7 +1596,7 @@ type TrustedDomainSearchQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TrustedDomainSearchQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

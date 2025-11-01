@@ -140,7 +140,7 @@ type ListAdministratorsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListAdministratorsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -305,7 +305,7 @@ type ListAdministratorsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListAdministratorsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -478,7 +478,7 @@ type CreateAdministratorRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateAdministratorRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -687,7 +687,7 @@ type ResourceTypeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ResourceTypeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -816,7 +816,7 @@ type CreateAdministratorResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateAdministratorResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -990,7 +990,7 @@ type UpdateAdministratorRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateAdministratorRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1121,7 +1121,7 @@ type UpdateAdministratorResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UpdateAdministratorResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1264,7 +1264,7 @@ type DeleteAdministratorRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteAdministratorRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1395,7 +1395,7 @@ type DeleteAdministratorResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteAdministratorResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1520,7 +1520,7 @@ type ResourceType_ProjectGrantMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ResourceType_ProjectGrantMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

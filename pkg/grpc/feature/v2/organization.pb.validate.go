@@ -82,7 +82,7 @@ type SetOrganizationFeaturesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetOrganizationFeaturesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -214,7 +214,7 @@ type SetOrganizationFeaturesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetOrganizationFeaturesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -330,7 +330,7 @@ type ResetOrganizationFeaturesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ResetOrganizationFeaturesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -464,7 +464,7 @@ type ResetOrganizationFeaturesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ResetOrganizationFeaturesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -580,7 +580,7 @@ type GetOrganizationFeaturesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetOrganizationFeaturesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -712,7 +712,7 @@ type GetOrganizationFeaturesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetOrganizationFeaturesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

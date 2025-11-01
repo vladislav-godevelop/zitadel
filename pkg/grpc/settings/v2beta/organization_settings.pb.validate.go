@@ -133,7 +133,7 @@ type OrganizationSettingsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OrganizationSettingsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -337,7 +337,7 @@ type OrganizationSettingsSearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OrganizationSettingsSearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -444,7 +444,7 @@ type OrganizationScopedUsernamesFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OrganizationScopedUsernamesFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

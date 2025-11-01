@@ -140,7 +140,7 @@ type OrganizationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OrganizationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -424,7 +424,7 @@ type OrganizationSearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OrganizationSearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -548,7 +548,7 @@ type OrgNameFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OrgNameFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -670,7 +670,7 @@ type OrgDomainFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OrgDomainFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -781,7 +781,7 @@ type OrgStateFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OrgStateFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -891,7 +891,7 @@ type OrgIDFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OrgIDFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1049,7 +1049,7 @@ type DomainSearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DomainSearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1173,7 +1173,7 @@ type DomainNameFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DomainNameFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1281,7 +1281,7 @@ type DomainMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DomainMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

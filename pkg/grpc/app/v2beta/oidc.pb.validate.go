@@ -75,7 +75,7 @@ type OIDCLocalizedMessageMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OIDCLocalizedMessageMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -292,7 +292,7 @@ type OIDCConfigMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OIDCConfigMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

@@ -164,7 +164,7 @@ type PersonalAccessTokenMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PersonalAccessTokenMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -494,7 +494,7 @@ type PersonalAccessTokensSearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PersonalAccessTokensSearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

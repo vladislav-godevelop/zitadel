@@ -101,7 +101,7 @@ type MilestoneMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MilestoneMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -247,7 +247,7 @@ type MilestoneQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MilestoneQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -349,7 +349,7 @@ type IsReachedQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IsReachedQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

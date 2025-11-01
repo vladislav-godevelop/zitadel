@@ -299,6 +299,16 @@ var UserService_AuthMethods = authz.MethodMapping{
 		Permission: "authenticated",
 		CheckParam: "",
 	},
+
+	UserService_RegisterByPhone_FullMethodName: authz.Option{
+		Permission: "authenticated",
+		CheckParam: "",
+	},
+
+	UserService_VerifyPhoneRegistration_FullMethodName: authz.Option{
+		Permission: "authenticated",
+		CheckParam: "",
+	},
 }
 
 func (r *AddHumanUserRequest) OrganizationFromRequest() *middleware.Organization {

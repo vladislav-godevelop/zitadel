@@ -175,7 +175,7 @@ type SearchUserSchemasRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SearchUserSchemasRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -342,7 +342,7 @@ type SearchUserSchemasResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SearchUserSchemasResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -455,7 +455,7 @@ type GetUserSchemaRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetUserSchemaRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -586,7 +586,7 @@ type GetUserSchemaResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetUserSchemaResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -750,7 +750,7 @@ type CreateUserSchemaRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateUserSchemaRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -881,7 +881,7 @@ type CreateUserSchemaResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateUserSchemaResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1056,7 +1056,7 @@ type PatchUserSchemaRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PatchUserSchemaRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1187,7 +1187,7 @@ type PatchUserSchemaResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PatchUserSchemaResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1333,7 +1333,7 @@ type DeactivateUserSchemaRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeactivateUserSchemaRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1465,7 +1465,7 @@ type DeactivateUserSchemaResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeactivateUserSchemaResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1612,7 +1612,7 @@ type ReactivateUserSchemaRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReactivateUserSchemaRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1744,7 +1744,7 @@ type ReactivateUserSchemaResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReactivateUserSchemaResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1891,7 +1891,7 @@ type DeleteUserSchemaRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteUserSchemaRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2022,7 +2022,7 @@ type DeleteUserSchemaResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteUserSchemaResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

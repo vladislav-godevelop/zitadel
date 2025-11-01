@@ -141,7 +141,7 @@ type ActionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ActionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -252,7 +252,7 @@ type ActionIDQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ActionIDQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -374,7 +374,7 @@ type ActionNameQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ActionNameQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -485,7 +485,7 @@ type ActionStateQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ActionStateQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -677,7 +677,7 @@ type FlowMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m FlowMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -807,7 +807,7 @@ type FlowTypeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m FlowTypeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -937,7 +937,7 @@ type TriggerTypeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TriggerTypeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1100,7 +1100,7 @@ type TriggerActionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TriggerActionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

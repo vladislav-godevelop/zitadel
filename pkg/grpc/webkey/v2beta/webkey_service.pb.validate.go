@@ -199,7 +199,7 @@ type CreateWebKeyRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateWebKeyRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -332,7 +332,7 @@ type CreateWebKeyResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CreateWebKeyResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -445,7 +445,7 @@ type ActivateWebKeyRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ActivateWebKeyRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -576,7 +576,7 @@ type ActivateWebKeyResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ActivateWebKeyResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -689,7 +689,7 @@ type DeleteWebKeyRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteWebKeyRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -820,7 +820,7 @@ type DeleteWebKeyResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DeleteWebKeyResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -922,7 +922,7 @@ type ListWebKeysRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListWebKeysRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1058,7 +1058,7 @@ type ListWebKeysResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListWebKeysResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

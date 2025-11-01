@@ -116,7 +116,7 @@ type ProjectMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -261,7 +261,7 @@ type GrantedProjectMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GrantedProjectMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -460,7 +460,7 @@ type ProjectQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -582,7 +582,7 @@ type ProjectNameQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectNameQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -693,7 +693,7 @@ type ProjectResourceOwnerQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectResourceOwnerQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -828,7 +828,7 @@ type RoleMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RoleMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1027,7 +1027,7 @@ type RoleQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RoleQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1148,7 +1148,7 @@ type RoleKeyQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RoleKeyQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1270,7 +1270,7 @@ type RoleDisplayNameQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RoleDisplayNameQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1472,7 +1472,7 @@ type ProjectGrantQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectGrantQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1758,7 +1758,7 @@ type AllProjectGrantQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AllProjectGrantQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1882,7 +1882,7 @@ type GrantProjectNameQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GrantProjectNameQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2006,7 +2006,7 @@ type GrantRoleKeyQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GrantRoleKeyQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2119,7 +2119,7 @@ type ProjectIDQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectIDQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2230,7 +2230,7 @@ type GrantedOrgIDQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GrantedOrgIDQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

@@ -144,7 +144,7 @@ type ProjectGrantMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectGrantMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -326,7 +326,7 @@ type ProjectMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -568,7 +568,7 @@ type ProjectSearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectSearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -692,7 +692,7 @@ type ProjectNameFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectNameFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -816,7 +816,7 @@ type ProjectOrganizationIDFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectOrganizationIDFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1145,7 +1145,7 @@ type ProjectGrantSearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectGrantSearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1312,7 +1312,7 @@ type ProjectRoleMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectRoleMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1512,7 +1512,7 @@ type ProjectRoleSearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectRoleSearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1636,7 +1636,7 @@ type ProjectRoleKeyFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectRoleKeyFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1760,7 +1760,7 @@ type ProjectRoleDisplayNameFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectRoleDisplayNameFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

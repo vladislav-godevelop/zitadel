@@ -127,7 +127,7 @@ type ContactMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ContactMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -229,7 +229,7 @@ type EmailMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m EmailMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -331,7 +331,7 @@ type PhoneMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PhoneMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -496,7 +496,7 @@ type SetContactMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetContactMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -778,7 +778,7 @@ type SetEmailMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetEmailMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -893,7 +893,7 @@ type SendEmailVerificationCodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SendEmailVerificationCodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -995,7 +995,7 @@ type ReturnEmailVerificationCodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReturnEmailVerificationCodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1218,7 +1218,7 @@ type SetPhoneMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetPhoneMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1318,7 +1318,7 @@ type SendPhoneVerificationCodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SendPhoneVerificationCodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1420,7 +1420,7 @@ type ReturnPhoneVerificationCodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReturnPhoneVerificationCodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

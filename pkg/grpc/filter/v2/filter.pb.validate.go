@@ -77,7 +77,7 @@ type PaginationRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PaginationRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -183,7 +183,7 @@ type PaginationResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PaginationResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -295,7 +295,7 @@ type IDFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IDFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -435,7 +435,7 @@ type TimestampFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TimestampFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -565,7 +565,7 @@ type InIDsFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InIDsFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

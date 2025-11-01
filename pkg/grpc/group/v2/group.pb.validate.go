@@ -139,7 +139,7 @@ type GroupMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GroupMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -300,7 +300,7 @@ type GroupUserMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GroupUserMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -542,7 +542,7 @@ type GroupsSearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GroupsSearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -666,7 +666,7 @@ type GroupNameFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GroupNameFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -866,7 +866,7 @@ type GroupUsersSearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GroupUsersSearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

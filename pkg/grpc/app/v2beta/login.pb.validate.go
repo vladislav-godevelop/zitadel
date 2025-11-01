@@ -157,7 +157,7 @@ type LoginVersionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LoginVersionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -255,7 +255,7 @@ type LoginV1MultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LoginV1MultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -357,7 +357,7 @@ type LoginV2MultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LoginV2MultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

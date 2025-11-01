@@ -10,6 +10,7 @@ package userschema
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 
@@ -24,439 +25,353 @@ import (
 )
 
 // Suppress "imported and not used" errors
-var _ codes.Code
-var _ io.Reader
-var _ status.Status
-var _ = runtime.String
-var _ = utilities.NewDoubleArray
-var _ = metadata.Join
-
 var (
-	filter_ZITADELUserSchemas_SearchUserSchemas_0 = &utilities.DoubleArray{Encoding: map[string]int{"filters": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	_ codes.Code
+	_ io.Reader
+	_ status.Status
+	_ = errors.New
+	_ = runtime.String
+	_ = utilities.NewDoubleArray
+	_ = metadata.Join
 )
 
-func request_ZITADELUserSchemas_SearchUserSchemas_0(ctx context.Context, marshaler runtime.Marshaler, client ZITADELUserSchemasClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SearchUserSchemasRequest
-	var metadata runtime.ServerMetadata
+var filter_ZITADELUserSchemas_SearchUserSchemas_0 = &utilities.DoubleArray{Encoding: map[string]int{"filters": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Filters); err != nil && err != io.EOF {
+func request_ZITADELUserSchemas_SearchUserSchemas_0(ctx context.Context, marshaler runtime.Marshaler, client ZITADELUserSchemasClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq SearchUserSchemasRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Filters); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELUserSchemas_SearchUserSchemas_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.SearchUserSchemas(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ZITADELUserSchemas_SearchUserSchemas_0(ctx context.Context, marshaler runtime.Marshaler, server ZITADELUserSchemasServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq SearchUserSchemasRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Filters); err != nil && err != io.EOF {
+	var (
+		protoReq SearchUserSchemasRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Filters); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELUserSchemas_SearchUserSchemas_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.SearchUserSchemas(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 func request_ZITADELUserSchemas_GetUserSchema_0(ctx context.Context, marshaler runtime.Marshaler, client ZITADELUserSchemasClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetUserSchemaRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq GetUserSchemaRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	msg, err := client.GetUserSchema(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ZITADELUserSchemas_GetUserSchema_0(ctx context.Context, marshaler runtime.Marshaler, server ZITADELUserSchemasServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetUserSchemaRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq GetUserSchemaRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	msg, err := server.GetUserSchema(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_ZITADELUserSchemas_CreateUserSchema_0 = &utilities.DoubleArray{Encoding: map[string]int{"user_schema": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
-)
+var filter_ZITADELUserSchemas_CreateUserSchema_0 = &utilities.DoubleArray{Encoding: map[string]int{"user_schema": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_ZITADELUserSchemas_CreateUserSchema_0(ctx context.Context, marshaler runtime.Marshaler, client ZITADELUserSchemasClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateUserSchemaRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.UserSchema); err != nil && err != io.EOF {
+	var (
+		protoReq CreateUserSchemaRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.UserSchema); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELUserSchemas_CreateUserSchema_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.CreateUserSchema(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ZITADELUserSchemas_CreateUserSchema_0(ctx context.Context, marshaler runtime.Marshaler, server ZITADELUserSchemasServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateUserSchemaRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.UserSchema); err != nil && err != io.EOF {
+	var (
+		protoReq CreateUserSchemaRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.UserSchema); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELUserSchemas_CreateUserSchema_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.CreateUserSchema(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_ZITADELUserSchemas_PatchUserSchema_0 = &utilities.DoubleArray{Encoding: map[string]int{"user_schema": 0, "id": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
-)
+var filter_ZITADELUserSchemas_PatchUserSchema_0 = &utilities.DoubleArray{Encoding: map[string]int{"user_schema": 0, "id": 1}, Base: []int{1, 1, 2, 0, 0}, Check: []int{0, 1, 1, 2, 3}}
 
 func request_ZITADELUserSchemas_PatchUserSchema_0(ctx context.Context, marshaler runtime.Marshaler, client ZITADELUserSchemasClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PatchUserSchemaRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.UserSchema); err != nil && err != io.EOF {
+	var (
+		protoReq PatchUserSchemaRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.UserSchema); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["id"]
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELUserSchemas_PatchUserSchema_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.PatchUserSchema(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ZITADELUserSchemas_PatchUserSchema_0(ctx context.Context, marshaler runtime.Marshaler, server ZITADELUserSchemasServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq PatchUserSchemaRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.UserSchema); err != nil && err != io.EOF {
+	var (
+		protoReq PatchUserSchemaRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.UserSchema); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["id"]
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELUserSchemas_PatchUserSchema_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.PatchUserSchema(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_ZITADELUserSchemas_DeactivateUserSchema_0 = &utilities.DoubleArray{Encoding: map[string]int{"id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
-)
+var filter_ZITADELUserSchemas_DeactivateUserSchema_0 = &utilities.DoubleArray{Encoding: map[string]int{"id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_ZITADELUserSchemas_DeactivateUserSchema_0(ctx context.Context, marshaler runtime.Marshaler, client ZITADELUserSchemasClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeactivateUserSchemaRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq DeactivateUserSchemaRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELUserSchemas_DeactivateUserSchema_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.DeactivateUserSchema(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ZITADELUserSchemas_DeactivateUserSchema_0(ctx context.Context, marshaler runtime.Marshaler, server ZITADELUserSchemasServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeactivateUserSchemaRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq DeactivateUserSchemaRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELUserSchemas_DeactivateUserSchema_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.DeactivateUserSchema(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_ZITADELUserSchemas_ReactivateUserSchema_0 = &utilities.DoubleArray{Encoding: map[string]int{"id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
-)
+var filter_ZITADELUserSchemas_ReactivateUserSchema_0 = &utilities.DoubleArray{Encoding: map[string]int{"id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_ZITADELUserSchemas_ReactivateUserSchema_0(ctx context.Context, marshaler runtime.Marshaler, client ZITADELUserSchemasClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ReactivateUserSchemaRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq ReactivateUserSchemaRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELUserSchemas_ReactivateUserSchema_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.ReactivateUserSchema(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ZITADELUserSchemas_ReactivateUserSchema_0(ctx context.Context, marshaler runtime.Marshaler, server ZITADELUserSchemasServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ReactivateUserSchemaRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq ReactivateUserSchemaRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELUserSchemas_ReactivateUserSchema_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.ReactivateUserSchema(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_ZITADELUserSchemas_DeleteUserSchema_0 = &utilities.DoubleArray{Encoding: map[string]int{"id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
-)
+var filter_ZITADELUserSchemas_DeleteUserSchema_0 = &utilities.DoubleArray{Encoding: map[string]int{"id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_ZITADELUserSchemas_DeleteUserSchema_0(ctx context.Context, marshaler runtime.Marshaler, client ZITADELUserSchemasClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteUserSchemaRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq DeleteUserSchemaRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELUserSchemas_DeleteUserSchema_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.DeleteUserSchema(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ZITADELUserSchemas_DeleteUserSchema_0(ctx context.Context, marshaler runtime.Marshaler, server ZITADELUserSchemasServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq DeleteUserSchemaRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq DeleteUserSchemaRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELUserSchemas_DeleteUserSchema_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.DeleteUserSchema(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 // RegisterZITADELUserSchemasHandlerServer registers the http handlers for service ZITADELUserSchemas to "mux".
@@ -465,16 +380,13 @@ func local_request_ZITADELUserSchemas_DeleteUserSchema_0(ctx context.Context, ma
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterZITADELUserSchemasHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterZITADELUserSchemasHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ZITADELUserSchemasServer) error {
-
-	mux.Handle("POST", pattern_ZITADELUserSchemas_SearchUserSchemas_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ZITADELUserSchemas_SearchUserSchemas_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/SearchUserSchemas", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/_search"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/SearchUserSchemas", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/_search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -486,20 +398,15 @@ func RegisterZITADELUserSchemasHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_SearchUserSchemas_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_ZITADELUserSchemas_GetUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ZITADELUserSchemas_GetUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/GetUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/GetUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -511,20 +418,15 @@ func RegisterZITADELUserSchemasHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_GetUserSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ZITADELUserSchemas_CreateUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ZITADELUserSchemas_CreateUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/CreateUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/CreateUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -536,20 +438,15 @@ func RegisterZITADELUserSchemasHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_CreateUserSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("PATCH", pattern_ZITADELUserSchemas_PatchUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPatch, pattern_ZITADELUserSchemas_PatchUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/PatchUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/PatchUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -561,20 +458,15 @@ func RegisterZITADELUserSchemasHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_PatchUserSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ZITADELUserSchemas_DeactivateUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ZITADELUserSchemas_DeactivateUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/DeactivateUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}/_deactivate"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/DeactivateUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}/_deactivate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -586,20 +478,15 @@ func RegisterZITADELUserSchemasHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_DeactivateUserSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ZITADELUserSchemas_ReactivateUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ZITADELUserSchemas_ReactivateUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/ReactivateUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}/_reactivate"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/ReactivateUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}/_reactivate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -611,20 +498,15 @@ func RegisterZITADELUserSchemasHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_ReactivateUserSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("DELETE", pattern_ZITADELUserSchemas_DeleteUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_ZITADELUserSchemas_DeleteUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/DeleteUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/DeleteUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -636,9 +518,7 @@ func RegisterZITADELUserSchemasHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_DeleteUserSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
 
 	return nil
@@ -665,7 +545,6 @@ func RegisterZITADELUserSchemasHandlerFromEndpoint(ctx context.Context, mux *run
 			}
 		}()
 	}()
-
 	return RegisterZITADELUserSchemasHandler(ctx, mux, conn)
 }
 
@@ -681,14 +560,11 @@ func RegisterZITADELUserSchemasHandler(ctx context.Context, mux *runtime.ServeMu
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "ZITADELUserSchemasClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterZITADELUserSchemasHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ZITADELUserSchemasClient) error {
-
-	mux.Handle("POST", pattern_ZITADELUserSchemas_SearchUserSchemas_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ZITADELUserSchemas_SearchUserSchemas_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/SearchUserSchemas", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/_search"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/SearchUserSchemas", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/_search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -699,18 +575,13 @@ func RegisterZITADELUserSchemasHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_SearchUserSchemas_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_ZITADELUserSchemas_GetUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ZITADELUserSchemas_GetUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/GetUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/GetUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -721,18 +592,13 @@ func RegisterZITADELUserSchemasHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_GetUserSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ZITADELUserSchemas_CreateUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ZITADELUserSchemas_CreateUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/CreateUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/CreateUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -743,18 +609,13 @@ func RegisterZITADELUserSchemasHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_CreateUserSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("PATCH", pattern_ZITADELUserSchemas_PatchUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPatch, pattern_ZITADELUserSchemas_PatchUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/PatchUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/PatchUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -765,18 +626,13 @@ func RegisterZITADELUserSchemasHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_PatchUserSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ZITADELUserSchemas_DeactivateUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ZITADELUserSchemas_DeactivateUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/DeactivateUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}/_deactivate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/DeactivateUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}/_deactivate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -787,18 +643,13 @@ func RegisterZITADELUserSchemasHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_DeactivateUserSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("POST", pattern_ZITADELUserSchemas_ReactivateUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ZITADELUserSchemas_ReactivateUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/ReactivateUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}/_reactivate"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/ReactivateUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}/_reactivate"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -809,18 +660,13 @@ func RegisterZITADELUserSchemasHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_ReactivateUserSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("DELETE", pattern_ZITADELUserSchemas_DeleteUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodDelete, pattern_ZITADELUserSchemas_DeleteUserSchema_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/DeleteUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.userschema.v3alpha.ZITADELUserSchemas/DeleteUserSchema", runtime.WithHTTPPathPattern("/resources/v3alpha/user_schemas/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -831,42 +677,27 @@ func RegisterZITADELUserSchemasHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELUserSchemas_DeleteUserSchema_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
 	return nil
 }
 
 var (
-	pattern_ZITADELUserSchemas_SearchUserSchemas_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"resources", "v3alpha", "user_schemas", "_search"}, ""))
-
-	pattern_ZITADELUserSchemas_GetUserSchema_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"resources", "v3alpha", "user_schemas", "id"}, ""))
-
-	pattern_ZITADELUserSchemas_CreateUserSchema_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"resources", "v3alpha", "user_schemas"}, ""))
-
-	pattern_ZITADELUserSchemas_PatchUserSchema_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"resources", "v3alpha", "user_schemas", "id"}, ""))
-
+	pattern_ZITADELUserSchemas_SearchUserSchemas_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"resources", "v3alpha", "user_schemas", "_search"}, ""))
+	pattern_ZITADELUserSchemas_GetUserSchema_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"resources", "v3alpha", "user_schemas", "id"}, ""))
+	pattern_ZITADELUserSchemas_CreateUserSchema_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"resources", "v3alpha", "user_schemas"}, ""))
+	pattern_ZITADELUserSchemas_PatchUserSchema_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"resources", "v3alpha", "user_schemas", "id"}, ""))
 	pattern_ZITADELUserSchemas_DeactivateUserSchema_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"resources", "v3alpha", "user_schemas", "id", "_deactivate"}, ""))
-
 	pattern_ZITADELUserSchemas_ReactivateUserSchema_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"resources", "v3alpha", "user_schemas", "id", "_reactivate"}, ""))
-
-	pattern_ZITADELUserSchemas_DeleteUserSchema_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"resources", "v3alpha", "user_schemas", "id"}, ""))
+	pattern_ZITADELUserSchemas_DeleteUserSchema_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"resources", "v3alpha", "user_schemas", "id"}, ""))
 )
 
 var (
-	forward_ZITADELUserSchemas_SearchUserSchemas_0 = runtime.ForwardResponseMessage
-
-	forward_ZITADELUserSchemas_GetUserSchema_0 = runtime.ForwardResponseMessage
-
-	forward_ZITADELUserSchemas_CreateUserSchema_0 = runtime.ForwardResponseMessage
-
-	forward_ZITADELUserSchemas_PatchUserSchema_0 = runtime.ForwardResponseMessage
-
+	forward_ZITADELUserSchemas_SearchUserSchemas_0    = runtime.ForwardResponseMessage
+	forward_ZITADELUserSchemas_GetUserSchema_0        = runtime.ForwardResponseMessage
+	forward_ZITADELUserSchemas_CreateUserSchema_0     = runtime.ForwardResponseMessage
+	forward_ZITADELUserSchemas_PatchUserSchema_0      = runtime.ForwardResponseMessage
 	forward_ZITADELUserSchemas_DeactivateUserSchema_0 = runtime.ForwardResponseMessage
-
 	forward_ZITADELUserSchemas_ReactivateUserSchema_0 = runtime.ForwardResponseMessage
-
-	forward_ZITADELUserSchemas_DeleteUserSchema_0 = runtime.ForwardResponseMessage
+	forward_ZITADELUserSchemas_DeleteUserSchema_0     = runtime.ForwardResponseMessage
 )

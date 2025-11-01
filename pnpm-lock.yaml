@@ -144,9 +144,6 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.4.1
         version: 4.7.0(vite@5.4.20(@types/node@22.18.1)(less@4.1.3)(lightningcss@1.30.1)(sass@1.92.1)(terser@5.44.0))
-      '@zitadel/client':
-        specifier: workspace:*
-        version: link:../../packages/zitadel-client
       '@zitadel/proto':
         specifier: workspace:*
         version: link:../../packages/zitadel-proto
@@ -300,6 +297,9 @@ importers:
       '@tanstack/angular-query-experimental':
         specifier: ^5.85.6
         version: 5.87.4(@angular/common@20.3.3(@angular/core@20.3.3(@angular/compiler@20.3.3)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.3(@angular/compiler@20.3.3)(rxjs@7.8.2)(zone.js@0.15.1))
+      '@zitadel/client':
+        specifier: workspace:*
+        version: link:../packages/zitadel-client
       angular-oauth2-oidc:
         specifier: ^20.0.2
         version: 20.0.2(@angular/common@20.3.3(@angular/core@20.3.3(@angular/compiler@20.3.3)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.3.3(@angular/compiler@20.3.3)(rxjs@7.8.2)(zone.js@0.15.1))
@@ -424,9 +424,6 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.35.1
         version: 8.43.0(eslint@8.57.1)(typescript@5.9.2)
-      '@zitadel/client':
-        specifier: workspace:*
-        version: link:../packages/zitadel-client
       '@zitadel/proto':
         specifier: workspace:*
         version: link:../packages/zitadel-proto
@@ -609,6 +606,9 @@ importers:
       '@bufbuild/protobuf':
         specifier: ^2.6.1
         version: 2.6.3
+      '@zitadel/proto':
+        specifier: ^1.3.1
+        version: 1.3.1
     devDependencies:
       '@bufbuild/buf':
         specifier: ^1.55.1
@@ -6065,6 +6065,12 @@ packages:
 
   '@zag-js/utils@1.22.1':
     resolution: {integrity: sha512-VXY4gjHaTENHW+wjnKKENZ2jcaW0vnG2a5lYEMuZR4dpNCKH217yFr/bCNrI44y2s1W3LWhWmpEjfZluP6udYg==}
+
+  '@zitadel/client@1.3.1':
+    resolution: {integrity: sha512-OBbj11mTs57JRfCjMzyaKL+FCSPnPCVc66gmkxkFm/akNx1RpajjZ209E+O9thqTKUlfheuKXOabICRm4XXW+g==}
+
+  '@zitadel/proto@1.3.1':
+    resolution: {integrity: sha512-ALvvBxNbL1U0O8wCZotIHacDk5Ad+6Hp6hc90kFCw0pxzxvP6v6hiL1zZp1dWz9DxvXRofC75a1cmCS64Kb3yA==}
 
   '@zkochan/js-yaml@0.0.7':
     resolution: {integrity: sha512-nrUSn7hzt7J6JWgWGz78ZYI8wj+gdIJdk0Ynjpp8l+trkn58Uqsf6RYrYkEK+3X18EX+TNdtJI0WxAtc+L84SQ==}
@@ -11971,7 +11977,7 @@ packages:
   puppeteer@22.15.0:
     resolution: {integrity: sha512-XjCY1SiSEi1T7iSYuxS82ft85kwDJUS7wj1Z0eGVXKdtr5g4xnVcbjwxhq5xBnpK/E7x1VZZoJDxpjAOasHT4Q==}
     engines: {node: '>=18'}
-    deprecated: < 24.9.0 is no longer supported
+    deprecated: < 24.15.0 is no longer supported
     hasBin: true
 
   qjobs@1.2.0:
@@ -20962,6 +20968,19 @@ snapshots:
       csstype: 3.1.3
 
   '@zag-js/utils@1.22.1': {}
+
+  '@zitadel/client@1.3.1':
+    dependencies:
+      '@bufbuild/protobuf': 2.6.3
+      '@connectrpc/connect': 2.0.4(@bufbuild/protobuf@2.6.3)
+      '@connectrpc/connect-node': 2.1.0(@bufbuild/protobuf@2.6.3)(@connectrpc/connect@2.0.4(@bufbuild/protobuf@2.6.3))
+      '@connectrpc/connect-web': 2.0.4(@bufbuild/protobuf@2.6.3)(@connectrpc/connect@2.0.4(@bufbuild/protobuf@2.6.3))
+      '@zitadel/proto': 1.3.1
+      jose: 5.10.0
+
+  '@zitadel/proto@1.3.1':
+    dependencies:
+      '@bufbuild/protobuf': 2.6.3
 
   '@zkochan/js-yaml@0.0.7':
     dependencies:

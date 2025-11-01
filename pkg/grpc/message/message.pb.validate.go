@@ -74,7 +74,7 @@ type ErrorDetailMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ErrorDetailMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -180,7 +180,7 @@ type CredentialsCheckErrorMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CredentialsCheckErrorMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -286,7 +286,7 @@ type LocalizedMessageMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LocalizedMessageMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

@@ -133,7 +133,7 @@ type SetInstanceFeaturesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetInstanceFeaturesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -268,7 +268,7 @@ type SetInstanceFeaturesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetInstanceFeaturesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -371,7 +371,7 @@ type ResetInstanceFeaturesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ResetInstanceFeaturesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -503,7 +503,7 @@ type ResetInstanceFeaturesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ResetInstanceFeaturesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -608,7 +608,7 @@ type GetInstanceFeaturesRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetInstanceFeaturesRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -913,7 +913,7 @@ type GetInstanceFeaturesResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetInstanceFeaturesResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

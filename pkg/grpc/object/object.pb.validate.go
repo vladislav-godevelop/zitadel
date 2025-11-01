@@ -133,7 +133,7 @@ type ObjectDetailsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ObjectDetailsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -238,7 +238,7 @@ type ListQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -370,7 +370,7 @@ type ListDetailsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListDetailsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

@@ -116,7 +116,7 @@ type MessageCustomTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MessageCustomTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1264,7 +1264,7 @@ type LoginCustomTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LoginCustomTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1452,7 +1452,7 @@ type SelectAccountScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SelectAccountScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1675,7 +1675,7 @@ type LoginScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LoginScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1907,7 +1907,7 @@ type PasswordScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PasswordScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2064,7 +2064,7 @@ type UsernameChangeScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UsernameChangeScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2199,7 +2199,7 @@ type UsernameChangeDoneScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UsernameChangeDoneScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2379,7 +2379,7 @@ type InitPasswordScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InitPasswordScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2525,7 +2525,7 @@ type InitPasswordDoneScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InitPasswordDoneScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2682,7 +2682,7 @@ type EmailVerificationScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m EmailVerificationScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2840,7 +2840,7 @@ type EmailVerificationDoneScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m EmailVerificationDoneScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3020,7 +3020,7 @@ type InitializeUserScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InitializeUserScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3166,7 +3166,7 @@ type InitializeUserDoneScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InitializeUserDoneScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3335,7 +3335,7 @@ type InitMFAPromptScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InitMFAPromptScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3514,7 +3514,7 @@ type InitMFAOTPScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InitMFAOTPScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3682,7 +3682,7 @@ type InitMFAU2FScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InitMFAU2FScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3828,7 +3828,7 @@ type InitMFADoneScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InitMFADoneScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3963,7 +3963,7 @@ type MFAProvidersTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MFAProvidersTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4107,7 +4107,7 @@ type VerifyMFAOTPScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m VerifyMFAOTPScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4264,7 +4264,7 @@ type VerifyMFAU2FScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m VerifyMFAU2FScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4432,7 +4432,7 @@ type PasswordlessScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PasswordlessScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4622,7 +4622,7 @@ type PasswordChangeScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PasswordChangeScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4757,7 +4757,7 @@ type PasswordChangeDoneScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PasswordChangeDoneScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -4893,7 +4893,7 @@ type PasswordResetDoneScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PasswordResetDoneScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -5051,7 +5051,7 @@ type RegistrationOptionScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RegistrationOptionScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -5352,7 +5352,7 @@ type RegistrationUserScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RegistrationUserScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -5633,7 +5633,7 @@ type ExternalRegistrationUserOverviewScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExternalRegistrationUserOverviewScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -5901,7 +5901,7 @@ type RegistrationOrgScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RegistrationOrgScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6047,7 +6047,7 @@ type LinkingUserPromptScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LinkingUserPromptScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6194,7 +6194,7 @@ type LinkingUserDoneScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LinkingUserDoneScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6395,7 +6395,7 @@ type ExternalUserNotFoundScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExternalUserNotFoundScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6542,7 +6542,7 @@ type SuccessLoginScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SuccessLoginScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6677,7 +6677,7 @@ type LogoutDoneScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LogoutDoneScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6822,7 +6822,7 @@ type FooterTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m FooterTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -6988,7 +6988,7 @@ type PasswordlessPromptScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PasswordlessPromptScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -7159,7 +7159,7 @@ type PasswordlessRegistrationScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PasswordlessRegistrationScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -7320,7 +7320,7 @@ type PasswordlessRegistrationDoneScreenTextMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PasswordlessRegistrationDoneScreenTextMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

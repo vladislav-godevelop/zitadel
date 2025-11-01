@@ -102,7 +102,7 @@ type SecuritySettingsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SecuritySettingsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -204,7 +204,7 @@ type EmbeddedIframeSettingsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m EmbeddedIframeSettingsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

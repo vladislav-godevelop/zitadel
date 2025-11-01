@@ -246,6 +246,48 @@ func (c *Commands) RemoveHumanPhone(ctx context.Context, userID, resourceOwner s
 	return writeModelToObjectDetails(&existingPhone.WriteModel), nil
 }
 
+// CreateHumanPhoneLoginCode generates a verification code for login purposes
+// Unlike CreateHumanPhoneVerificationCode, this works for already verified phones
+func (c *Commands) CreateHumanPhoneLoginCode(ctx context.Context, userID, resourceowner string) (*domain.ObjectDetails, string, error) {
+	if userID == "" {
+		return nil, "", zerrors.ThrowInvalidArgument(nil, "COMMAND-4M0ds", "Errors.User.UserIDMissing")
+	}
+
+	existingPhone, err := c.phoneWriteModelByID(ctx, userID, resourceowner)
+	if err != nil {
+		return nil, "", err
+	}
+
+	if !existingPhone.UserState.Exists() {
+		return nil, "", zerrors.ThrowPreconditionFailed(nil, "COMMAND-2M0fs", "Errors.User.NotFound")
+	}
+	if !existingPhone.State.Exists() {
+		return nil, "", zerrors.ThrowNotFound(nil, "COMMAND-2b7Hf", "Errors.User.Phone.NotFound")
+	}
+
+	// Для логина не проверяем IsPhoneVerified - генерируем код в любом случае
+	phoneCode, generatorID, err := c.newPhoneCode(ctx, c.eventstore.Filter, domain.SecretGeneratorTypeVerifyPhoneCode, c.userEncryption, c.defaultSecretGenerators.PhoneVerificationCode) //nolint:staticcheck
+	if err != nil {
+		return nil, "", err
+	}
+
+	userAgg := UserAggregateFromWriteModel(&existingPhone.WriteModel)
+	if err = c.pushAppendAndReduce(ctx, existingPhone, user.NewHumanPhoneCodeAddedEvent(ctx, userAgg, phoneCode.CryptedCode(), phoneCode.CodeExpiry(), generatorID)); err != nil {
+		return nil, "", err
+	}
+
+	// MOCK SMS: Отправить код через mock сервис
+	if existingPhone.Phone != "" && phoneCode.Plain != "" {
+		mockSMS := sms.GetMockSMSService()
+		if err := mockSMS.StoreCode(ctx, string(existingPhone.Phone), phoneCode.Plain, sms.CodeTypeVerification); err != nil {
+			logging.WithError(err).Warn("Failed to store code in mock SMS service")
+			// Не прерываем выполнение, т.к. код уже сохранен в базе
+		}
+	}
+
+	return writeModelToObjectDetails(&existingPhone.WriteModel), phoneCode.Plain, nil
+}
+
 func (c *Commands) phoneWriteModelByID(ctx context.Context, userID, resourceOwner string) (writeModel *HumanPhoneWriteModel, err error) {
 	ctx, span := tracing.NewSpan(ctx)
 	defer func() { span.EndWithError(err) }()

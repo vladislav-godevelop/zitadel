@@ -103,7 +103,7 @@ type OrgIAMPolicyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OrgIAMPolicyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -239,7 +239,7 @@ type DomainPolicyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DomainPolicyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -401,7 +401,7 @@ type LabelPolicyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LabelPolicyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -734,7 +734,7 @@ type LoginPolicyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LoginPolicyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -875,7 +875,7 @@ type PasswordComplexityPolicyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PasswordComplexityPolicyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1012,7 +1012,7 @@ type PasswordAgePolicyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PasswordAgePolicyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1149,7 +1149,7 @@ type LockoutPolicyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LockoutPolicyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1369,7 +1369,7 @@ type PrivacyPolicyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PrivacyPolicyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1502,7 +1502,7 @@ type NotificationPolicyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m NotificationPolicyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

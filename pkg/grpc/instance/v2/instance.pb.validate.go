@@ -174,7 +174,7 @@ type InstanceMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m InstanceMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -310,7 +310,7 @@ type CustomDomainMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CustomDomainMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -508,7 +508,7 @@ type FilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m FilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -635,7 +635,7 @@ type CustomDomainsFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CustomDomainsFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -821,7 +821,7 @@ type CustomDomainFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CustomDomainFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -944,7 +944,7 @@ type DomainFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DomainFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1077,7 +1077,7 @@ type TrustedDomainMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TrustedDomainMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1235,7 +1235,7 @@ type TrustedDomainFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m TrustedDomainFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

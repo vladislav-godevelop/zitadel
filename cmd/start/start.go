@@ -718,16 +718,14 @@ func startAPIs(
 		return nil, err
 	}
 
-	// Phone registration REST endpoints
-	registerPhoneRegistrationEndpoints(apis, commands, queries, keys.User)
+	registerPhoneEndpoints(apis, commands, queries, keys.User, config.ExternalSecure)
 
 	// handle grpc at last to be able to handle the root, because grpc and gateway require a lot of different prefixes
 	apis.RouteGRPC()
 	return apis, nil
 }
 
-// registerPhoneRegistrationEndpoints registers HTTP REST endpoints for phone-only registration
-func registerPhoneRegistrationEndpoints(apis *api.API, commands *command.Commands, queries *query.Queries, userCodeAlg crypto.EncryptionAlgorithm) {
+func registerPhoneEndpoints(apis *api.API, commands *command.Commands, queries *query.Queries, userCodeAlg crypto.EncryptionAlgorithm, externalSecure bool) {
 	// POST /v2/users/register/phone - Step 1: Register by phone number
 	apis.HandleFunc("/v2/users/register/phone", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -751,7 +749,45 @@ func registerPhoneRegistrationEndpoints(apis *api.API, commands *command.Command
 		}
 
 		ctx := r.Context()
-		logging.WithFields("phone", req.Phone, "orgID", req.OrganizationID).Info("RegisterByPhone: starting registration")
+
+		if internal_authz.GetInstance(ctx) == nil || internal_authz.GetInstance(ctx).InstanceID() == "" {
+			instances, err := queries.SearchInstances(ctx, &query.InstanceSearchQueries{})
+			if err == nil && instances != nil && len(instances.Instances) > 0 {
+				ctx = internal_authz.WithInstanceID(ctx, instances.Instances[0].ID)
+				logging.WithFields("instanceID", instances.Instances[0].ID).Info("RegisterByPhone: set instance in context")
+			} else {
+				logging.WithFields("error", err).Error("RegisterByPhone: could not find any instances")
+				http_util.MarshalJSON(w, nil, fmt.Errorf("system not initialized - no instances found"), http.StatusInternalServerError)
+				return
+			}
+		}
+
+		orgID := req.OrganizationID
+		if orgID == "" {
+			instance := internal_authz.GetInstance(ctx)
+			if instance != nil {
+				orgID = instance.DefaultOrganisationID()
+				logging.WithFields("default_orgID", orgID).Info("RegisterByPhone: using instance default orgID")
+			}
+		}
+
+		if orgID == "" {
+			instanceQuery, err := queries.Instance(ctx, false)
+			if err == nil && instanceQuery != nil && instanceQuery.DefaultOrgID != "" {
+				orgID = instanceQuery.DefaultOrgID
+				logging.WithFields("instance_default_orgID", orgID).Info("RegisterByPhone: using instance default organization from DB")
+			} else if err != nil {
+				logging.WithFields("error", err).Warn("RegisterByPhone: failed to get instance from DB")
+			}
+		}
+
+		if orgID == "" {
+			logging.Error("RegisterByPhone: organization ID is empty - cannot register user without organization")
+			http_util.MarshalJSON(w, nil, fmt.Errorf("organization ID is required. No organizations found in the system"), http.StatusBadRequest)
+			return
+		}
+
+		logging.WithFields("phone", req.Phone, "orgID", orgID).Info("RegisterByPhone: starting registration")
 
 		human := &command.AddHuman{
 			Phone: command.Phone{
@@ -763,7 +799,7 @@ func registerPhoneRegistrationEndpoints(apis *api.API, commands *command.Command
 			Register:              true,
 		}
 
-		err := commands.AddUserHuman(ctx, req.OrganizationID, human, false, userCodeAlg)
+		err := commands.AddUserHuman(ctx, orgID, human, false, userCodeAlg)
 		if err != nil {
 			logging.WithFields("phone", req.Phone, "error", err).Error("RegisterByPhone: failed to create user")
 			http_util.MarshalJSON(w, nil, err, http.StatusInternalServerError)
@@ -782,9 +818,9 @@ func registerPhoneRegistrationEndpoints(apis *api.API, commands *command.Command
 
 		if human.Details != nil {
 			response["details"] = map[string]interface{}{
-				"sequence":       human.Details.Sequence,
-				"resourceOwner":  human.Details.ResourceOwner,
-				"eventDate":      human.Details.EventDate,
+				"sequence":      human.Details.Sequence,
+				"resourceOwner": human.Details.ResourceOwner,
+				"eventDate":     human.Details.EventDate,
 			}
 		}
 
@@ -820,6 +856,17 @@ func registerPhoneRegistrationEndpoints(apis *api.API, commands *command.Command
 		ctx := r.Context()
 		logging.WithFields("userID", req.UserID, "code", req.VerificationCode).Info("VerifyPhoneRegistration: verifying code")
 
+		// Ensure instance is set in context for public verify endpoint
+		if internal_authz.GetInstance(ctx) == nil || internal_authz.GetInstance(ctx).InstanceID() == "" {
+			instances, err := queries.SearchInstances(ctx, &query.InstanceSearchQueries{})
+			if err == nil && instances != nil && len(instances.Instances) > 0 {
+				ctx = internal_authz.WithInstanceID(ctx, instances.Instances[0].ID)
+				logging.WithFields("instanceID", instances.Instances[0].ID).Debug("VerifyPhoneRegistration: set instance in context")
+			} else {
+				logging.WithFields("error", err).Warn("VerifyPhoneRegistration: could not find instance")
+			}
+		}
+
 		phoneCodeGenerator, err := queries.InitEncryptionGenerator(ctx, domain.SecretGeneratorTypeVerifyPhoneCode, userCodeAlg)
 		if err != nil {
 			logging.WithFields("userID", req.UserID, "error", err).Error("VerifyPhoneRegistration: failed to init generator")
@@ -848,6 +895,219 @@ func registerPhoneRegistrationEndpoints(apis *api.API, commands *command.Command
 		}
 
 		http_util.MarshalJSON(w, response, nil, http.StatusOK)
+	})
+
+	apis.HandleFunc("/v2/users/login/phone/start", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("only POST method allowed"), http.StatusMethodNotAllowed)
+			return
+		}
+
+		var req struct {
+			Phone      string `json:"phone"`
+			ReturnCode bool   `json:"return_code"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("invalid JSON: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		if req.Phone == "" {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("phone number is required"), http.StatusBadRequest)
+			return
+		}
+
+		ctx := r.Context()
+
+		if internal_authz.GetInstance(ctx) == nil || internal_authz.GetInstance(ctx).InstanceID() == "" {
+			instances, err := queries.SearchInstances(ctx, &query.InstanceSearchQueries{})
+			if err == nil && instances != nil && len(instances.Instances) > 0 {
+				ctx = internal_authz.WithInstanceID(ctx, instances.Instances[0].ID)
+				logging.WithFields("instanceID", instances.Instances[0].ID).Debug("LoginByPhone: set instance in context")
+			}
+		}
+
+		usernameQuery, err := query.NewUserUsernameSearchQuery(req.Phone, query.TextEqualsIgnoreCase)
+		if err != nil {
+			logging.WithFields("phone", req.Phone, "error", err).Error("LoginByPhone: failed to create search query")
+			http_util.MarshalJSON(w, nil, fmt.Errorf("internal error"), http.StatusInternalServerError)
+			return
+		}
+
+		users, err := queries.SearchUsers(ctx, &query.UserSearchQueries{
+			Queries: []query.SearchQuery{usernameQuery},
+		}, nil)
+		if err != nil || users == nil || users.Count == 0 {
+			logging.WithFields("phone", req.Phone, "error", err).Error("LoginByPhone: user not found")
+			http_util.MarshalJSON(w, nil, fmt.Errorf("user not found"), http.StatusNotFound)
+			return
+		}
+		user := users.Users[0]
+
+		if user.State != domain.UserStateActive {
+			logging.WithFields("phone", req.Phone, "state", user.State).Error("LoginByPhone: user is not active")
+			http_util.MarshalJSON(w, nil, fmt.Errorf("user is not active"), http.StatusForbidden)
+			return
+		}
+
+		logging.WithFields("phone", req.Phone, "userID", user.ID).Info("LoginByPhone: initiating login for user")
+
+		details, plainCode, err := commands.CreateHumanPhoneLoginCode(ctx, user.ID, user.ResourceOwner)
+		if err != nil {
+			logging.WithFields("phone", req.Phone, "userID", user.ID, "error", err).Error("LoginByPhone: failed to generate verification code")
+			http_util.MarshalJSON(w, nil, fmt.Errorf("failed to send SMS code"), http.StatusInternalServerError)
+			return
+		}
+
+		logging.WithFields("userID", user.ID, "phone", req.Phone).Info("LoginByPhone: ✅ SMS code generated and sent")
+
+		response := map[string]interface{}{
+			"user_id": user.ID,
+			"message": "SMS code sent to your phone",
+		}
+
+		if details != nil {
+			response["details"] = map[string]interface{}{
+				"sequence":      details.Sequence,
+				"resourceOwner": details.ResourceOwner,
+				"eventDate":     details.EventDate,
+			}
+		}
+
+		if req.ReturnCode && plainCode != "" {
+			response["verification_code"] = plainCode
+			response["message"] = "SMS code sent. Code returned for testing."
+			logging.WithFields("userID", user.ID, "phone", req.Phone, "code", plainCode).Info("LoginByPhone: ✅ CODE (для тестирования)")
+		}
+
+		http_util.MarshalJSON(w, response, nil, http.StatusOK)
+	})
+
+	apis.HandleFunc("/v2/users/login/phone/verify", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("only POST method allowed"), http.StatusMethodNotAllowed)
+			return
+		}
+
+		var req struct {
+			UserID           string `json:"user_id"`
+			VerificationCode string `json:"verification_code"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("invalid JSON: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		if req.UserID == "" {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("user_id is required"), http.StatusBadRequest)
+			return
+		}
+		if req.VerificationCode == "" {
+			http_util.MarshalJSON(w, nil, fmt.Errorf("verification_code is required"), http.StatusBadRequest)
+			return
+		}
+
+		ctx := r.Context()
+
+		if internal_authz.GetInstance(ctx) == nil || internal_authz.GetInstance(ctx).InstanceID() == "" {
+			instances, err := queries.SearchInstances(ctx, &query.InstanceSearchQueries{})
+			if err == nil && instances != nil && len(instances.Instances) > 0 {
+				ctx = internal_authz.WithInstanceID(ctx, instances.Instances[0].ID)
+				logging.WithFields("instanceID", instances.Instances[0].ID).Debug("VerifyLoginByPhone: set instance in context")
+			}
+		}
+
+		logging.WithFields("userID", req.UserID, "code", req.VerificationCode).Info("VerifyLoginByPhone: verifying code")
+
+		codeGenerator, err := queries.InitEncryptionGenerator(ctx, domain.SecretGeneratorTypeVerifyPhoneCode, userCodeAlg)
+		if err != nil {
+			logging.WithFields("userID", req.UserID, "error", err).Error("VerifyLoginByPhone: failed to init generator")
+			http_util.MarshalJSON(w, nil, err, http.StatusInternalServerError)
+			return
+		}
+
+		details, err := commands.VerifyHumanPhone(ctx, req.UserID, req.VerificationCode, "", codeGenerator)
+		if err != nil {
+			logging.WithFields("userID", req.UserID, "error", err).Error("VerifyLoginByPhone: ❌ code verification failed")
+			http_util.MarshalJSON(w, nil, fmt.Errorf("invalid or expired verification code"), http.StatusBadRequest)
+			return
+		}
+
+		logging.WithFields("userID", req.UserID).Info("VerifyLoginByPhone: ✅ code verified successfully")
+
+		ctx = internal_authz.SetCtxData(ctx, internal_authz.CtxData{
+			UserID:        req.UserID,
+			OrgID:         details.ResourceOwner,
+			ResourceOwner: details.ResourceOwner,
+			SystemMemberships: internal_authz.Memberships{
+				{
+					MemberType:  internal_authz.MemberTypeSystem,
+					AggregateID: details.ResourceOwner,
+					Roles:       []string{domain.RoleIAMOwner},
+				},
+			},
+		})
+
+		userAgentDesc := r.Header.Get("User-Agent")
+		userAgent := &domain.UserAgent{
+			FingerprintID: nil, // Not tracking fingerprint for phone login
+			IP:            http_util.RemoteIPFromRequest(r),
+			Description:   &userAgentDesc,
+			Header:        r.Header,
+		}
+
+		sessionCommands := []command.SessionCommand{
+			command.CheckUser(req.UserID, details.ResourceOwner, nil),
+		}
+
+		sessionSet, err := commands.CreateSession(ctx, sessionCommands, nil, userAgent, 0)
+		if err != nil {
+			logging.WithFields("userID", req.UserID, "error", err).Error("VerifyLoginByPhone: ❌ failed to create session")
+			http_util.MarshalJSON(w, nil, fmt.Errorf("failed to create session"), http.StatusInternalServerError)
+			return
+		}
+
+		logging.WithFields("userID", req.UserID, "sessionID", sessionSet.ID).Info("VerifyLoginByPhone: ✅ session created successfully")
+
+		response := map[string]interface{}{
+			"success":       true,
+			"session_id":    sessionSet.ID,
+			"session_token": sessionSet.NewToken,
+			"user_id":       req.UserID,
+		}
+
+		if sessionSet.ObjectDetails != nil {
+			response["details"] = map[string]interface{}{
+				"sequence":      sessionSet.ObjectDetails.Sequence,
+				"resourceOwner": sessionSet.ObjectDetails.ResourceOwner,
+				"eventDate":     sessionSet.ObjectDetails.EventDate,
+			}
+		}
+
+		http_util.MarshalJSON(w, response, nil, http.StatusOK)
+	})
+
+	apis.HandleFunc("/v2/users/console", func(w http.ResponseWriter, r *http.Request) {
+		sessionToken := r.URL.Query().Get("session_token")
+		if sessionToken == "" {
+			http.Error(w, "session_token is required", http.StatusBadRequest)
+			return
+		}
+
+		cookie := &http.Cookie{
+			Name:     "zitadel.session.token",
+			Value:    sessionToken,
+			Path:     "/",
+			HttpOnly: true,
+			Secure:   externalSecure,
+			SameSite: http.SameSiteLaxMode,
+			MaxAge:   86400 * 30, // 30 days
+		}
+		http.SetCookie(w, cookie)
+
+		logging.WithFields("token_length", len(sessionToken)).Info("ConsoleLogin: set session cookie, redirecting to console")
+
+		http.Redirect(w, r, "/ui/console", http.StatusFound)
 	})
 }
 

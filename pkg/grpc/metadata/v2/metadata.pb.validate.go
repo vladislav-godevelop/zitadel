@@ -136,7 +136,7 @@ type MetadataMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MetadataMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -294,7 +294,7 @@ type MetadataSearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MetadataSearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -418,7 +418,7 @@ type MetadataKeyFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MetadataKeyFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -542,7 +542,7 @@ type MetadataValueFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MetadataValueFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

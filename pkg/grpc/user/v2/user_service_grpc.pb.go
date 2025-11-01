@@ -77,6 +77,8 @@ const (
 	UserService_SetUserMetadata_FullMethodName                = "/zitadel.user.v2.UserService/SetUserMetadata"
 	UserService_ListUserMetadata_FullMethodName               = "/zitadel.user.v2.UserService/ListUserMetadata"
 	UserService_DeleteUserMetadata_FullMethodName             = "/zitadel.user.v2.UserService/DeleteUserMetadata"
+	UserService_RegisterByPhone_FullMethodName                = "/zitadel.user.v2.UserService/RegisterByPhone"
+	UserService_VerifyPhoneRegistration_FullMethodName        = "/zitadel.user.v2.UserService/VerifyPhoneRegistration"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -377,6 +379,17 @@ type UserServiceClient interface {
 	// Required permission:
 	//   - `user.write`
 	DeleteUserMetadata(ctx context.Context, in *DeleteUserMetadataRequest, opts ...grpc.CallOption) (*DeleteUserMetadataResponse, error)
+	// Register user by phone number only (Step 1: Send phone, receive SMS code)
+	//
+	// Initiates phone-only registration by creating a user with only a phone number.
+	// An SMS verification code will be sent to the provided phone number.
+	// Use VerifyPhoneRegistration to complete the registration.
+	RegisterByPhone(ctx context.Context, in *RegisterByPhoneRequest, opts ...grpc.CallOption) (*RegisterByPhoneResponse, error)
+	// Verify phone registration code (Step 2: Submit SMS code to complete registration)
+	//
+	// Verifies the SMS code received by the user and completes the phone-only registration.
+	// After successful verification, the user can log in.
+	VerifyPhoneRegistration(ctx context.Context, in *VerifyPhoneRegistrationRequest, opts ...grpc.CallOption) (*VerifyPhoneRegistrationResponse, error)
 }
 
 type userServiceClient struct {
@@ -967,6 +980,26 @@ func (c *userServiceClient) DeleteUserMetadata(ctx context.Context, in *DeleteUs
 	return out, nil
 }
 
+func (c *userServiceClient) RegisterByPhone(ctx context.Context, in *RegisterByPhoneRequest, opts ...grpc.CallOption) (*RegisterByPhoneResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RegisterByPhoneResponse)
+	err := c.cc.Invoke(ctx, UserService_RegisterByPhone_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) VerifyPhoneRegistration(ctx context.Context, in *VerifyPhoneRegistrationRequest, opts ...grpc.CallOption) (*VerifyPhoneRegistrationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(VerifyPhoneRegistrationResponse)
+	err := c.cc.Invoke(ctx, UserService_VerifyPhoneRegistration_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
@@ -1265,6 +1298,17 @@ type UserServiceServer interface {
 	// Required permission:
 	//   - `user.write`
 	DeleteUserMetadata(context.Context, *DeleteUserMetadataRequest) (*DeleteUserMetadataResponse, error)
+	// Register user by phone number only (Step 1: Send phone, receive SMS code)
+	//
+	// Initiates phone-only registration by creating a user with only a phone number.
+	// An SMS verification code will be sent to the provided phone number.
+	// Use VerifyPhoneRegistration to complete the registration.
+	RegisterByPhone(context.Context, *RegisterByPhoneRequest) (*RegisterByPhoneResponse, error)
+	// Verify phone registration code (Step 2: Submit SMS code to complete registration)
+	//
+	// Verifies the SMS code received by the user and completes the phone-only registration.
+	// After successful verification, the user can log in.
+	VerifyPhoneRegistration(context.Context, *VerifyPhoneRegistrationRequest) (*VerifyPhoneRegistrationResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -1448,6 +1492,12 @@ func (UnimplementedUserServiceServer) ListUserMetadata(context.Context, *ListUse
 }
 func (UnimplementedUserServiceServer) DeleteUserMetadata(context.Context, *DeleteUserMetadataRequest) (*DeleteUserMetadataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserMetadata not implemented")
+}
+func (UnimplementedUserServiceServer) RegisterByPhone(context.Context, *RegisterByPhoneRequest) (*RegisterByPhoneResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterByPhone not implemented")
+}
+func (UnimplementedUserServiceServer) VerifyPhoneRegistration(context.Context, *VerifyPhoneRegistrationRequest) (*VerifyPhoneRegistrationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyPhoneRegistration not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 func (UnimplementedUserServiceServer) testEmbeddedByValue()                     {}
@@ -2514,6 +2564,42 @@ func _UserService_DeleteUserMetadata_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_RegisterByPhone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterByPhoneRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).RegisterByPhone(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_RegisterByPhone_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).RegisterByPhone(ctx, req.(*RegisterByPhoneRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_VerifyPhoneRegistration_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyPhoneRegistrationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).VerifyPhoneRegistration(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_VerifyPhoneRegistration_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).VerifyPhoneRegistration(ctx, req.(*VerifyPhoneRegistrationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2752,6 +2838,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteUserMetadata",
 			Handler:    _UserService_DeleteUserMetadata_Handler,
+		},
+		{
+			MethodName: "RegisterByPhone",
+			Handler:    _UserService_RegisterByPhone_Handler,
+		},
+		{
+			MethodName: "VerifyPhoneRegistration",
+			Handler:    _UserService_VerifyPhoneRegistration_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

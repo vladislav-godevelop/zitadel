@@ -197,7 +197,7 @@ type EventMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m EventMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -329,7 +329,7 @@ type AddedEventMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AddedEventMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -461,7 +461,7 @@ type ChangedEventMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ChangedEventMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -589,7 +589,7 @@ type RemovedEventMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RemovedEventMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

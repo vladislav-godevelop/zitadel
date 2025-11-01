@@ -477,6 +477,112 @@
         ]
       }
     },
+    "/v2/users/register/phone": {
+      "post": {
+        "summary": "Register user by phone number",
+        "description": "Creates a new user with only a phone number and sends an SMS verification code. No email or password required.",
+        "operationId": "UserService_RegisterByPhone",
+        "responses": {
+          "200": {
+            "description": "User created successfully, SMS code sent",
+            "schema": {
+              "$ref": "#/definitions/v2RegisterByPhoneResponse"
+            }
+          },
+          "400": {
+            "description": "The request is malformed.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "401": {
+            "description": "Returned when the user is not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "409": {
+            "description": "Phone number already in use",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2RegisterByPhoneRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/v2/users/register/phone/verify": {
+      "post": {
+        "summary": "Verify phone registration code",
+        "description": "Verifies the SMS code and completes the phone-only registration process.",
+        "operationId": "UserService_VerifyPhoneRegistration",
+        "responses": {
+          "200": {
+            "description": "Phone verified successfully, registration complete",
+            "schema": {
+              "$ref": "#/definitions/v2VerifyPhoneRegistrationResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid or expired verification code",
+            "schema": {}
+          },
+          "401": {
+            "description": "Returned when the user is not authenticated.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "403": {
+            "description": "Returned when the user does not have permission to access the resource.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2VerifyPhoneRegistrationRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
     "/v2/users/{userId}": {
       "get": {
         "summary": "User by ID",
@@ -5905,6 +6011,44 @@
         }
       }
     },
+    "v2RegisterByPhoneRequest": {
+      "type": "object",
+      "properties": {
+        "phone": {
+          "type": "string",
+          "example": "+79001234567",
+          "description": "Phone number in international format, e.g. +79001234567",
+          "title": "Phone number in international format (E164)"
+        },
+        "returnCode": {
+          "type": "boolean",
+          "description": "If true, returns the SMS verification code in the response (for testing only)",
+          "title": "Optional: return verification code in response (for testing/development)"
+        },
+        "organizationId": {
+          "type": "string",
+          "title": "Optional: organization ID (if not specified, uses default organization)"
+        }
+      },
+      "title": "Step 1: Register by phone - send phone number"
+    },
+    "v2RegisterByPhoneResponse": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "title": "Created user ID"
+        },
+        "details": {
+          "$ref": "#/definitions/v2Details",
+          "title": "Creation details"
+        },
+        "verificationCode": {
+          "type": "string",
+          "title": "Verification code (only returned if return_code=true)"
+        }
+      }
+    },
     "v2RegisterPasskeyResponse": {
       "type": "object",
       "properties": {
@@ -6787,6 +6931,29 @@
       "properties": {
         "details": {
           "$ref": "#/definitions/v2Details"
+        }
+      }
+    },
+    "v2VerifyPhoneRegistrationRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "title": "User ID from RegisterByPhone response"
+        },
+        "verificationCode": {
+          "type": "string",
+          "title": "SMS verification code received by the user"
+        }
+      },
+      "title": "Step 2: Verify phone code and complete registration"
+    },
+    "v2VerifyPhoneRegistrationResponse": {
+      "type": "object",
+      "properties": {
+        "details": {
+          "$ref": "#/definitions/v2Details",
+          "title": "Verification details"
         }
       }
     },

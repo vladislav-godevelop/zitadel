@@ -82,7 +82,7 @@ type GetIDPByIDRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetIDPByIDRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -213,7 +213,7 @@ type GetIDPByIDResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m GetIDPByIDResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

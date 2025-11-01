@@ -127,7 +127,7 @@ type OptionsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OptionsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -230,7 +230,7 @@ type AuthOptionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AuthOptionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -332,7 +332,7 @@ type CustomHTTPResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m CustomHTTPResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

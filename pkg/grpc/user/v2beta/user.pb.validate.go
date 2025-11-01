@@ -142,7 +142,7 @@ type SetHumanProfileMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetHumanProfileMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -263,7 +263,7 @@ type HumanProfileMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m HumanProfileMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -385,7 +385,7 @@ type SetMetadataEntryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetMetadataEntryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -610,7 +610,7 @@ type HumanUserMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m HumanUserMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -832,7 +832,7 @@ type UserMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UserMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -939,7 +939,7 @@ type MachineUserMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MachineUserMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

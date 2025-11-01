@@ -109,7 +109,7 @@ type ReportBaseInformationRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReportBaseInformationRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -214,7 +214,7 @@ type ReportBaseInformationResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReportBaseInformationResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -357,7 +357,7 @@ type ReportResourceCountsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReportResourceCountsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -462,7 +462,7 @@ type ReportResourceCountsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReportResourceCountsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

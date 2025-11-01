@@ -266,7 +266,7 @@ type ApplicationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -476,7 +476,7 @@ type ApplicationSearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationSearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -600,7 +600,7 @@ type ApplicationNameQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationNameQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -768,7 +768,7 @@ type ApplicationKeyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationKeyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

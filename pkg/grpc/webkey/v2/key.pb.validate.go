@@ -259,7 +259,7 @@ type WebKeyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m WebKeyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -401,7 +401,7 @@ type RSAMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RSAMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -529,7 +529,7 @@ type ECDSAMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ECDSAMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -631,7 +631,7 @@ type ED25519MultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ED25519MultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

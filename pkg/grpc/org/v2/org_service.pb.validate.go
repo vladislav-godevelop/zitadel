@@ -131,7 +131,7 @@ type AddOrganizationRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AddOrganizationRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -298,7 +298,7 @@ type AddOrganizationResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AddOrganizationResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -465,7 +465,7 @@ type ListOrganizationsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListOrganizationsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -632,7 +632,7 @@ type ListOrganizationsResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ListOrganizationsResponseMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -792,7 +792,7 @@ type AddOrganizationRequest_AdminMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AddOrganizationRequest_AdminMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -907,7 +907,7 @@ type AddOrganizationResponse_CreatedAdminMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AddOrganizationResponse_CreatedAdminMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

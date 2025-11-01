@@ -121,7 +121,7 @@ func (h *AddHuman) Validate(hasher *crypto.Hasher) (err error) {
 
 		// Email делаем фиктивным и verified
 		if h.Email.Address == "" {
-			h.Email.Address = domain.EmailAddress(string(h.Phone.Number) + "@phone.local")
+			h.Email.Address = domain.EmailAddress(string(h.Phone.Number) + "@local.test")
 		}
 		h.Email.Verified = true
 		h.Email.NoEmailVerification = true

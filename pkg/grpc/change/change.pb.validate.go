@@ -139,7 +139,7 @@ type ChangeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ChangeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -244,7 +244,7 @@ type ChangeQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ChangeQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

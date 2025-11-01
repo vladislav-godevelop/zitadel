@@ -142,7 +142,7 @@ type SetHumanProfileMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetHumanProfileMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -263,7 +263,7 @@ type HumanProfileMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m HumanProfileMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -385,7 +385,7 @@ type SetMetadataEntryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetMetadataEntryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -639,7 +639,7 @@ type HumanUserMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m HumanUserMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -861,7 +861,7 @@ type UserMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UserMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -968,7 +968,7 @@ type MachineUserMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MachineUserMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1072,7 +1072,7 @@ type PasskeyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PasskeyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1342,7 +1342,7 @@ type AuthFactorMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AuthFactorMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1442,7 +1442,7 @@ type AuthFactorOTPMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AuthFactorOTPMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1542,7 +1542,7 @@ type AuthFactorOTPSMSMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AuthFactorOTPSMSMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1642,7 +1642,7 @@ type AuthFactorOTPEmailMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AuthFactorOTPEmailMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1748,7 +1748,7 @@ type AuthFactorU2FMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AuthFactorU2FMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1878,7 +1878,7 @@ type SendInviteCodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SendInviteCodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1978,7 +1978,7 @@ type ReturnInviteCodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReturnInviteCodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

@@ -92,7 +92,7 @@ type AddCustomOrgIAMPolicyRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AddCustomOrgIAMPolicyRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -229,7 +229,7 @@ type ImportDataOrgMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ImportDataOrgMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1586,7 +1586,7 @@ type DataOrgMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataOrgMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1716,7 +1716,7 @@ type DataOIDCIDPMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataOIDCIDPMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1846,7 +1846,7 @@ type DataJWTIDPMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataJWTIDPMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2103,7 +2103,7 @@ type ExportHumanUserMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExportHumanUserMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2243,7 +2243,7 @@ type DataAppKeyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataAppKeyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2380,7 +2380,7 @@ type DataMachineKeyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataMachineKeyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2510,7 +2510,7 @@ type DataProjectMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataProjectMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2641,7 +2641,7 @@ type DataAPIApplicationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataAPIApplicationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2774,7 +2774,7 @@ type DataOIDCApplicationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataOIDCApplicationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -2909,7 +2909,7 @@ type DataHumanUserMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataHumanUserMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3042,7 +3042,7 @@ type DataMachineUserMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataMachineUserMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3172,7 +3172,7 @@ type DataActionMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataActionMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3303,7 +3303,7 @@ type DataProjectGrantMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m DataProjectGrantMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3407,7 +3407,7 @@ type SetTriggerActionsRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetTriggerActionsRequestMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3566,7 +3566,7 @@ type ExportHumanUser_ProfileMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExportHumanUser_ProfileMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3732,7 +3732,7 @@ type ExportHumanUser_EmailMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExportHumanUser_EmailMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3858,7 +3858,7 @@ type ExportHumanUser_PhoneMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExportHumanUser_PhoneMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -3964,7 +3964,7 @@ type ExportHumanUser_HashedPasswordMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ExportHumanUser_HashedPasswordMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

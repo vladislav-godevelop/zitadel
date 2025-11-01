@@ -552,7 +552,7 @@ type SearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -685,7 +685,7 @@ type OrFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OrFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -818,7 +818,7 @@ type AndFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m AndFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -946,7 +946,7 @@ type NotFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m NotFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1067,7 +1067,7 @@ type UserIDFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UserIDFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1189,7 +1189,7 @@ type OrganizationIDFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m OrganizationIDFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1315,7 +1315,7 @@ type UsernameFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m UsernameFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1436,7 +1436,7 @@ type EmailFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m EmailFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1557,7 +1557,7 @@ type PhoneFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m PhoneFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1667,7 +1667,7 @@ type StateFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m StateFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1778,7 +1778,7 @@ type SchemaIDFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SchemaIDFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1900,7 +1900,7 @@ type SchemaTypeFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SchemaTypeFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

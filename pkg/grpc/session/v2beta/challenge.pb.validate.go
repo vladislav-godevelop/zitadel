@@ -170,7 +170,7 @@ type RequestChallengesMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RequestChallengesMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -312,7 +312,7 @@ type ChallengesMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ChallengesMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -445,7 +445,7 @@ type RequestChallenges_WebAuthNMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RequestChallenges_WebAuthNMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -553,7 +553,7 @@ type RequestChallenges_OTPSMSMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RequestChallenges_OTPSMSMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -742,7 +742,7 @@ type RequestChallenges_OTPEmailMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RequestChallenges_OTPEmailMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -861,7 +861,7 @@ type RequestChallenges_OTPEmail_SendCodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RequestChallenges_OTPEmail_SendCodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -966,7 +966,7 @@ type RequestChallenges_OTPEmail_ReturnCodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RequestChallenges_OTPEmail_ReturnCodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1098,7 +1098,7 @@ type Challenges_WebAuthNMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m Challenges_WebAuthNMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

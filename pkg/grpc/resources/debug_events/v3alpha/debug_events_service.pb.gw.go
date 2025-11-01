@@ -10,6 +10,7 @@ package debug_events
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 
@@ -24,161 +25,143 @@ import (
 )
 
 // Suppress "imported and not used" errors
-var _ codes.Code
-var _ io.Reader
-var _ status.Status
-var _ = runtime.String
-var _ = utilities.NewDoubleArray
-var _ = metadata.Join
-
 var (
-	filter_ZITADELDebugEvents_CreateDebugEvents_0 = &utilities.DoubleArray{Encoding: map[string]int{"events": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	_ codes.Code
+	_ io.Reader
+	_ status.Status
+	_ = errors.New
+	_ = runtime.String
+	_ = utilities.NewDoubleArray
+	_ = metadata.Join
 )
 
-func request_ZITADELDebugEvents_CreateDebugEvents_0(ctx context.Context, marshaler runtime.Marshaler, client ZITADELDebugEventsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateDebugEventsRequest
-	var metadata runtime.ServerMetadata
+var filter_ZITADELDebugEvents_CreateDebugEvents_0 = &utilities.DoubleArray{Encoding: map[string]int{"events": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Events); err != nil && err != io.EOF {
+func request_ZITADELDebugEvents_CreateDebugEvents_0(ctx context.Context, marshaler runtime.Marshaler, client ZITADELDebugEventsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq CreateDebugEventsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Events); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELDebugEvents_CreateDebugEvents_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.CreateDebugEvents(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ZITADELDebugEvents_CreateDebugEvents_0(ctx context.Context, marshaler runtime.Marshaler, server ZITADELDebugEventsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq CreateDebugEventsRequest
-	var metadata runtime.ServerMetadata
-
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Events); err != nil && err != io.EOF {
+	var (
+		protoReq CreateDebugEventsRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Events); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELDebugEvents_CreateDebugEvents_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.CreateDebugEvents(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_ZITADELDebugEvents_GetDebugEventsStateById_0 = &utilities.DoubleArray{Encoding: map[string]int{"id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
-)
+var filter_ZITADELDebugEvents_GetDebugEventsStateById_0 = &utilities.DoubleArray{Encoding: map[string]int{"id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_ZITADELDebugEvents_GetDebugEventsStateById_0(ctx context.Context, marshaler runtime.Marshaler, client ZITADELDebugEventsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetDebugEventsStateByIdRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq GetDebugEventsStateByIdRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELDebugEvents_GetDebugEventsStateById_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.GetDebugEventsStateById(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ZITADELDebugEvents_GetDebugEventsStateById_0(ctx context.Context, marshaler runtime.Marshaler, server ZITADELDebugEventsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetDebugEventsStateByIdRequest
-	var metadata runtime.ServerMetadata
-
 	var (
-		val string
-		ok  bool
-		err error
-		_   = err
+		protoReq GetDebugEventsStateByIdRequest
+		metadata runtime.ServerMetadata
+		err      error
 	)
-
-	val, ok = pathParams["id"]
+	val, ok := pathParams["id"]
 	if !ok {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
-
 	protoReq.Id, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
-
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELDebugEvents_GetDebugEventsStateById_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.GetDebugEventsStateById(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
-var (
-	filter_ZITADELDebugEvents_ListDebugEventsStates_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
+var filter_ZITADELDebugEvents_ListDebugEventsStates_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_ZITADELDebugEvents_ListDebugEventsStates_0(ctx context.Context, marshaler runtime.Marshaler, client ZITADELDebugEventsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListDebugEventsStatesRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq ListDebugEventsStatesRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELDebugEvents_ListDebugEventsStates_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := client.ListDebugEventsStates(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
-
 }
 
 func local_request_ZITADELDebugEvents_ListDebugEventsStates_0(ctx context.Context, marshaler runtime.Marshaler, server ZITADELDebugEventsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq ListDebugEventsStatesRequest
-	var metadata runtime.ServerMetadata
-
+	var (
+		protoReq ListDebugEventsStatesRequest
+		metadata runtime.ServerMetadata
+	)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ZITADELDebugEvents_ListDebugEventsStates_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-
 	msg, err := server.ListDebugEventsStates(ctx, &protoReq)
 	return msg, metadata, err
-
 }
 
 // RegisterZITADELDebugEventsHandlerServer registers the http handlers for service ZITADELDebugEvents to "mux".
@@ -187,16 +170,13 @@ func local_request_ZITADELDebugEvents_ListDebugEventsStates_0(ctx context.Contex
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterZITADELDebugEventsHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterZITADELDebugEventsHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ZITADELDebugEventsServer) error {
-
-	mux.Handle("POST", pattern_ZITADELDebugEvents_CreateDebugEvents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ZITADELDebugEvents_CreateDebugEvents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.debug_events.v3alpha.ZITADELDebugEvents/CreateDebugEvents", runtime.WithHTTPPathPattern("/"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.debug_events.v3alpha.ZITADELDebugEvents/CreateDebugEvents", runtime.WithHTTPPathPattern("/"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -208,20 +188,15 @@ func RegisterZITADELDebugEventsHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELDebugEvents_CreateDebugEvents_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_ZITADELDebugEvents_GetDebugEventsStateById_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ZITADELDebugEvents_GetDebugEventsStateById_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.debug_events.v3alpha.ZITADELDebugEvents/GetDebugEventsStateById", runtime.WithHTTPPathPattern("/v3alpha/debug_events/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.debug_events.v3alpha.ZITADELDebugEvents/GetDebugEventsStateById", runtime.WithHTTPPathPattern("/v3alpha/debug_events/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -233,20 +208,15 @@ func RegisterZITADELDebugEventsHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELDebugEvents_GetDebugEventsStateById_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_ZITADELDebugEvents_ListDebugEventsStates_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ZITADELDebugEvents_ListDebugEventsStates_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.debug_events.v3alpha.ZITADELDebugEvents/ListDebugEventsStates", runtime.WithHTTPPathPattern("/v3alpha/debug_events"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/zitadel.resources.debug_events.v3alpha.ZITADELDebugEvents/ListDebugEventsStates", runtime.WithHTTPPathPattern("/v3alpha/debug_events"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -258,9 +228,7 @@ func RegisterZITADELDebugEventsHandlerServer(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELDebugEvents_ListDebugEventsStates_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
 
 	return nil
@@ -287,7 +255,6 @@ func RegisterZITADELDebugEventsHandlerFromEndpoint(ctx context.Context, mux *run
 			}
 		}()
 	}()
-
 	return RegisterZITADELDebugEventsHandler(ctx, mux, conn)
 }
 
@@ -303,14 +270,11 @@ func RegisterZITADELDebugEventsHandler(ctx context.Context, mux *runtime.ServeMu
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "ZITADELDebugEventsClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterZITADELDebugEventsHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ZITADELDebugEventsClient) error {
-
-	mux.Handle("POST", pattern_ZITADELDebugEvents_CreateDebugEvents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_ZITADELDebugEvents_CreateDebugEvents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.debug_events.v3alpha.ZITADELDebugEvents/CreateDebugEvents", runtime.WithHTTPPathPattern("/"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.debug_events.v3alpha.ZITADELDebugEvents/CreateDebugEvents", runtime.WithHTTPPathPattern("/"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -321,18 +285,13 @@ func RegisterZITADELDebugEventsHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELDebugEvents_CreateDebugEvents_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_ZITADELDebugEvents_GetDebugEventsStateById_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ZITADELDebugEvents_GetDebugEventsStateById_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.debug_events.v3alpha.ZITADELDebugEvents/GetDebugEventsStateById", runtime.WithHTTPPathPattern("/v3alpha/debug_events/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.debug_events.v3alpha.ZITADELDebugEvents/GetDebugEventsStateById", runtime.WithHTTPPathPattern("/v3alpha/debug_events/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -343,18 +302,13 @@ func RegisterZITADELDebugEventsHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELDebugEvents_GetDebugEventsStateById_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
-	mux.Handle("GET", pattern_ZITADELDebugEvents_ListDebugEventsStates_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ZITADELDebugEvents_ListDebugEventsStates_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		var err error
-		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.debug_events.v3alpha.ZITADELDebugEvents/ListDebugEventsStates", runtime.WithHTTPPathPattern("/v3alpha/debug_events"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/zitadel.resources.debug_events.v3alpha.ZITADELDebugEvents/ListDebugEventsStates", runtime.WithHTTPPathPattern("/v3alpha/debug_events"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -365,26 +319,19 @@ func RegisterZITADELDebugEventsHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-
 		forward_ZITADELDebugEvents_ListDebugEventsStates_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
 	})
-
 	return nil
 }
 
 var (
-	pattern_ZITADELDebugEvents_CreateDebugEvents_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{""}, ""))
-
+	pattern_ZITADELDebugEvents_CreateDebugEvents_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{""}, ""))
 	pattern_ZITADELDebugEvents_GetDebugEventsStateById_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v3alpha", "debug_events", "id"}, ""))
-
-	pattern_ZITADELDebugEvents_ListDebugEventsStates_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v3alpha", "debug_events"}, ""))
+	pattern_ZITADELDebugEvents_ListDebugEventsStates_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v3alpha", "debug_events"}, ""))
 )
 
 var (
-	forward_ZITADELDebugEvents_CreateDebugEvents_0 = runtime.ForwardResponseMessage
-
+	forward_ZITADELDebugEvents_CreateDebugEvents_0       = runtime.ForwardResponseMessage
 	forward_ZITADELDebugEvents_GetDebugEventsStateById_0 = runtime.ForwardResponseMessage
-
-	forward_ZITADELDebugEvents_ListDebugEventsStates_0 = runtime.ForwardResponseMessage
+	forward_ZITADELDebugEvents_ListDebugEventsStates_0   = runtime.ForwardResponseMessage
 )

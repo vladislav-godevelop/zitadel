@@ -266,7 +266,7 @@ type ApplicationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -514,7 +514,7 @@ type ApplicationSearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationSearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -631,7 +631,7 @@ type ProjectIDFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ProjectIDFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -753,7 +753,7 @@ type ApplicationNameFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationNameFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -997,7 +997,7 @@ type ApplicationKeySearchFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationKeySearchFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1112,7 +1112,7 @@ type ApplicationKeyApplicationIDFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationKeyApplicationIDFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1226,7 +1226,7 @@ type ApplicationKeyProjectIDFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationKeyProjectIDFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1342,7 +1342,7 @@ type ApplicationKeyOrganizationIDFilterMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationKeyOrganizationIDFilterMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1511,7 +1511,7 @@ type ApplicationKeyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ApplicationKeyMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

@@ -105,7 +105,7 @@ type LDAPCredentialsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m LDAPCredentialsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -250,7 +250,7 @@ type RedirectURLsMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m RedirectURLsMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -355,7 +355,7 @@ type IDPIntentMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IDPIntentMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -618,7 +618,7 @@ type IDPInformationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IDPInformationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -724,7 +724,7 @@ type IDPOAuthAccessInformationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IDPOAuthAccessInformationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -855,7 +855,7 @@ type IDPLDAPAccessInformationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IDPLDAPAccessInformationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -959,7 +959,7 @@ type IDPSAMLAccessInformationMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IDPSAMLAccessInformationMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1092,7 +1092,7 @@ type IDPLinkMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m IDPLinkMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -1195,7 +1195,7 @@ type FormDataMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m FormDataMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

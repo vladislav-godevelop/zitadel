@@ -243,7 +243,7 @@ type SetHumanEmailMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SetHumanEmailMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -346,7 +346,7 @@ type HumanEmailMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m HumanEmailMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -461,7 +461,7 @@ type SendEmailVerificationCodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m SendEmailVerificationCodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -563,7 +563,7 @@ type ReturnEmailVerificationCodeMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m ReturnEmailVerificationCodeMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}

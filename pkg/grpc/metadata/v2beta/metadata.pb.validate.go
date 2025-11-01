@@ -136,7 +136,7 @@ type MetadataMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MetadataMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -294,7 +294,7 @@ type MetadataQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MetadataQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
@@ -416,7 +416,7 @@ type MetadataKeyQueryMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
 func (m MetadataKeyQueryMultiError) Error() string {
-	var msgs []string
+	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
 	}
